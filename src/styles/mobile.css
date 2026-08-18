@@ -6,7 +6,6 @@
 
 /* =========================================
    MOBILE-ONLY COMPONENTS
-   Hidden by default on desktop
 ========================================= */
 
 .android-bottom-nav,
@@ -246,8 +245,7 @@
 
     max-width: 82%;
 
-    padding:
-        14px 16px;
+    padding: 14px 16px;
 
     border-radius: 18px;
 }
@@ -256,14 +254,11 @@
 .ai-chat-message.ai {
     justify-self: start;
 
-    border:
-        1px solid #e5e5df;
+    border: 1px solid #e5e5df;
 
-    border-bottom-left-radius:
-        6px;
+    border-bottom-left-radius: 6px;
 
     background: #ffffff;
-
     color: #1e1e1c;
 }
 
@@ -271,11 +266,9 @@
 .ai-chat-message.user {
     justify-self: end;
 
-    border-bottom-right-radius:
-        6px;
+    border-bottom-right-radius: 6px;
 
     background: #1e1e1c;
-
     color: #ffffff;
 }
 
@@ -292,11 +285,9 @@
     color: #777770;
 
     font-size: 9px;
-
     font-weight: 800;
 
-    letter-spacing:
-        0.04em;
+    letter-spacing: 0.04em;
 }
 
 
@@ -312,8 +303,7 @@
 .ai-user-text {
     margin: 0;
 
-    white-space:
-        pre-wrap;
+    white-space: pre-wrap;
 
     font-size: 13px;
 
@@ -335,9 +325,7 @@
 
     padding: 7px;
 
-    border:
-        1px solid #e2e2dd;
-
+    border: 1px solid #e2e2dd;
     border-radius: 18px;
 
     background: white;
@@ -350,8 +338,7 @@
 .mobile-ai-input input {
     min-width: 0;
 
-    padding:
-        10px 12px;
+    padding: 10px 12px;
 
     border: 0;
 
@@ -397,8 +384,7 @@
 .ai-markdown {
     min-width: 0;
 
-    overflow-wrap:
-        anywhere;
+    overflow-wrap: anywhere;
 
     color: inherit;
 
@@ -418,24 +404,14 @@
 }
 
 
-/* =========================================
-   MARKDOWN PARAGRAPHS
-========================================= */
-
 .ai-markdown p {
-    margin:
-        0 0 14px;
+    margin: 0 0 14px;
 
-    white-space:
-        normal;
+    white-space: normal;
 
     line-height: 1.7;
 }
 
-
-/* =========================================
-   MARKDOWN HEADINGS
-========================================= */
 
 .ai-markdown h1,
 .ai-markdown h2,
@@ -450,40 +426,32 @@
 
 
 .ai-markdown h1 {
-    margin:
-        22px 0 10px;
+    margin: 22px 0 10px;
 
     font-size: 21px;
 }
 
 
 .ai-markdown h2 {
-    margin:
-        20px 0 9px;
+    margin: 20px 0 9px;
 
     font-size: 18px;
 }
 
 
 .ai-markdown h3 {
-    margin:
-        18px 0 9px;
+    margin: 18px 0 9px;
 
     font-size: 16px;
 }
 
 
 .ai-markdown h4 {
-    margin:
-        16px 0 8px;
+    margin: 16px 0 8px;
 
     font-size: 14px;
 }
 
-
-/* =========================================
-   MARKDOWN BOLD / ITALIC
-========================================= */
 
 .ai-markdown strong {
     font-weight: 800;
@@ -497,14 +465,9 @@
 }
 
 
-/* =========================================
-   MARKDOWN LISTS
-========================================= */
-
 .ai-markdown ul,
 .ai-markdown ol {
-    margin:
-        10px 0 16px;
+    margin: 10px 0 16px;
 
     padding-left: 24px;
 }
@@ -533,45 +496,28 @@
 
 .ai-markdown li ul,
 .ai-markdown li ol {
-    margin:
-        7px 0 4px;
+    margin: 7px 0 4px;
 }
 
 
-/* =========================================
-   MARKDOWN DIVIDER
-========================================= */
-
 .ai-markdown hr {
-    margin:
-        20px 0;
+    margin: 20px 0;
 
     border: 0;
 
-    border-top:
-        1px solid #e3e3de;
+    border-top: 1px solid #e3e3de;
 }
 
 
-/* =========================================
-   MARKDOWN BLOCKQUOTE
-========================================= */
-
 .ai-markdown blockquote {
-    margin:
-        14px 0;
+    margin: 14px 0;
 
-    padding:
-        11px 13px;
+    padding: 11px 13px;
 
-    border-left:
-        3px solid #1e1e1c;
+    border-left: 3px solid #1e1e1c;
+    border-radius: 0 10px 10px 0;
 
-    border-radius:
-        0 10px 10px 0;
-
-    background:
-        #f4f4f0;
+    background: #f4f4f0;
 }
 
 
@@ -580,21 +526,13 @@
 }
 
 
-/* =========================================
-   INLINE CODE
-========================================= */
-
 .ai-markdown code {
-    padding:
-        2px 5px;
+    padding: 2px 5px;
 
     border-radius: 5px;
 
-    background:
-        #eeeeea;
-
-    color:
-        #1e1e1c;
+    background: #eeeeea;
+    color: #1e1e1c;
 
     font-family:
         Consolas,
@@ -605,27 +543,19 @@
 }
 
 
-/* =========================================
-   CODE BLOCK
-========================================= */
-
 .ai-markdown pre {
     max-width: 100%;
 
     overflow-x: auto;
 
-    margin:
-        14px 0;
+    margin: 14px 0;
 
     padding: 15px;
 
     border-radius: 13px;
 
-    background:
-        #171715;
-
-    color:
-        #f6f6f2;
+    background: #171715;
+    color: #f6f6f2;
 
     line-height: 1.55;
 }
@@ -634,35 +564,22 @@
 .ai-markdown pre code {
     padding: 0;
 
-    background:
-        transparent;
+    background: transparent;
 
-    color:
-        inherit;
+    color: inherit;
 }
 
-
-/* =========================================
-   LINKS
-========================================= */
 
 .ai-markdown a {
     color: inherit;
 
-    text-decoration:
-        underline;
+    text-decoration: underline;
 
-    text-decoration-thickness:
-        1px;
+    text-decoration-thickness: 1px;
 
-    text-underline-offset:
-        3px;
+    text-underline-offset: 3px;
 }
 
-
-/* =========================================
-   TABLES
-========================================= */
 
 .ai-markdown table {
     width: 100%;
@@ -671,29 +588,24 @@
 
     overflow-x: auto;
 
-    margin:
-        14px 0;
+    margin: 14px 0;
 
-    border-collapse:
-        collapse;
+    border-collapse: collapse;
 }
 
 
 .ai-markdown th,
 .ai-markdown td {
-    padding:
-        8px 10px;
+    padding: 8px 10px;
 
-    border:
-        1px solid #e3e3dd;
+    border: 1px solid #e3e3dd;
 
     text-align: left;
 }
 
 
 .ai-markdown th {
-    background:
-        #f1f1ed;
+    background: #f1f1ed;
 
     font-weight: 800;
 }
@@ -722,8 +634,7 @@
 
     border-radius: 50%;
 
-    background:
-        #777770;
+    background: #777770;
 
     animation:
         studyflow-thinking 1.2s infinite ease-in-out;
@@ -731,14 +642,12 @@
 
 
 .ai-thinking>span:nth-child(2) {
-    animation-delay:
-        0.15s;
+    animation-delay: 0.15s;
 }
 
 
 .ai-thinking>span:nth-child(3) {
-    animation-delay:
-        0.3s;
+    animation-delay: 0.3s;
 }
 
 
@@ -747,15 +656,13 @@
     0%,
     60%,
     100% {
-        transform:
-            translateY(0);
+        transform: translateY(0);
 
         opacity: 0.35;
     }
 
     30% {
-        transform:
-            translateY(-4px);
+        transform: translateY(-4px);
 
         opacity: 1;
     }
@@ -782,8 +689,7 @@
     body {
         overflow-x: hidden;
 
-        background:
-            #f7f7f5;
+        background: #f7f7f5;
     }
 
 
@@ -801,10 +707,6 @@
     }
 
 
-    /* =====================================
-       HIDE DESKTOP NAV
-    ===================================== */
-
     .sidebar {
         display: none !important;
     }
@@ -815,10 +717,6 @@
     }
 
 
-    /* =====================================
-       MAIN AREA
-    ===================================== */
-
     .main-area {
         width: 100%;
 
@@ -827,10 +725,6 @@
         min-height: 100vh;
     }
 
-
-    /* =====================================
-       MOBILE TOP BAR
-    ===================================== */
 
     .topbar {
         position: sticky;
@@ -843,28 +737,22 @@
 
         height: 62px;
 
-        padding:
-            0 18px;
+        padding: 0 18px;
 
         background:
-            rgba(247,
-                247,
-                245,
-                0.97);
+            rgba(247, 247, 245, 0.97);
 
         border-bottom:
             1px solid #e7e7e2;
 
-        backdrop-filter:
-            blur(14px);
+        backdrop-filter: blur(14px);
     }
 
 
     .topbar .menu-button,
     .topbar .eyebrow,
     .topbar-date {
-        display:
-            none !important;
+        display: none !important;
     }
 
 
@@ -876,10 +764,6 @@
         line-height: 1;
     }
 
-
-    /* =====================================
-       PAGE WRAPPER
-    ===================================== */
 
     .content-wrap {
         width: 100%;
@@ -900,35 +784,24 @@
     }
 
 
-    /* =====================================
-       COMMON MOBILE CARDS
-    ===================================== */
-
     .panel,
     .stat-card,
     .quick-card,
     .guide-step,
     .subject-card {
-        border-radius:
-            18px;
+        border-radius: 18px;
     }
 
 
-    /* =====================================
-       DASHBOARD
-    ===================================== */
-
     .dashboard-page .desktop-dashboard-hero,
     .dashboard-page .desktop-dashboard-content {
-        display:
-            none !important;
+        display: none !important;
     }
 
 
     .mobile-home-hero,
     .mobile-dashboard-section {
-        display:
-            block !important;
+        display: block !important;
     }
 
 
@@ -937,13 +810,8 @@
     }
 
 
-    /* =====================================
-       MOBILE HOME HEADER
-    ===================================== */
-
     .mobile-home-hero {
-        padding:
-            4px 0 0;
+        padding: 4px 0 0;
     }
 
 
@@ -952,8 +820,7 @@
 
         align-items: center;
 
-        justify-content:
-            space-between;
+        justify-content: space-between;
 
         gap: 16px;
     }
@@ -962,551 +829,381 @@
     .mobile-home-top p {
         margin: 0;
 
-        color:
-            #73736c;
+        color: #73736c;
 
-        font-size:
-            12px;
+        font-size: 12px;
     }
 
 
     .mobile-home-top h2 {
-        margin:
-            2px 0 0;
+        margin: 2px 0 0;
 
-        font-size:
-            25px;
+        font-size: 25px;
 
-        line-height:
-            1.1;
+        line-height: 1.1;
     }
 
 
     .mobile-profile-avatar {
         width: 42px;
-
         height: 42px;
 
         flex-shrink: 0;
 
         display: grid;
 
-        place-items:
-            center;
+        place-items: center;
 
-        border-radius:
-            50%;
+        border-radius: 50%;
 
-        background:
-            #1e1e1c;
+        background: #1e1e1c;
+        color: white;
 
-        color:
-            white;
-
-        font-weight:
-            800;
+        font-weight: 800;
     }
 
-
-    /* =====================================
-       ASK AI CARD
-    ===================================== */
 
     .mobile-study-question {
         width: 100%;
 
-        margin-top:
-            20px;
+        margin-top: 20px;
 
-        padding:
-            20px;
+        padding: 20px;
 
-        border-radius:
-            22px;
+        border-radius: 22px;
 
-        background:
-            #1e1e1c;
-
-        color:
-            white;
+        background: #1e1e1c;
+        color: white;
     }
 
 
     .mobile-study-question p {
-        margin:
-            0 0 18px;
+        margin: 0 0 18px;
 
-        font-size:
-            21px;
+        font-size: 21px;
 
-        font-weight:
-            750;
+        font-weight: 750;
 
-        line-height:
-            1.2;
+        line-height: 1.2;
 
-        letter-spacing:
-            -0.025em;
+        letter-spacing: -0.025em;
     }
 
 
     .mobile-ai-pill {
-        display:
-            inline-flex;
+        display: inline-flex;
 
-        align-items:
-            center;
+        align-items: center;
 
-        gap:
-            7px;
+        gap: 7px;
 
-        padding:
-            10px 13px;
+        padding: 10px 13px;
 
-        border-radius:
-            999px;
+        border-radius: 999px;
 
-        background:
-            white;
+        background: white;
+        color: #1e1e1c;
 
-        color:
-            #1e1e1c;
+        font-size: 11px;
 
-        font-size:
-            11px;
-
-        font-weight:
-            750;
+        font-weight: 750;
     }
 
 
-    /* =====================================
-       SECTION HEADERS
-    ===================================== */
-
     .mobile-section-header {
-        display:
-            flex;
+        display: flex;
 
-        align-items:
-            center;
+        align-items: center;
 
-        justify-content:
-            space-between;
+        justify-content: space-between;
 
-        gap:
-            12px;
+        gap: 12px;
 
-        margin-bottom:
-            10px;
+        margin-bottom: 10px;
     }
 
 
     .mobile-section-header h3,
     .mobile-section-title {
-        margin:
-            0;
+        margin: 0;
 
-        font-size:
-            15px;
+        font-size: 15px;
     }
 
 
     .mobile-section-header a {
-        flex-shrink:
-            0;
+        flex-shrink: 0;
 
-        color:
-            #73736c;
+        color: #73736c;
 
-        font-size:
-            11px;
+        font-size: 11px;
 
-        font-weight:
-            650;
+        font-weight: 650;
     }
 
 
-    /* =====================================
-       QUICK ACTIONS
-    ===================================== */
-
     .mobile-quick-actions {
-        width:
-            100%;
+        width: 100%;
 
-        display:
-            grid;
+        display: grid;
 
         grid-template-columns:
-            repeat(4,
-                minmax(0,
-                    1fr));
+            repeat(4, minmax(0, 1fr));
 
-        gap:
-            8px;
+        gap: 8px;
     }
 
 
     .mobile-quick-action {
-        min-width:
-            0;
+        min-width: 0;
 
-        display:
-            flex;
+        display: flex;
 
-        flex-direction:
-            column;
+        flex-direction: column;
 
-        align-items:
-            center;
+        align-items: center;
 
-        gap:
-            6px;
+        gap: 6px;
 
-        color:
-            #1e1e1c;
+        color: #1e1e1c;
 
-        font-size:
-            9px;
+        font-size: 9px;
 
-        font-weight:
-            650;
+        font-weight: 650;
 
-        text-align:
-            center;
+        text-align: center;
     }
 
 
     .mobile-quick-action>div {
-        width:
-            100%;
+        width: 100%;
 
-        aspect-ratio:
-            1 / 0.9;
+        aspect-ratio: 1 / 0.9;
 
-        display:
-            grid;
+        display: grid;
 
-        place-items:
-            center;
+        place-items: center;
 
-        border:
-            1px solid #e4e4df;
+        border: 1px solid #e4e4df;
+        border-radius: 16px;
 
-        border-radius:
-            16px;
+        background: white;
 
-        background:
-            white;
-
-        font-size:
-            18px;
+        font-size: 18px;
     }
 
 
-    /* =====================================
-       SUBJECTS DASHBOARD
-    ===================================== */
-
     .mobile-subject-list {
-        overflow:
-            hidden;
+        overflow: hidden;
 
-        border:
-            1px solid #e5e5df;
+        border: 1px solid #e5e5df;
+        border-radius: 18px;
 
-        border-radius:
-            18px;
-
-        background:
-            white;
+        background: white;
     }
 
 
     .mobile-subject-row {
-        min-height:
-            66px;
+        min-height: 66px;
 
-        display:
-            grid;
+        display: grid;
 
         grid-template-columns:
-            40px minmax(0,
-                1fr) 20px;
+            40px minmax(0, 1fr) 20px;
 
-        align-items:
-            center;
+        align-items: center;
 
-        gap:
-            10px;
+        gap: 10px;
 
-        padding:
-            10px 12px;
+        padding: 10px 12px;
 
-        border-top:
-            1px solid #e7e7e2;
+        border-top: 1px solid #e7e7e2;
     }
 
 
     .mobile-subject-row:first-child {
-        border-top:
-            0;
+        border-top: 0;
     }
 
 
     .mobile-subject-icon {
-        width:
-            40px;
+        width: 40px;
+        height: 40px;
 
-        height:
-            40px;
+        display: grid;
 
-        display:
-            grid;
+        place-items: center;
 
-        place-items:
-            center;
+        border-radius: 12px;
 
-        border-radius:
-            12px;
+        background: #eeeeea;
+        color: #1e1e1c;
 
-        background:
-            #eeeeea;
-
-        color:
-            #1e1e1c;
-
-        font-weight:
-            800;
+        font-weight: 800;
     }
 
 
     .mobile-subject-info {
-        min-width:
-            0;
+        min-width: 0;
 
-        display:
-            grid;
+        display: grid;
 
-        gap:
-            2px;
+        gap: 2px;
     }
 
 
     .mobile-subject-info strong {
-        overflow:
-            hidden;
+        overflow: hidden;
 
-        text-overflow:
-            ellipsis;
+        text-overflow: ellipsis;
 
-        white-space:
-            nowrap;
+        white-space: nowrap;
 
-        font-size:
-            12px;
+        font-size: 12px;
     }
 
 
     .mobile-subject-info span {
-        color:
-            #73736c;
+        color: #73736c;
 
-        font-size:
-            9px;
+        font-size: 9px;
     }
 
 
     .mobile-row-arrow {
-        color:
-            #aaa9a2;
+        color: #aaa9a2;
 
-        font-size:
-            20px;
+        font-size: 20px;
     }
 
 
     .mobile-empty-card {
-        display:
-            grid;
+        display: grid;
 
-        gap:
-            4px;
+        gap: 4px;
 
-        padding:
-            16px;
+        padding: 16px;
 
-        border:
-            1px solid #e5e5df;
+        border: 1px solid #e5e5df;
+        border-radius: 18px;
 
-        border-radius:
-            18px;
-
-        background:
-            white;
+        background: white;
     }
 
 
     .mobile-empty-card strong {
-        font-size:
-            12px;
+        font-size: 12px;
     }
 
 
     .mobile-empty-card span {
-        color:
-            #73736c;
+        color: #73736c;
 
-        font-size:
-            10px;
+        font-size: 10px;
     }
 
 
-    /* =====================================
-       TODAY'S STUDY
-    ===================================== */
-
     .mobile-today-card {
-        overflow:
-            hidden;
+        overflow: hidden;
 
-        padding:
-            0 12px;
+        padding: 0 12px;
 
-        border:
-            1px solid #e5e5df;
+        border: 1px solid #e5e5df;
+        border-radius: 18px;
 
-        border-radius:
-            18px;
-
-        background:
-            white;
+        background: white;
     }
 
 
     .mobile-task-row {
-        min-height:
-            60px;
+        min-height: 60px;
 
-        display:
-            grid;
+        display: grid;
 
         grid-template-columns:
-            12px minmax(0,
-                1fr);
+            12px minmax(0, 1fr);
 
-        align-items:
-            center;
+        align-items: center;
 
-        gap:
-            9px;
+        gap: 9px;
 
-        border-top:
-            1px solid #e7e7e2;
+        border-top: 1px solid #e7e7e2;
     }
 
 
     .mobile-task-row:first-child {
-        border-top:
-            0;
+        border-top: 0;
     }
 
 
     .mobile-task-dot {
-        width:
-            9px;
-
-        height:
-            9px;
+        width: 9px;
+        height: 9px;
 
         border:
             2px solid #8f8f88;
 
-        border-radius:
-            50%;
+        border-radius: 50%;
     }
 
 
     .mobile-task-row>div:last-child {
-        min-width:
-            0;
+        min-width: 0;
 
-        display:
-            grid;
+        display: grid;
 
-        gap:
-            2px;
+        gap: 2px;
     }
 
 
     .mobile-task-row strong {
-        overflow:
-            hidden;
+        overflow: hidden;
 
-        text-overflow:
-            ellipsis;
+        text-overflow: ellipsis;
 
-        white-space:
-            nowrap;
+        white-space: nowrap;
 
-        font-size:
-            11px;
+        font-size: 11px;
     }
 
 
     .mobile-task-row span {
-        color:
-            #73736c;
+        color: #73736c;
 
-        font-size:
-            9px;
+        font-size: 9px;
     }
 
 
     .mobile-empty-today {
-        display:
-            grid;
+        display: grid;
 
-        gap:
-            4px;
+        gap: 4px;
 
-        padding:
-            18px 2px;
+        padding: 18px 2px;
     }
 
 
     .mobile-empty-today strong {
-        font-size:
-            12px;
+        font-size: 12px;
     }
 
 
     .mobile-empty-today span {
-        color:
-            #73736c;
+        color: #73736c;
 
-        font-size:
-            10px;
+        font-size: 10px;
     }
 
 
-    /* =====================================
-       SUBJECT PAGE
-    ===================================== */
-
     .subject-layout {
-        display:
-            block !important;
+        display: block !important;
     }
 
 
     .subject-form {
-        position:
-            static !important;
+        position: static !important;
 
-        margin-bottom:
-            14px;
+        margin-bottom: 14px;
     }
 
 
@@ -1514,121 +1211,91 @@
         grid-template-columns:
             1fr !important;
 
-        gap:
-            10px;
+        gap: 10px;
     }
 
 
     .subject-card {
-        min-height:
-            auto;
+        min-height: auto;
 
-        padding:
-            18px;
+        padding: 18px;
     }
 
 
     .subject-card-content {
-        margin-top:
-            20px;
+        margin-top: 20px;
     }
 
 
     .subject-card-content h3 {
-        font-size:
-            17px;
+        font-size: 17px;
     }
 
 
-    /* =====================================
-       MATERIALS PAGE
-    ===================================== */
-
     .materials-layout {
-        display:
-            block !important;
+        display: block !important;
     }
 
 
     .upload-panel {
-        position:
-            static !important;
+        position: static !important;
 
-        margin-bottom:
-            14px;
+        margin-bottom: 14px;
     }
 
 
     .materials-header {
-        flex-direction:
-            column;
+        flex-direction: column;
 
-        align-items:
-            flex-start;
+        align-items: flex-start;
 
-        padding:
-            22px 18px;
+        padding: 22px 18px;
     }
 
 
     .materials-header h2 {
-        font-size:
-            27px;
+        font-size: 27px;
     }
 
 
     .materials-header p {
-        font-size:
-            11px;
+        font-size: 11px;
     }
 
 
     .upload-dropzone {
-        min-height:
-            180px;
+        min-height: 180px;
     }
 
 
     .material-item {
         grid-template-columns:
-            42px minmax(0,
-                1fr) !important;
+            42px minmax(0, 1fr) !important;
 
-        gap:
-            12px;
+        gap: 12px;
     }
 
 
     .material-info {
-        min-width:
-            0;
+        min-width: 0;
     }
 
 
     .material-info>strong {
-        overflow:
-            hidden;
+        overflow: hidden;
 
-        text-overflow:
-            ellipsis;
+        text-overflow: ellipsis;
 
-        white-space:
-            nowrap;
+        white-space: nowrap;
     }
 
 
     .material-actions {
-        grid-column:
-            2;
+        grid-column: 2;
 
-        justify-content:
-            flex-start;
+        justify-content: flex-start;
     }
 
-
-    /* =====================================
-       PLANNER
-    ===================================== */
 
     .planner-grid {
         grid-template-columns:
@@ -1637,14 +1304,9 @@
 
 
     .task-form {
-        position:
-            static !important;
+        position: static !important;
     }
 
-
-    /* =====================================
-       FOCUS PAGE
-    ===================================== */
 
     .focus-layout {
         grid-template-columns:
@@ -1653,449 +1315,318 @@
 
 
     .timer-display {
-        font-size:
-            64px;
+        font-size: 64px;
     }
 
-
-    /* =====================================
-       TOUCH CONTROLS
-    ===================================== */
 
     .field input,
     .study-select,
     .study-textarea {
-        width:
-            100%;
+        width: 100%;
 
-        min-height:
-            48px;
+        min-height: 48px;
 
-        font-size:
-            16px;
+        font-size: 16px;
     }
 
 
     .primary-button,
     .secondary-button,
     .ghost-button {
-        min-height:
-            46px;
+        min-height: 46px;
     }
 
 
-    /* =====================================
-       AI PAGE - PHONE
-    ===================================== */
-
     .mobile-ai-page {
-        width:
-            100%;
+        width: 100%;
 
-        max-width:
-            none;
+        max-width: none;
 
-        margin:
-            0;
+        margin: 0;
 
-        display:
-            grid;
+        display: grid;
 
-        gap:
-            14px;
+        gap: 14px;
     }
 
 
     .mobile-ai-hero {
-        padding:
-            22px 18px;
+        padding: 22px 18px;
 
-        border-radius:
-            22px;
+        border-radius: 22px;
     }
 
 
     .mobile-ai-logo {
-        width:
-            42px;
+        width: 42px;
+        height: 42px;
 
-        height:
-            42px;
+        margin-bottom: 22px;
 
-        margin-bottom:
-            22px;
+        border-radius: 13px;
 
-        border-radius:
-            13px;
-
-        font-size:
-            18px;
+        font-size: 18px;
     }
 
 
     .mobile-small-label {
-        margin-bottom:
-            6px;
+        margin-bottom: 6px;
 
-        font-size:
-            9px;
+        font-size: 9px;
     }
 
 
     .mobile-ai-hero h2 {
-        margin-bottom:
-            8px;
+        margin-bottom: 8px;
 
-        font-size:
-            26px;
+        font-size: 26px;
     }
 
 
     .mobile-ai-hero p {
-        font-size:
-            11px;
+        font-size: 11px;
 
-        line-height:
-            1.55;
+        line-height: 1.55;
     }
 
 
-    /* =====================================
-       AI MATERIAL - PHONE
-    ===================================== */
-
     .mobile-ai-material {
-        gap:
-            12px;
+        gap: 12px;
 
-        padding:
-            15px;
+        padding: 15px;
 
-        border-radius:
-            17px;
+        border-radius: 17px;
     }
 
 
     .mobile-ai-material>div {
-        min-width:
-            0;
+        min-width: 0;
 
-        gap:
-            3px;
+        gap: 3px;
     }
 
 
     .mobile-ai-material span {
-        font-size:
-            8px;
+        font-size: 8px;
     }
 
 
     .mobile-ai-material strong {
-        font-size:
-            11px;
+        font-size: 11px;
     }
 
 
     .mobile-ai-material a {
-        padding:
-            8px 11px;
+        padding: 8px 11px;
 
-        border-radius:
-            10px;
+        border-radius: 10px;
 
-        font-size:
-            10px;
+        font-size: 10px;
     }
 
-
-    /* =====================================
-       AI PROMPTS - PHONE
-    ===================================== */
 
     .mobile-ai-prompts {
         grid-template-columns:
             1fr 1fr;
 
-        gap:
-            8px;
+        gap: 8px;
     }
 
 
     .mobile-ai-prompts button {
-        min-height:
-            78px;
+        min-height: 78px;
 
-        flex-direction:
-            column;
+        flex-direction: column;
 
-        align-items:
-            flex-start;
+        align-items: flex-start;
 
-        justify-content:
-            space-between;
+        justify-content: space-between;
 
-        gap:
-            8px;
+        gap: 8px;
 
-        padding:
-            12px;
+        padding: 12px;
 
-        border-radius:
-            16px;
+        border-radius: 16px;
 
-        font-size:
-            10px;
+        font-size: 10px;
     }
 
 
     .mobile-ai-prompts button>span {
-        font-size:
-            16px;
+        font-size: 16px;
     }
 
 
-    /* =====================================
-       AI CHAT - PHONE
-    ===================================== */
-
     .ai-chat-thread {
-        gap:
-            10px;
+        gap: 10px;
     }
 
 
     .ai-chat-message {
-        max-width:
-            92%;
+        max-width: 92%;
 
-        padding:
-            12px 13px;
+        padding: 12px 13px;
 
-        border-radius:
-            16px;
+        border-radius: 16px;
     }
 
 
     .ai-message-author {
-        margin-bottom:
-            6px;
+        margin-bottom: 6px;
 
-        font-size:
-            8px;
+        font-size: 8px;
     }
 
 
     .ai-user-text {
-        font-size:
-            11px;
+        font-size: 11px;
 
-        line-height:
-            1.55;
+        line-height: 1.55;
     }
 
 
     .ai-markdown {
-        font-size:
-            11px;
+        font-size: 11px;
 
-        line-height:
-            1.65;
+        line-height: 1.65;
     }
 
 
     .ai-markdown p {
-        margin-bottom:
-            11px;
+        margin-bottom: 11px;
 
-        font-size:
-            11px;
+        font-size: 11px;
 
-        line-height:
-            1.65;
+        line-height: 1.65;
     }
 
 
     .ai-markdown h1 {
-        margin:
-            16px 0 7px;
+        margin: 16px 0 7px;
 
-        font-size:
-            17px;
+        font-size: 17px;
     }
 
 
     .ai-markdown h2 {
-        margin:
-            15px 0 7px;
+        margin: 15px 0 7px;
 
-        font-size:
-            15px;
+        font-size: 15px;
     }
 
 
     .ai-markdown h3 {
-        margin:
-            14px 0 7px;
+        margin: 14px 0 7px;
 
-        font-size:
-            13px;
+        font-size: 13px;
     }
 
 
     .ai-markdown h4 {
-        margin:
-            13px 0 6px;
+        margin: 13px 0 6px;
 
-        font-size:
-            12px;
+        font-size: 12px;
     }
 
 
     .ai-markdown ul,
     .ai-markdown ol {
-        margin:
-            8px 0 12px;
+        margin: 8px 0 12px;
 
-        padding-left:
-            19px;
+        padding-left: 19px;
     }
 
 
     .ai-markdown li {
-        margin-bottom:
-            7px;
+        margin-bottom: 7px;
 
-        font-size:
-            11px;
+        font-size: 11px;
 
-        line-height:
-            1.6;
+        line-height: 1.6;
     }
 
 
     .ai-markdown blockquote {
-        margin:
-            10px 0;
+        margin: 10px 0;
 
-        padding:
-            9px 10px;
+        padding: 9px 10px;
     }
 
 
     .ai-markdown pre {
-        margin:
-            10px 0;
+        margin: 10px 0;
 
-        padding:
-            11px;
+        padding: 11px;
 
-        font-size:
-            10px;
+        font-size: 10px;
     }
 
 
     .ai-markdown code {
-        font-size:
-            10px;
+        font-size: 10px;
     }
 
 
     .ai-markdown th,
     .ai-markdown td {
-        padding:
-            6px 8px;
+        padding: 6px 8px;
 
-        font-size:
-            10px;
+        font-size: 10px;
     }
 
 
-    /* =====================================
-       AI INPUT - PHONE
-    ===================================== */
-
     .mobile-ai-input {
-        position:
-            sticky;
+        position: sticky;
 
         bottom:
             calc(82px + env(safe-area-inset-bottom));
 
-        z-index:
-            20;
+        z-index: 20;
 
         grid-template-columns:
-            minmax(0,
-                1fr) 43px;
+            minmax(0, 1fr) 43px;
 
-        gap:
-            6px;
+        gap: 6px;
 
-        padding:
-            6px;
+        padding: 6px;
 
-        border-radius:
-            17px;
+        border-radius: 17px;
 
         box-shadow:
-            0 10px 30px rgba(0,
-                0,
-                0,
-                0.08);
+            0 10px 30px rgba(0, 0, 0, 0.08);
     }
 
 
     .mobile-ai-input input {
-        padding:
-            8px 10px;
+        padding: 8px 10px;
 
-        font-size:
-            12px;
+        font-size: 12px;
     }
 
 
     .mobile-ai-input button {
-        width:
-            43px;
+        width: 43px;
+        height: 43px;
 
-        height:
-            43px;
-
-        border-radius:
-            13px;
+        border-radius: 13px;
     }
 
 
-    /* =====================================
-       ANDROID BOTTOM NAVIGATION
-    ===================================== */
-
     .android-bottom-nav {
-        position:
-            fixed;
+        position: fixed;
 
-        left:
-            0;
+        left: 0;
+        right: 0;
+        bottom: 0;
 
-        right:
-            0;
+        z-index: 150;
 
-        bottom:
-            0;
-
-        z-index:
-            150;
-
-        display:
-            grid;
+        display: grid;
 
         grid-template-columns:
-            repeat(4,
-                1fr);
+            repeat(4, 1fr);
 
-        min-height:
-            70px;
+        min-height: 70px;
 
         padding:
             6px 8px calc(6px + env(safe-area-inset-bottom));
@@ -2104,10 +1635,7 @@
             1px solid #e3e3de;
 
         background:
-            rgba(255,
-                255,
-                255,
-                0.98);
+            rgba(255, 255, 255, 0.98);
 
         backdrop-filter:
             blur(14px);
@@ -2115,410 +1643,275 @@
 
 
     .android-nav-item {
-        min-width:
-            0;
+        min-width: 0;
 
-        display:
-            flex;
+        display: flex;
 
-        flex-direction:
-            column;
+        flex-direction: column;
 
-        align-items:
-            center;
+        align-items: center;
 
-        justify-content:
-            center;
+        justify-content: center;
 
-        gap:
-            2px;
+        gap: 2px;
 
-        padding:
-            0;
+        padding: 0;
 
-        border:
-            0;
+        border: 0;
 
-        background:
-            transparent;
+        background: transparent;
 
-        color:
-            #73736c;
+        color: #73736c;
 
-        font:
-            inherit;
+        font: inherit;
 
-        cursor:
-            pointer;
+        cursor: pointer;
     }
 
 
     .android-nav-item>span {
-        min-width:
-            36px;
+        min-width: 36px;
 
-        height:
-            27px;
+        height: 27px;
 
-        display:
-            grid;
+        display: grid;
 
-        place-items:
-            center;
+        place-items: center;
 
-        border-radius:
-            999px;
+        border-radius: 999px;
 
-        font-size:
-            16px;
+        font-size: 16px;
     }
 
 
     .android-nav-item small {
-        font-size:
-            8px;
+        font-size: 8px;
 
-        font-weight:
-            650;
+        font-weight: 650;
     }
 
 
     .android-nav-item.active {
-        color:
-            #1e1e1c;
+        color: #1e1e1c;
     }
 
 
     .android-nav-item.active>span {
-        background:
-            #e7e7e2;
+        background: #e7e7e2;
     }
 
-
-    /* =====================================
-       MORE SHEET BACKDROP
-    ===================================== */
 
     .android-sheet-backdrop {
-        position:
-            fixed;
+        position: fixed;
 
-        inset:
-            0;
+        inset: 0;
 
-        z-index:
-            190;
+        z-index: 190;
 
-        display:
-            block;
+        display: block;
 
-        border:
-            0;
+        border: 0;
 
         background:
-            rgba(0,
-                0,
-                0,
-                0.35);
+            rgba(0, 0, 0, 0.35);
     }
 
 
-    /* =====================================
-       MORE SHEET
-    ===================================== */
-
     .android-more-sheet {
-        position:
-            fixed;
+        position: fixed;
 
-        left:
-            8px;
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
 
-        right:
-            8px;
+        z-index: 200;
 
-        bottom:
-            8px;
+        display: block;
 
-        z-index:
-            200;
+        max-height: 85vh;
 
-        display:
-            block;
+        overflow-y: auto;
 
-        max-height:
-            85vh;
-
-        overflow-y:
-            auto;
-
-        overscroll-behavior:
-            contain;
+        overscroll-behavior: contain;
 
         padding:
             8px 14px calc(14px + env(safe-area-inset-bottom));
 
-        border-radius:
-            26px;
+        border-radius: 26px;
 
-        background:
-            white;
+        background: white;
 
         box-shadow:
-            0 -10px 50px rgba(0,
-                0,
-                0,
-                0.15);
+            0 -10px 50px rgba(0, 0, 0, 0.15);
     }
 
 
     .android-sheet-handle {
-        width:
-            36px;
+        width: 36px;
 
-        height:
-            4px;
+        height: 4px;
 
-        margin:
-            2px auto 15px;
+        margin: 2px auto 15px;
 
-        border-radius:
-            999px;
+        border-radius: 999px;
 
-        background:
-            #d0d0ca;
+        background: #d0d0ca;
     }
 
 
-    /* =====================================
-       MORE SHEET HEADER
-    ===================================== */
-
     .android-sheet-title {
-        display:
-            flex;
+        display: flex;
 
-        align-items:
-            center;
+        align-items: center;
 
-        justify-content:
-            space-between;
+        justify-content: space-between;
 
-        gap:
-            12px;
+        gap: 12px;
 
-        margin-bottom:
-            12px;
+        margin-bottom: 12px;
     }
 
 
     .android-sheet-title h2 {
-        margin:
-            0;
+        margin: 0;
 
-        font-size:
-            23px;
+        font-size: 23px;
     }
 
 
     .android-sheet-title button {
-        width:
-            36px;
+        width: 36px;
+        height: 36px;
 
-        height:
-            36px;
+        flex-shrink: 0;
 
-        flex-shrink:
-            0;
+        display: grid;
 
-        display:
-            grid;
+        place-items: center;
 
-        place-items:
-            center;
+        border: 0;
 
-        border:
-            0;
+        border-radius: 50%;
 
-        border-radius:
-            50%;
+        background: #eeeeea;
+        color: #1e1e1c;
 
-        background:
-            #eeeeea;
+        font-size: 20px;
 
-        color:
-            #1e1e1c;
-
-        font-size:
-            20px;
-
-        cursor:
-            pointer;
+        cursor: pointer;
     }
 
 
-    /* =====================================
-       MORE MENU LIST
-    ===================================== */
-
     .android-more-list {
-        overflow:
-            hidden;
+        overflow: hidden;
 
-        border:
-            1px solid #e5e5df;
+        border: 1px solid #e5e5df;
 
-        border-radius:
-            18px;
+        border-radius: 18px;
     }
 
 
     .android-more-list>a {
-        min-height:
-            61px;
+        min-height: 61px;
 
-        display:
-            grid;
+        display: grid;
 
         grid-template-columns:
-            36px minmax(0,
-                1fr) 20px;
+            36px minmax(0, 1fr) 20px;
 
-        align-items:
-            center;
+        align-items: center;
 
-        gap:
-            10px;
+        gap: 10px;
 
-        padding:
-            9px 12px;
+        padding: 9px 12px;
 
-        border-top:
-            1px solid #e7e7e2;
+        border-top: 1px solid #e7e7e2;
     }
 
 
     .android-more-list>a:first-child {
-        border-top:
-            0;
+        border-top: 0;
     }
 
 
     .android-more-list>a>span {
-        width:
-            36px;
+        width: 36px;
+        height: 36px;
 
-        height:
-            36px;
+        display: grid;
 
-        display:
-            grid;
+        place-items: center;
 
-        place-items:
-            center;
+        border-radius: 11px;
 
-        border-radius:
-            11px;
+        background: #eeeeea;
 
-        background:
-            #eeeeea;
-
-        color:
-            #1e1e1c;
+        color: #1e1e1c;
     }
 
 
     .android-more-list>a>div {
-        min-width:
-            0;
+        min-width: 0;
 
-        display:
-            grid;
+        display: grid;
 
-        gap:
-            2px;
+        gap: 2px;
     }
 
 
     .android-more-list strong {
-        overflow:
-            hidden;
+        overflow: hidden;
 
-        text-overflow:
-            ellipsis;
+        text-overflow: ellipsis;
 
-        white-space:
-            nowrap;
+        white-space: nowrap;
 
-        font-size:
-            11px;
+        font-size: 11px;
     }
 
 
     .android-more-list small {
-        overflow:
-            hidden;
+        overflow: hidden;
 
-        color:
-            #73736c;
+        color: #73736c;
 
-        text-overflow:
-            ellipsis;
+        text-overflow: ellipsis;
 
-        white-space:
-            nowrap;
+        white-space: nowrap;
 
-        font-size:
-            9px;
+        font-size: 9px;
     }
 
 
     .android-more-list b {
-        color:
-            #aaa9a2;
+        color: #aaa9a2;
 
-        font-size:
-            20px;
+        font-size: 20px;
 
-        font-weight:
-            400;
+        font-weight: 400;
     }
 
 
-    /* =====================================
-       SIGN OUT
-    ===================================== */
-
     .android-signout {
-        width:
-            100%;
+        width: 100%;
 
-        min-height:
-            45px;
+        min-height: 45px;
 
-        margin-top:
-            10px;
+        margin-top: 10px;
 
-        border:
-            0;
+        border: 0;
 
-        border-radius:
-            14px;
+        border-radius: 14px;
 
-        background:
-            #f1f1ed;
+        background: #f1f1ed;
 
-        color:
-            #7b3131;
+        color: #7b3131;
 
-        font:
-            inherit;
+        font: inherit;
 
-        font-weight:
-            700;
+        font-weight: 700;
 
-        cursor:
-            pointer;
+        cursor: pointer;
     }
 }
 
@@ -2530,35 +1923,29 @@
 @media screen and (max-width: 390px) {
 
     .content-wrap {
-        padding-left:
-            12px;
+        padding-left: 12px;
 
-        padding-right:
-            12px;
+        padding-right: 12px;
     }
 
 
     .mobile-study-question {
-        padding:
-            18px;
+        padding: 18px;
     }
 
 
     .mobile-study-question p {
-        font-size:
-            19px;
+        font-size: 19px;
     }
 
 
     .mobile-quick-actions {
-        gap:
-            6px;
+        gap: 6px;
     }
 
 
     .mobile-quick-action {
-        font-size:
-            8px;
+        font-size: 8px;
     }
 
 
@@ -2569,8 +1956,7 @@
 
 
     .ai-chat-message {
-        max-width:
-            96%;
+        max-width: 96%;
     }
 }
 
@@ -2583,28 +1969,34 @@
 
     .content-wrap {
         padding-left: 24px;
+
         padding-right: 24px;
     }
 
+
     .subjects-grid {
         grid-template-columns:
-            repeat(2,
-                minmax(0, 1fr));
+            repeat(2, minmax(0, 1fr));
     }
+
 
     .materials-layout,
     .subject-layout {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            1fr;
     }
+
 
     .subject-form,
     .upload-panel {
         position: static;
     }
 
+
     .mobile-ai-page {
         max-width: 760px;
     }
+
 
     .ai-chat-message {
         max-width: 88%;
@@ -2645,13 +2037,16 @@
         transform 0.2s ease;
 }
 
+
 .material-ai-button:hover {
     opacity: 0.88;
 }
 
+
 .material-ai-button:active {
     transform: scale(0.97);
 }
+
 
 .material-ai-button span {
     margin: 0;
@@ -2683,10 +2078,6 @@
 }
 
 
-/* =========================================
-   SELECTED MATERIAL TOP
-========================================= */
-
 .ai-selected-material-top {
     min-width: 0;
 
@@ -2700,10 +2091,6 @@
     gap: 12px;
 }
 
-
-/* =========================================
-   FILE TYPE ICON
-========================================= */
 
 .ai-material-file-icon {
     width: 48px;
@@ -2721,15 +2108,12 @@
     color: #ffffff;
 
     font-size: 9px;
+
     font-weight: 800;
 
     letter-spacing: 0.03em;
 }
 
-
-/* =========================================
-   MATERIAL INFO
-========================================= */
 
 .ai-selected-material-info {
     min-width: 0;
@@ -2739,16 +2123,19 @@
     gap: 4px;
 }
 
+
 .ai-material-label {
     display: block;
 
     color: #777770;
 
     font-size: 8px;
+
     font-weight: 800;
 
     letter-spacing: 0.1em;
 }
+
 
 .ai-selected-material-info strong {
     display: block;
@@ -2758,18 +2145,16 @@
     overflow: hidden;
 
     text-overflow: ellipsis;
+
     white-space: nowrap;
 
     color: #1e1e1c;
 
     font-size: 14px;
+
     line-height: 1.3;
 }
 
-
-/* =========================================
-   MATERIAL META
-========================================= */
 
 .ai-material-meta {
     min-width: 0;
@@ -2787,11 +2172,13 @@
     font-size: 10px;
 }
 
+
 .ai-material-meta span {
     display: inline-flex;
 
     align-items: center;
 }
+
 
 .ai-material-meta span+span::before {
     content: "•";
@@ -2801,10 +2188,6 @@
     color: #b1b1aa;
 }
 
-
-/* =========================================
-   CHANGE MATERIAL BUTTON
-========================================= */
 
 .ai-material-change {
     flex-shrink: 0;
@@ -2824,19 +2207,17 @@
     color: #1e1e1c;
 
     font-size: 10px;
+
     font-weight: 700;
 
     text-decoration: none;
 }
 
+
 .ai-material-change:hover {
     background: #e5e5df;
 }
 
-
-/* =========================================
-   MATERIAL AI ACTIONS
-========================================= */
 
 .ai-material-actions {
     width: 100%;
@@ -2844,14 +2225,15 @@
     display: grid;
 
     grid-template-columns:
-        repeat(3,
-            minmax(0, 1fr));
+        repeat(3, minmax(0, 1fr));
 
     gap: 9px;
 }
 
+
 .ai-material-actions button {
     min-width: 0;
+
     min-height: 70px;
 
     display: flex;
@@ -2859,6 +2241,7 @@
     flex-direction: column;
 
     align-items: flex-start;
+
     justify-content: space-between;
 
     gap: 10px;
@@ -2866,15 +2249,19 @@
     padding: 12px;
 
     border: 1px solid #e3e3de;
+
     border-radius: 15px;
 
     background: #f8f8f5;
+
     color: #1e1e1c;
 
     text-align: left;
 
     font: inherit;
+
     font-size: 11px;
+
     font-weight: 700;
 
     cursor: pointer;
@@ -2884,13 +2271,16 @@
         transform 0.2s ease;
 }
 
+
 .ai-material-actions button:hover {
     background: #eeeeea;
 }
 
+
 .ai-material-actions button:active {
     transform: scale(0.98);
 }
+
 
 .ai-material-actions button>span {
     display: block;
@@ -2900,13 +2290,10 @@
     color: #1e1e1c;
 
     font-size: 15px;
+
     line-height: 1;
 }
 
-
-/* =========================================
-   MATERIAL NOTE
-========================================= */
 
 .ai-material-phase-note {
     margin: 0;
@@ -2914,13 +2301,10 @@
     color: #777770;
 
     font-size: 10px;
+
     line-height: 1.5;
 }
 
-
-/* =========================================
-   MATERIAL ACTIONS ON LIBRARY
-========================================= */
 
 .material-actions {
     display: flex;
@@ -2958,6 +2342,7 @@
 
     .ai-material-file-icon {
         width: 42px;
+
         height: 42px;
 
         border-radius: 11px;
@@ -2999,14 +2384,9 @@
     }
 
 
-    /* =====================================
-       TWO COLUMN ACTION CARDS
-    ===================================== */
-
     .ai-material-actions {
         grid-template-columns:
-            repeat(2,
-                minmax(0, 1fr));
+            repeat(2, minmax(0, 1fr));
 
         gap: 8px;
     }
@@ -3020,6 +2400,7 @@
         border-radius: 14px;
 
         font-size: 10px;
+
         line-height: 1.25;
     }
 
@@ -3031,13 +2412,10 @@
 
     .ai-material-phase-note {
         font-size: 9px;
+
         line-height: 1.5;
     }
 
-
-    /* =====================================
-       LIBRARY ACTION BUTTONS
-    ===================================== */
 
     .material-actions {
         display: flex;
@@ -3059,7 +2437,6 @@
 
         font-size: 10px;
     }
-
 }
 
 
@@ -3077,6 +2454,7 @@
 
     .ai-material-file-icon {
         width: 38px;
+
         height: 38px;
     }
 
@@ -3094,8 +2472,8 @@
 
         font-size: 9px;
     }
-
 }
+
 
 /* =========================================
    PHASE 2C.4
@@ -3112,6 +2490,7 @@
     padding: 22px;
 
     border: 1px solid #e3e3de;
+
     border-radius: 22px;
 
     background: #ffffff;
@@ -3135,14 +2514,17 @@
     height: 48px;
 
     display: grid;
+
     place-items: center;
 
     border-radius: 15px;
 
     background: #1e1e1c;
+
     color: #ffffff;
 
     font-size: 18px;
+
     font-weight: 800;
 }
 
@@ -3160,6 +2542,7 @@
     color: #777770;
 
     font-size: 11px;
+
     line-height: 1.55;
 }
 
@@ -3168,6 +2551,7 @@
     display: flex;
 
     align-items: flex-start;
+
     justify-content: space-between;
 
     gap: 16px;
@@ -3182,6 +2566,7 @@
     color: #777770;
 
     font-size: 9px;
+
     font-weight: 800;
 
     letter-spacing: 0.1em;
@@ -3192,6 +2577,7 @@
     margin: 0;
 
     font-size: 20px;
+
     line-height: 1.25;
 }
 
@@ -3203,15 +2589,19 @@
     flex-shrink: 0;
 
     display: grid;
+
     place-items: center;
 
     border: 0;
+
     border-radius: 50%;
 
     background: #eeeeea;
+
     color: #1e1e1c;
 
     font: inherit;
+
     font-size: 20px;
 
     cursor: pointer;
@@ -3222,6 +2612,7 @@
     display: flex;
 
     align-items: center;
+
     justify-content: space-between;
 
     gap: 12px;
@@ -3241,6 +2632,7 @@
 
 .quiz-progress {
     width: 100%;
+
     height: 6px;
 
     overflow: hidden;
@@ -3268,6 +2660,7 @@
     color: #1e1e1c;
 
     font-size: 22px;
+
     line-height: 1.35;
 
     letter-spacing: -0.02em;
@@ -3298,14 +2691,17 @@
     padding: 10px 12px;
 
     border: 1px solid #e3e3de;
+
     border-radius: 14px;
 
     background: #ffffff;
+
     color: #1e1e1c;
 
     text-align: left;
 
     font: inherit;
+
     font-size: 12px;
 
     cursor: pointer;
@@ -3355,9 +2751,11 @@
 
 .quiz-option-letter {
     width: 34px;
+
     height: 34px;
 
     display: grid;
+
     place-items: center;
 
     margin: 0;
@@ -3365,9 +2763,11 @@
     border-radius: 10px;
 
     background: #eeeeea;
+
     color: #1e1e1c;
 
     font-size: 11px;
+
     font-weight: 800;
 }
 
@@ -3423,6 +2823,7 @@
     color: #454541;
 
     font-size: 12px;
+
     line-height: 1.6;
 }
 
@@ -3433,19 +2834,25 @@
     min-height: 48px;
 
     display: inline-flex;
+
     align-items: center;
+
     justify-content: center;
 
     padding: 0 16px;
 
     border: 0;
+
     border-radius: 13px;
 
     background: #1e1e1c;
+
     color: #ffffff;
 
     font: inherit;
+
     font-size: 12px;
+
     font-weight: 750;
 
     cursor: pointer;
@@ -3495,6 +2902,7 @@
     color: #1e1e1c;
 
     font-size: 46px;
+
     line-height: 1;
 }
 
@@ -3526,6 +2934,7 @@
     padding: 15px;
 
     border: 1px solid #e3e3de;
+
     border-radius: 14px;
 
     background: #f8f8f5;
@@ -3559,6 +2968,7 @@
 .quiz-result-actions .secondary-button,
 .quiz-result-actions .quiz-primary-button {
     width: 100%;
+
     min-height: 46px;
 }
 
@@ -3580,6 +2990,7 @@
     padding: 14px;
 
     border: 1px solid #e3e3de;
+
     border-radius: 14px;
 
     background: #f8f8f5;
@@ -3590,6 +3001,7 @@
     color: #777770;
 
     font-size: 9px;
+
     font-weight: 800;
 
     letter-spacing: 0.04em;
@@ -3600,6 +3012,7 @@
     color: #1e1e1c;
 
     font-size: 12px;
+
     line-height: 1.5;
 }
 
@@ -3610,6 +3023,7 @@
     color: #454541;
 
     font-size: 11px;
+
     line-height: 1.5;
 }
 
@@ -3618,6 +3032,7 @@
     color: #777770;
 
     font-size: 10px;
+
     line-height: 1.55;
 }
 
@@ -3626,10 +3041,13 @@
     border: 0;
 
     background: transparent;
+
     color: #777770;
 
     font: inherit;
+
     font-size: 11px;
+
     font-weight: 650;
 
     cursor: pointer;
@@ -3715,6 +3133,7 @@
 
     .quiz-question h2 {
         font-size: 16px;
+
         line-height: 1.4;
     }
 
@@ -3757,6 +3176,7 @@
 
     .quiz-feedback p {
         font-size: 10px;
+
         line-height: 1.55;
     }
 
@@ -3794,7 +3214,8 @@
 
 
     .quiz-result-actions {
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            1fr;
     }
 
 
@@ -3821,671 +3242,2847 @@
     .quiz-close-results {
         font-size: 9px;
     }
-        /* =========================================
-       PHASE 2C.5
-       QUIZ HISTORY
+}
+
+
+/* =========================================
+   PHASE 2C.5
+   QUIZ HISTORY
+========================================= */
+
+.quiz-save-status {
+    width: 100%;
+}
+
+
+.quiz-save-message {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 11px 14px;
+
+    border-radius: 12px;
+
+    font-size: 11px;
+}
+
+
+.quiz-save-message.saving {
+    background: #f2f2ee;
+
+    color: #777770;
+}
+
+
+.quiz-save-message.saved {
+    background: #edf7ee;
+
+    color: #355d39;
+}
+
+
+.quiz-save-message.saved a {
+    color: inherit;
+
+    font-weight: 750;
+
+    text-decoration: underline;
+
+    text-underline-offset: 2px;
+}
+
+
+.quiz-save-message.error {
+    background: #fff0f0;
+
+    color: #863d3d;
+}
+
+
+.quiz-save-message.error button {
+    border: 0;
+
+    background: transparent;
+
+    color: inherit;
+
+    font: inherit;
+
+    font-weight: 750;
+
+    text-decoration: underline;
+
+    cursor: pointer;
+}
+
+
+.quiz-history-page {
+    width: 100%;
+
+    max-width: 1050px;
+
+    margin: 0 auto;
+}
+
+
+.quiz-history-hero {
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 24px;
+
+    padding: 30px;
+
+    border-radius: 24px;
+
+    background: #1e1e1c;
+
+    color: #ffffff;
+}
+
+
+.quiz-history-hero h2 {
+    margin: 3px 0 8px;
+
+    font-size: 34px;
+
+    letter-spacing: -0.035em;
+}
+
+
+.quiz-history-hero>div>p:last-child {
+    max-width: 520px;
+
+    margin: 0;
+
+    color: #c6c6c0;
+
+    font-size: 13px;
+}
+
+
+.quiz-history-start {
+    flex-shrink: 0;
+
+    padding: 12px 16px;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    color: #1e1e1c;
+
+    font-size: 12px;
+
+    font-weight: 750;
+}
+
+
+.quiz-history-stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 10px;
+}
+
+
+.quiz-history-stats article {
+    display: grid;
+
+    gap: 8px;
+
+    padding: 18px;
+
+    border: 1px solid #e3e3de;
+
+    border-radius: 16px;
+
+    background: #ffffff;
+}
+
+
+.quiz-history-stats span {
+    color: #777770;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+
+.quiz-history-stats strong {
+    font-size: 24px;
+}
+
+
+.quiz-history-panel {
+    overflow: hidden;
+
+    border: 1px solid #e3e3de;
+
+    border-radius: 20px;
+
+    background: #ffffff;
+}
+
+
+.quiz-history-panel-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 18px;
+
+    padding: 20px;
+
+    border-bottom: 1px solid #e7e7e2;
+}
+
+
+.quiz-history-panel-header h3 {
+    margin: 2px 0 0;
+
+    font-size: 18px;
+}
+
+
+.quiz-history-panel-header>span {
+    color: #777770;
+
+    font-size: 10px;
+}
+
+
+.quiz-history-empty {
+    display: grid;
+
+    justify-items: center;
+
+    gap: 8px;
+
+    padding: 50px 20px;
+
+    color: #777770;
+
+    text-align: center;
+}
+
+
+.quiz-history-empty-icon {
+    width: 48px;
+    height: 48px;
+
+    display: grid;
+
+    place-items: center;
+
+    margin-bottom: 5px;
+
+    border-radius: 15px;
+
+    background: #eeeeea;
+
+    color: #1e1e1c;
+
+    font-size: 20px;
+}
+
+
+.quiz-history-empty strong {
+    color: #1e1e1c;
+
+    font-size: 14px;
+}
+
+
+.quiz-history-empty p {
+    max-width: 330px;
+
+    margin: 0;
+
+    font-size: 11px;
+
+    line-height: 1.55;
+}
+
+
+.quiz-history-empty a {
+    margin-top: 5px;
+
+    color: #1e1e1c;
+
+    font-size: 11px;
+
+    font-weight: 750;
+}
+
+
+.quiz-history-list {
+    display: grid;
+}
+
+
+.quiz-history-item {
+    border-top: 1px solid #e7e7e2;
+}
+
+
+.quiz-history-item:first-child {
+    border-top: 0;
+}
+
+
+.quiz-history-main {
+    display: grid;
+
+    grid-template-columns:
+        72px minmax(0, 1fr) auto;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 16px 18px;
+}
+
+
+.quiz-history-score {
+    width: 66px;
+
+    height: 66px;
+
+    display: grid;
+
+    place-items: center;
+
+    align-content: center;
+
+    gap: 1px;
+
+    border-radius: 18px;
+
+    background: #eeeeea;
+}
+
+
+.quiz-history-score strong {
+    font-size: 18px;
+}
+
+
+.quiz-history-score span {
+    color: #777770;
+
+    font-size: 9px;
+}
+
+
+.quiz-history-info {
+    min-width: 0;
+
+    display: grid;
+
+    gap: 3px;
+}
+
+
+.quiz-history-subject {
+    color: #777770;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+}
+
+
+.quiz-history-info>strong,
+.quiz-history-info>p {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+.quiz-history-info>strong {
+    font-size: 13px;
+}
+
+
+.quiz-history-info>p {
+    margin: 0;
+
+    color: #777770;
+
+    font-size: 10px;
+}
+
+
+.quiz-history-info small {
+    color: #aaa9a2;
+
+    font-size: 9px;
+}
+
+
+.quiz-history-expand {
+    padding: 9px 12px;
+
+    border: 0;
+
+    border-radius: 10px;
+
+    background: #eeeeea;
+
+    color: #1e1e1c;
+
+    font: inherit;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.quiz-history-review {
+    display: grid;
+
+    gap: 9px;
+
+    padding: 16px 18px 20px;
+
+    border-top: 1px solid #edede8;
+
+    background: #fafaf7;
+}
+
+
+.quiz-history-review-top {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 12px;
+}
+
+
+.quiz-history-review-top strong {
+    font-size: 12px;
+}
+
+
+.quiz-history-review-top button {
+    border: 0;
+
+    background: transparent;
+
+    color: #8b4747;
+
+    font: inherit;
+
+    font-size: 10px;
+
+    cursor: pointer;
+}
+
+
+.quiz-history-answer {
+    display: grid;
+
+    gap: 6px;
+
+    padding: 13px;
+
+    border: 1px solid #e3e3de;
+
+    border-radius: 13px;
+
+    background: #ffffff;
+}
+
+
+.quiz-history-answer.correct {
+    border-left: 3px solid #6e9b72;
+}
+
+
+.quiz-history-answer.wrong {
+    border-left: 3px solid #bb7777;
+}
+
+
+.quiz-history-answer>span {
+    color: #777770;
+
+    font-size: 8px;
+
+    font-weight: 800;
+}
+
+
+.quiz-history-answer>strong {
+    font-size: 11px;
+
+    line-height: 1.45;
+}
+
+
+.quiz-history-answer p {
+    margin: 0;
+
+    font-size: 10px;
+
+    line-height: 1.45;
+}
+
+
+.quiz-history-answer small {
+    color: #777770;
+
+    font-size: 9px;
+
+    line-height: 1.5;
+}
+
+
+.quiz-history-model,
+.quiz-history-no-answers {
+    margin: 0;
+
+    color: #aaa9a2;
+
+    font-size: 8px;
+}
+
+
+.quiz-history-retake {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: fit-content;
+
+    padding: 9px 12px;
+
+    border-radius: 10px;
+
+    background: #1e1e1c;
+
+    color: #ffffff;
+
+    font-size: 9px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================
+   QUIZ HISTORY MOBILE
+========================================= */
+
+@media screen and (max-width: 767px) {
+
+    .quiz-history-hero {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 18px;
+
+        padding: 21px 18px;
+
+        border-radius: 20px;
+    }
+
+
+    .quiz-history-hero h2 {
+        font-size: 26px;
+    }
+
+
+    .quiz-history-hero>div>p:last-child {
+        font-size: 10px;
+    }
+
+
+    .quiz-history-start {
+        width: 100%;
+
+        text-align: center;
+    }
+
+
+    .quiz-history-stats {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 8px;
+    }
+
+
+    .quiz-history-stats article {
+        padding: 14px;
+
+        border-radius: 14px;
+    }
+
+
+    .quiz-history-stats strong {
+        font-size: 20px;
+    }
+
+
+    .quiz-history-panel {
+        border-radius: 18px;
+    }
+
+
+    .quiz-history-panel-header {
+        padding: 16px;
+    }
+
+
+    .quiz-history-main {
+        grid-template-columns:
+            58px minmax(0, 1fr) auto;
+
+        gap: 10px;
+
+        padding: 13px;
+    }
+
+
+    .quiz-history-score {
+        width: 54px;
+
+        height: 54px;
+
+        border-radius: 15px;
+    }
+
+
+    .quiz-history-score strong {
+        font-size: 15px;
+    }
+
+
+    .quiz-history-info>strong {
+        font-size: 10px;
+    }
+
+
+    .quiz-history-expand {
+        padding: 8px;
+
+        font-size: 9px;
+    }
+
+
+    .quiz-history-review {
+        padding: 13px;
+    }
+
+
+    .quiz-save-message {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        font-size: 9px;
+    }
+}
+
+
+/* =========================================
+   PHASE 2C.6
+   PROGRESS ANALYTICS
+========================================= */
+
+
+/* =========================================
+   MOBILE PROGRESS STATS
+========================================= */
+
+.mobile-progress-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 8px;
+}
+
+
+.mobile-progress-grid article {
+    min-width: 0;
+
+    display: grid;
+
+    gap: 5px;
+
+    padding: 13px 9px;
+
+    border: 1px solid #e5e5df;
+
+    border-radius: 15px;
+
+    background: #ffffff;
+}
+
+
+.mobile-progress-grid span {
+    color: #777770;
+
+    font-size: 8px;
+
+    font-weight: 700;
+}
+
+
+.mobile-progress-grid strong {
+    overflow: hidden;
+
+    font-size: 16px;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================
+   MOBILE PERFORMANCE
+========================================= */
+
+.mobile-performance-card {
+    overflow: hidden;
+
+    border: 1px solid #e5e5df;
+
+    border-radius: 18px;
+
+    background: #ffffff;
+}
+
+
+.mobile-performance-row {
+    min-height: 58px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 11px 13px;
+
+    border-top: 1px solid #e7e7e2;
+}
+
+
+.mobile-performance-row:first-child {
+    border-top: 0;
+}
+
+
+.mobile-performance-row>span {
+    color: #777770;
+
+    font-size: 9px;
+}
+
+
+.mobile-performance-row>div {
+    min-width: 0;
+
+    display: grid;
+
+    justify-items: end;
+
+    gap: 2px;
+}
+
+
+.mobile-performance-row strong {
+    max-width: 170px;
+
+    overflow: hidden;
+
+    font-size: 11px;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+.mobile-performance-row small {
+    color: #777770;
+
+    font-size: 8px;
+}
+
+
+/* =========================================
+   MOBILE WEAK AREAS
+========================================= */
+
+.mobile-weak-list {
+    overflow: hidden;
+
+    border: 1px solid #e5e5df;
+
+    border-radius: 18px;
+
+    background: #ffffff;
+}
+
+
+.mobile-weak-list article {
+    display: grid;
+
+    grid-template-columns:
+        30px minmax(0, 1fr) auto;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 12px;
+
+    border-top: 1px solid #e7e7e2;
+}
+
+
+.mobile-weak-list article:first-child {
+    border-top: 0;
+}
+
+
+.mobile-weak-number {
+    width: 30px;
+
+    height: 30px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 10px;
+
+    background: #eeeeea;
+
+    font-size: 10px;
+
+    font-weight: 800;
+}
+
+
+.mobile-weak-list article>div:nth-child(2) {
+    min-width: 0;
+
+    display: grid;
+
+    gap: 3px;
+}
+
+
+.mobile-weak-list article span {
+    color: #777770;
+
+    font-size: 8px;
+
+    font-weight: 700;
+}
+
+
+.mobile-weak-list article strong {
+    display: -webkit-box;
+
+    overflow: hidden;
+
+    font-size: 10px;
+
+    line-height: 1.35;
+
+    -webkit-box-orient: vertical;
+
+    -webkit-line-clamp: 2;
+
+    line-clamp: 2;
+}
+
+
+.mobile-weak-list article small {
+    color: #999991;
+
+    font-size: 8px;
+}
+
+
+.mobile-weak-list article>a {
+    padding: 7px 9px;
+
+    border-radius: 9px;
+
+    background: #eeeeea;
+
+    color: #1e1e1c;
+
+    font-size: 8px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================
+   DESKTOP ANALYTICS
+========================================= */
+
+.dashboard-analytics {
+    display: grid;
+
+    gap: 16px;
+
+    padding: 22px;
+
+    border: 1px solid #e3e3de;
+
+    border-radius: 22px;
+
+    background: #ffffff;
+}
+
+
+.dashboard-analytics-heading {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 18px;
+}
+
+
+.dashboard-analytics-heading h3 {
+    margin: 3px 0 0;
+
+    font-size: 19px;
+}
+
+
+.dashboard-analytics-heading>a {
+    color: #777770;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================
+   DESKTOP QUIZ STATS
+========================================= */
+
+.dashboard-quiz-stat-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 10px;
+}
+
+
+.dashboard-quiz-stat-grid article {
+    display: grid;
+
+    gap: 7px;
+
+    padding: 17px;
+
+    border: 1px solid #e5e5df;
+
+    border-radius: 16px;
+
+    background: #fafaf7;
+}
+
+
+.dashboard-quiz-stat-grid span {
+    color: #777770;
+
+    font-size: 9px;
+
+    font-weight: 700;
+}
+
+
+.dashboard-quiz-stat-grid strong {
+    font-size: 24px;
+}
+
+
+.dashboard-quiz-stat-grid small {
+    color: #999991;
+
+    font-size: 9px;
+}
+
+
+/* =========================================
+   PERFORMANCE INSIGHTS
+========================================= */
+
+.dashboard-insight-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 10px;
+}
+
+
+.dashboard-performance-card {
+    display: grid;
+
+    gap: 5px;
+
+    padding: 16px;
+
+    border: 1px solid #e4e4df;
+
+    border-radius: 15px;
+}
+
+
+.dashboard-performance-card>span {
+    color: #777770;
+
+    font-size: 9px;
+
+    font-weight: 700;
+}
+
+
+.dashboard-performance-card strong {
+    overflow: hidden;
+
+    font-size: 15px;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+.dashboard-performance-card p {
+    margin: 0;
+
+    color: #999991;
+
+    font-size: 9px;
+}
+
+
+.dashboard-performance-card.needs-review {
+    background: #faf7f4;
+}
+
+
+/* =========================================
+   TREND
+========================================= */
+
+.dashboard-trend {
+    display: grid;
+
+    gap: 13px;
+
+    padding-top: 4px;
+}
+
+
+.dashboard-subheading {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+}
+
+
+.dashboard-subheading strong {
+    font-size: 12px;
+}
+
+
+.dashboard-subheading span {
+    color: #999991;
+
+    font-size: 9px;
+}
+
+
+.dashboard-trend-bars {
+    min-height: 170px;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    gap: 12px;
+
+    padding: 14px;
+
+    border: 1px solid #e5e5df;
+
+    border-radius: 16px;
+
+    background: #fafaf7;
+}
+
+
+.dashboard-trend-item {
+    min-width: 0;
+
+    flex: 1;
+
+    display: grid;
+
+    justify-items: center;
+
+    gap: 5px;
+}
+
+
+.dashboard-trend-track {
+    width: 100%;
+
+    max-width: 54px;
+
+    height: 110px;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    overflow: hidden;
+
+    border-radius: 9px;
+
+    background: #eeeeea;
+}
+
+
+.dashboard-trend-fill {
+    width: 100%;
+
+    border-radius: 9px;
+
+    background: #1e1e1c;
+
+    transition: height 0.3s ease;
+}
+
+
+.dashboard-trend-item strong {
+    font-size: 10px;
+}
+
+
+.dashboard-trend-item span {
+    width: 100%;
+
+    overflow: hidden;
+
+    color: #999991;
+
+    font-size: 8px;
+
+    text-align: center;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   WEAK AREAS
+========================================= */
+
+.dashboard-weak-areas {
+    display: grid;
+
+    gap: 8px;
+}
+
+
+.dashboard-weak-areas article {
+    display: grid;
+
+    grid-template-columns:
+        34px minmax(0, 1fr) auto;
+
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 12px;
+
+    border: 1px solid #e5e5df;
+
+    border-radius: 14px;
+}
+
+
+.dashboard-weak-rank {
+    width: 34px;
+
+    height: 34px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 11px;
+
+    background: #eeeeea;
+
+    font-size: 11px;
+
+    font-weight: 800;
+}
+
+
+.dashboard-weak-areas article>div:nth-child(2) {
+    min-width: 0;
+
+    display: grid;
+
+    gap: 3px;
+}
+
+
+.dashboard-weak-areas article span {
+    color: #777770;
+
+    font-size: 8px;
+
+    font-weight: 700;
+}
+
+
+.dashboard-weak-areas article strong {
+    overflow: hidden;
+
+    font-size: 10px;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+.dashboard-weak-areas article small {
+    color: #999991;
+
+    font-size: 8px;
+}
+
+
+.dashboard-weak-areas article>a {
+    padding: 8px 10px;
+
+    border-radius: 9px;
+
+    background: #eeeeea;
+
+    color: #1e1e1c;
+
+    font-size: 9px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================
+   TABLET ANALYTICS
+========================================= */
+
+@media screen and (min-width: 768px) and (max-width: 1099px) {
+
+    .dashboard-quiz-stat-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .dashboard-insight-grid {
+        grid-template-columns:
+            1fr;
+    }
+}
+
+
+/* =========================================
+   SMALL MOBILE ANALYTICS
+========================================= */
+
+@media screen and (max-width: 390px) {
+
+    .mobile-progress-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* =========================================
+   PHASE 2C.6.2.3
+   DASHBOARD SMART RECOMMENDATIONS
+========================================= */
+
+
+/* =========================================
+       PRIORITY LABELS
     ========================================= */
-    
-        .quiz-save-status {
-            width: 100%;
-        }
-    
-    
-        .quiz-save-message {
-            display: flex;
-    
-            align-items: center;
-            justify-content: center;
-    
-            gap: 10px;
-    
-            padding: 11px 14px;
-    
-            border-radius: 12px;
-    
-            font-size: 11px;
-        }
-    
-    
-        .quiz-save-message.saving {
-            background: #f2f2ee;
-    
-            color: #777770;
-        }
-    
-    
-        .quiz-save-message.saved {
-            background: #edf7ee;
-    
-            color: #355d39;
-        }
-    
-    
-        .quiz-save-message.saved a {
-            color: inherit;
-    
-            font-weight: 750;
-    
-            text-decoration: underline;
-    
-            text-underline-offset: 2px;
-        }
-    
-    
-        .quiz-save-message.error {
-            background: #fff0f0;
-    
-            color: #863d3d;
-        }
-    
-    
-        .quiz-save-message.error button {
-            border: 0;
-    
-            background: transparent;
-    
-            color: inherit;
-    
-            font: inherit;
-    
-            font-weight: 750;
-    
-            text-decoration: underline;
-    
-            cursor: pointer;
-        }
-    
-    
-        /* =========================================
-       HISTORY PAGE
+
+.insight-priority {
+    width: fit-content;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 4px 7px;
+
+    border-radius: 999px;
+
+    font-size: 7px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.04em;
+
+    text-transform: uppercase;
+}
+
+
+.insight-priority.high {
+    background: #f7e6e6;
+
+    color: #874444;
+}
+
+
+.insight-priority.medium {
+    background: #f3eee0;
+
+    color: #775f31;
+}
+
+
+.insight-priority.low {
+    background: #e9f1e8;
+
+    color: #446548;
+}
+
+
+/* =========================================
+       MOBILE REFRESH BUTTON
     ========================================= */
-    
-        .quiz-history-page {
-            width: 100%;
-    
-            max-width: 1050px;
-    
-            margin: 0 auto;
-        }
-    
-    
-        .quiz-history-hero {
-            display: flex;
-    
-            align-items: flex-end;
-            justify-content: space-between;
-    
-            gap: 24px;
-    
-            padding: 30px;
-    
-            border-radius: 24px;
-    
-            background: #1e1e1c;
-    
-            color: #ffffff;
-        }
-    
-    
-        .quiz-history-hero h2 {
-            margin: 3px 0 8px;
-    
-            font-size: 34px;
-    
-            letter-spacing: -0.035em;
-        }
-    
-    
-        .quiz-history-hero>div>p:last-child {
-            max-width: 520px;
-    
-            margin: 0;
-    
-            color: #c6c6c0;
-    
-            font-size: 13px;
-        }
-    
-    
-        .quiz-history-start {
-            flex-shrink: 0;
-    
-            padding: 12px 16px;
-    
-            border-radius: 12px;
-    
-            background: #ffffff;
-    
-            color: #1e1e1c;
-    
-            font-size: 12px;
-    
-            font-weight: 750;
-        }
-    
-    
-        /* =========================================
-       HISTORY STATS
+
+.mobile-insight-refresh {
+    flex-shrink: 0;
+
+    padding: 0;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #73736c;
+
+    font: inherit;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.mobile-insight-refresh:disabled {
+    opacity: 0.5;
+
+    cursor: default;
+}
+
+
+/* =========================================
+       MOBILE SMART INSIGHT CARD
     ========================================= */
-    
-        .quiz-history-stats {
-            display: grid;
-    
-            grid-template-columns:
-                repeat(4,
-                    minmax(0, 1fr));
-    
-            gap: 10px;
-        }
-    
-    
-        .quiz-history-stats article {
-            display: grid;
-    
-            gap: 8px;
-    
-            padding: 18px;
-    
-            border: 1px solid #e3e3de;
-    
-            border-radius: 16px;
-    
-            background: #ffffff;
-        }
-    
-    
-        .quiz-history-stats span {
-            color: #777770;
-    
-            font-size: 10px;
-    
-            font-weight: 700;
-        }
-    
-    
-        .quiz-history-stats strong {
-            font-size: 24px;
-        }
-    
-    
-        /* =========================================
-       HISTORY PANEL
+
+.mobile-smart-insight-card {
+    overflow: hidden;
+
+    border: 1px solid #e5e5df;
+
+    border-radius: 18px;
+
+    background: #ffffff;
+}
+
+
+.mobile-insight-summary {
+    display: grid;
+
+    gap: 6px;
+
+    padding: 14px;
+
+    background: #1e1e1c;
+
+    color: #ffffff;
+}
+
+
+.mobile-insight-summary>span {
+    color: #aaa9a3;
+
+    font-size: 7px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.1em;
+}
+
+
+.mobile-insight-summary p {
+    margin: 0;
+
+    font-size: 10px;
+
+    line-height: 1.55;
+}
+
+
+.mobile-insight-summary small {
+    color: #aaa9a3;
+
+    font-size: 7px;
+}
+
+
+/* =========================================
+       MOBILE INSIGHT GROUP
     ========================================= */
-    
-        .quiz-history-panel {
-            overflow: hidden;
-    
-            border: 1px solid #e3e3de;
-    
-            border-radius: 20px;
-    
-            background: #ffffff;
-        }
-    
-    
-        .quiz-history-panel-header {
-            display: flex;
-    
-            align-items: center;
-            justify-content: space-between;
-    
-            gap: 18px;
-    
-            padding: 20px;
-    
-            border-bottom: 1px solid #e7e7e2;
-        }
-    
-    
-        .quiz-history-panel-header h3 {
-            margin: 2px 0 0;
-    
-            font-size: 18px;
-        }
-    
-    
-        .quiz-history-panel-header>span {
-            color: #777770;
-    
-            font-size: 10px;
-        }
-    
-    
-        /* =========================================
-       EMPTY
+
+.mobile-insight-group {
+    display: grid;
+
+    gap: 9px;
+
+    padding: 13px;
+
+    border-top: 1px solid #e7e7e2;
+}
+
+
+.mobile-insight-group h4 {
+    margin: 0;
+
+    font-size: 11px;
+}
+
+
+/* =========================================
+       MOBILE WEAK TOPICS
     ========================================= */
-    
-        .quiz-history-empty {
-            display: grid;
-    
-            justify-items: center;
-    
-            gap: 8px;
-    
-            padding: 50px 20px;
-    
-            color: #777770;
-    
-            text-align: center;
-        }
-    
-    
-        .quiz-history-empty-icon {
-            width: 48px;
-            height: 48px;
-    
-            display: grid;
-    
-            place-items: center;
-    
-            margin-bottom: 5px;
-    
-            border-radius: 15px;
-    
-            background: #eeeeea;
-    
-            color: #1e1e1c;
-    
-            font-size: 20px;
-        }
-    
-    
-        .quiz-history-empty strong {
-            color: #1e1e1c;
-    
-            font-size: 14px;
-        }
-    
-    
-        .quiz-history-empty p {
-            max-width: 330px;
-    
-            margin: 0;
-    
-            font-size: 11px;
-    
-            line-height: 1.55;
-        }
-    
-    
-        .quiz-history-empty a {
-            margin-top: 5px;
-    
-            color: #1e1e1c;
-    
-            font-size: 11px;
-    
-            font-weight: 750;
-        }
-    
-    
-        /* =========================================
-       ATTEMPTS
+
+.mobile-insight-topic-list {
+    display: grid;
+
+    gap: 8px;
+}
+
+
+.mobile-insight-topic {
+    display: grid;
+
+    gap: 7px;
+
+    padding: 11px;
+
+    border: 1px solid #e6e6e1;
+
+    border-radius: 13px;
+
+    background: #fafaf7;
+}
+
+
+.mobile-insight-topic-top {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 8px;
+}
+
+
+.mobile-insight-topic-top small {
+    color: #999991;
+
+    font-size: 7px;
+}
+
+
+.mobile-insight-topic>strong {
+    font-size: 11px;
+
+    line-height: 1.35;
+}
+
+
+.insight-subject {
+    color: #777770;
+
+    font-size: 8px;
+
+    font-weight: 700;
+}
+
+
+.mobile-insight-topic>p {
+    margin: 0;
+
+    color: #55554f;
+
+    font-size: 9px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================
+       REVIEW FOCUS
     ========================================= */
-    
-        .quiz-history-list {
-            display: grid;
-        }
-    
-    
-        .quiz-history-item {
-            border-top: 1px solid #e7e7e2;
-        }
-    
-    
-        .quiz-history-item:first-child {
-            border-top: 0;
-        }
-    
-    
-        .quiz-history-main {
-            display: grid;
-    
-            grid-template-columns:
-                72px minmax(0, 1fr) auto;
-    
-            align-items: center;
-    
-            gap: 15px;
-    
-            padding: 16px 18px;
-        }
-    
-    
-        .quiz-history-score {
-            width: 66px;
-            height: 66px;
-    
-            display: grid;
-    
-            place-items: center;
-    
-            align-content: center;
-    
-            gap: 1px;
-    
-            border-radius: 18px;
-    
-            background: #eeeeea;
-        }
-    
-    
-        .quiz-history-score strong {
-            font-size: 18px;
-        }
-    
-    
-        .quiz-history-score span {
-            color: #777770;
-    
-            font-size: 9px;
-        }
-    
-    
-        .quiz-history-info {
-            min-width: 0;
-    
-            display: grid;
-    
-            gap: 3px;
-        }
-    
-    
-        .quiz-history-subject {
-            color: #777770;
-    
-            font-size: 8px;
-    
-            font-weight: 800;
-    
-            letter-spacing: 0.08em;
-    
-            text-transform: uppercase;
-        }
-    
-    
-        .quiz-history-info>strong,
-        .quiz-history-info>p {
-            overflow: hidden;
-    
-            text-overflow: ellipsis;
-    
-            white-space: nowrap;
-        }
-    
-    
-        .quiz-history-info>strong {
-            font-size: 13px;
-        }
-    
-    
-        .quiz-history-info>p {
-            margin: 0;
-    
-            color: #777770;
-    
-            font-size: 10px;
-        }
-    
-    
-        .quiz-history-info small {
-            color: #aaa9a2;
-    
-            font-size: 9px;
-        }
-    
-    
-        .quiz-history-expand {
-            padding: 9px 12px;
-    
-            border: 0;
-    
-            border-radius: 10px;
-    
-            background: #eeeeea;
-    
-            color: #1e1e1c;
-    
-            font: inherit;
-    
-            font-size: 10px;
-    
-            font-weight: 700;
-    
-            cursor: pointer;
-        }
-    
-    
-        /* =========================================
-       ANSWER REVIEW
+
+.insight-review-focus,
+.dashboard-review-focus {
+    display: grid;
+
+    gap: 3px;
+
+    padding: 8px 9px;
+
+    border-radius: 9px;
+
+    background: #eeeeea;
+}
+
+
+.insight-review-focus>span,
+.dashboard-review-focus>span {
+    color: #777770;
+
+    font-size: 7px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.05em;
+
+    text-transform: uppercase;
+}
+
+
+.insight-review-focus p,
+.dashboard-review-focus p {
+    margin: 0;
+
+    font-size: 8px;
+
+    line-height: 1.45;
+}
+
+
+/* =========================================
+       INSIGHT ACTION
     ========================================= */
-    
-        .quiz-history-review {
-            display: grid;
-    
-            gap: 9px;
-    
-            padding: 16px 18px 20px;
-    
-            border-top: 1px solid #ededE8;
-    
-            background: #fafaf7;
-        }
-    
-    
-        .quiz-history-review-top {
-            display: flex;
-    
-            justify-content: space-between;
-    
-            gap: 12px;
-        }
-    
-    
-        .quiz-history-review-top strong {
-            font-size: 12px;
-        }
-    
-    
-        .quiz-history-review-top button {
-            border: 0;
-    
-            background: transparent;
-    
-            color: #8b4747;
-    
-            font: inherit;
-    
-            font-size: 10px;
-    
-            cursor: pointer;
-        }
-    
-    
-        .quiz-history-answer {
-            display: grid;
-    
-            gap: 6px;
-    
-            padding: 13px;
-    
-            border: 1px solid #e3e3de;
-    
-            border-radius: 13px;
-    
-            background: #ffffff;
-        }
-    
-    
-        .quiz-history-answer.correct {
-            border-left: 3px solid #6e9b72;
-        }
-    
-    
-        .quiz-history-answer.wrong {
-            border-left: 3px solid #bb7777;
-        }
-    
-    
-        .quiz-history-answer>span {
-            color: #777770;
-    
-            font-size: 8px;
-    
-            font-weight: 800;
-        }
-    
-    
-        .quiz-history-answer>strong {
-            font-size: 11px;
-    
-            line-height: 1.45;
-        }
-    
-    
-        .quiz-history-answer p {
-            margin: 0;
-    
-            font-size: 10px;
-    
-            line-height: 1.45;
-        }
-    
-    
-        .quiz-history-answer small {
-            color: #777770;
-    
-            font-size: 9px;
-    
-            line-height: 1.5;
-        }
-    
-    
-        .quiz-history-model,
-        .quiz-history-no-answers {
-            margin: 0;
-    
-            color: #aaa9a2;
-    
-            font-size: 8px;
-        }
-    
-    
-        /* =========================================
-       QUIZ HISTORY MOBILE
+
+.insight-action {
+    width: fit-content;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 8px 10px;
+
+    border-radius: 9px;
+
+    background: #1e1e1c;
+
+    color: #ffffff;
+
+    font-size: 8px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================
+       MOBILE RECOMMENDATIONS
     ========================================= */
-    
-        @media screen and (max-width: 767px) {
-    
-            .quiz-history-hero {
-                align-items: flex-start;
-    
-                flex-direction: column;
-    
-                gap: 18px;
-    
-                padding: 21px 18px;
-    
-                border-radius: 20px;
-            }
-    
-    
-            .quiz-history-hero h2 {
-                font-size: 26px;
-            }
-    
-    
-            .quiz-history-hero>div>p:last-child {
-                font-size: 10px;
-            }
-    
-    
-            .quiz-history-start {
-                width: 100%;
-    
-                text-align: center;
-            }
-    
-    
-            .quiz-history-stats {
-                grid-template-columns:
-                    repeat(2,
-                        minmax(0, 1fr));
-    
-                gap: 8px;
-            }
-    
-    
-            .quiz-history-stats article {
-                padding: 14px;
-    
-                border-radius: 14px;
-            }
-    
-    
-            .quiz-history-stats strong {
-                font-size: 20px;
-            }
-    
-    
-            .quiz-history-panel {
-                border-radius: 18px;
-            }
-    
-    
-            .quiz-history-panel-header {
-                padding: 16px;
-            }
-    
-    
-            .quiz-history-main {
-                grid-template-columns:
-                    58px minmax(0, 1fr) auto;
-    
-                gap: 10px;
-    
-                padding: 13px;
-            }
-    
-    
-            .quiz-history-score {
-                width: 54px;
-                height: 54px;
-    
-                border-radius: 15px;
-            }
-    
-    
-            .quiz-history-score strong {
-                font-size: 15px;
-            }
-    
-    
-            .quiz-history-info>strong {
-                font-size: 10px;
-            }
-    
-    
-            .quiz-history-expand {
-                padding: 8px;
-    
-                font-size: 9px;
-            }
-    
-    
-            .quiz-history-review {
-                padding: 13px;
-            }
-    
-    
-            .quiz-save-message {
-                align-items: flex-start;
-    
-                flex-direction: column;
-    
-                font-size: 9px;
-            }
-    
-        }
+
+.mobile-insight-recommendations {
+    overflow: hidden;
+
+    border: 1px solid #e6e6e1;
+
+    border-radius: 13px;
+}
+
+
+.mobile-insight-recommendation {
+    display: grid;
+
+    grid-template-columns:
+        28px minmax(0, 1fr) auto;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 10px;
+
+    border-top: 1px solid #e7e7e2;
+}
+
+
+.mobile-insight-recommendation:first-child {
+    border-top: 0;
+}
+
+
+.mobile-recommendation-number {
+    width: 28px;
+
+    height: 28px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 9px;
+
+    background: #eeeeea;
+
+    font-size: 9px;
+
+    font-weight: 800;
+}
+
+
+.mobile-insight-recommendation>div:nth-child(2) {
+    min-width: 0;
+
+    display: grid;
+
+    gap: 4px;
+}
+
+
+.mobile-insight-recommendation strong {
+    font-size: 9px;
+
+    line-height: 1.35;
+}
+
+
+.mobile-insight-recommendation p {
+    margin: 0;
+
+    color: #66665f;
+
+    font-size: 8px;
+
+    line-height: 1.45;
+}
+
+
+.mobile-insight-recommendation small {
+    overflow: hidden;
+
+    color: #999991;
+
+    font-size: 7px;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+.mobile-insight-recommendation>a {
+    color: #777770;
+
+    font-size: 20px;
+}
+
+
+/* =========================================
+       COMMON INSIGHT STATES
+    ========================================= */
+
+.insight-loading,
+.dashboard-insight-loading {
+    display: grid;
+
+    justify-items: center;
+
+    gap: 8px;
+
+    padding: 26px;
+
+    text-align: center;
+}
+
+
+.insight-loading p,
+.dashboard-insight-loading p {
+    margin: 0;
+
+    color: #777770;
+
+    font-size: 9px;
+}
+
+
+.insight-error,
+.dashboard-insight-error {
+    display: grid;
+
+    gap: 7px;
+
+    padding: 14px;
+
+    background: #fff2f2;
+}
+
+
+.insight-error strong,
+.dashboard-insight-error strong {
+    font-size: 10px;
+}
+
+
+.insight-error p,
+.dashboard-insight-error p {
+    margin: 0;
+
+    color: #7c4b4b;
+
+    font-size: 9px;
+
+    line-height: 1.5;
+}
+
+
+.insight-error button,
+.dashboard-insight-error button {
+    width: fit-content;
+
+    padding: 7px 9px;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    background: #1e1e1c;
+
+    color: #ffffff;
+
+    font: inherit;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.insight-empty {
+    display: grid;
+
+    gap: 5px;
+
+    padding: 18px;
+
+    color: #777770;
+
+    text-align: center;
+}
+
+
+.insight-empty strong {
+    color: #1e1e1c;
+
+    font-size: 10px;
+}
+
+
+.insight-empty p {
+    margin: 0;
+
+    font-size: 9px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================
+       DESKTOP SMART INSIGHTS
+    ========================================= */
+
+.dashboard-smart-insights {
+    display: grid;
+
+    gap: 16px;
+
+    padding: 18px;
+
+    border: 1px solid #e3e3de;
+
+    border-radius: 18px;
+
+    background: #fafaf7;
+}
+
+
+.dashboard-smart-insight-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 18px;
+}
+
+
+.dashboard-smart-insight-header h3 {
+    margin: 3px 0 0;
+
+    font-size: 16px;
+}
+
+
+.dashboard-insight-refresh {
+    flex-shrink: 0;
+
+    padding: 9px 12px;
+
+    border: 1px solid #e0e0db;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #1e1e1c;
+
+    font: inherit;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.dashboard-insight-refresh:disabled {
+    opacity: 0.5;
+
+    cursor: default;
+}
+
+
+/* =========================================
+       DESKTOP SUMMARY
+    ========================================= */
+
+.dashboard-smart-summary {
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 14px;
+
+    border-radius: 13px;
+
+    background: #1e1e1c;
+
+    color: #ffffff;
+}
+
+
+.dashboard-smart-summary p {
+    max-width: 700px;
+
+    margin: 0;
+
+    font-size: 11px;
+
+    line-height: 1.6;
+}
+
+
+.dashboard-smart-summary span {
+    flex-shrink: 0;
+
+    color: #aaa9a3;
+
+    font-size: 8px;
+}
+
+
+/* =========================================
+       TWO COLUMN SMART GRID
+    ========================================= */
+
+.dashboard-smart-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+
+.dashboard-smart-column {
+    min-width: 0;
+
+    display: grid;
+
+    align-content: start;
+
+    gap: 10px;
+}
+
+
+/* =========================================
+       DESKTOP WEAK TOPICS
+    ========================================= */
+
+.dashboard-weak-topic-list {
+    display: grid;
+
+    gap: 8px;
+}
+
+
+.dashboard-weak-topic {
+    display: grid;
+
+    gap: 7px;
+
+    padding: 13px;
+
+    border: 1px solid #e3e3de;
+
+    border-radius: 13px;
+
+    background: #ffffff;
+}
+
+
+.dashboard-topic-heading {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+
+.dashboard-topic-heading small {
+    color: #999991;
+
+    font-size: 8px;
+}
+
+
+.dashboard-weak-topic>strong {
+    font-size: 12px;
+
+    line-height: 1.4;
+}
+
+
+.dashboard-weak-topic>p {
+    margin: 0;
+
+    color: #66665f;
+
+    font-size: 9px;
+
+    line-height: 1.55;
+}
+
+
+/* =========================================
+       DESKTOP RECOMMENDATIONS
+    ========================================= */
+
+.dashboard-recommendation-list {
+    overflow: hidden;
+
+    border: 1px solid #e3e3de;
+
+    border-radius: 13px;
+
+    background: #ffffff;
+}
+
+
+.dashboard-recommendation {
+    display: grid;
+
+    grid-template-columns:
+        32px minmax(0, 1fr) auto;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 12px;
+
+    border-top: 1px solid #e7e7e2;
+}
+
+
+.dashboard-recommendation:first-child {
+    border-top: 0;
+}
+
+
+.dashboard-recommendation-index {
+    width: 32px;
+
+    height: 32px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 10px;
+
+    background: #eeeeea;
+
+    font-size: 10px;
+
+    font-weight: 800;
+}
+
+
+.dashboard-recommendation>div:nth-child(2) {
+    min-width: 0;
+
+    display: grid;
+
+    gap: 5px;
+}
+
+
+.dashboard-recommendation strong {
+    font-size: 10px;
+
+    line-height: 1.4;
+}
+
+
+.dashboard-recommendation p {
+    margin: 0;
+
+    color: #66665f;
+
+    font-size: 9px;
+
+    line-height: 1.5;
+}
+
+
+.dashboard-recommendation small {
+    overflow: hidden;
+
+    color: #999991;
+
+    font-size: 8px;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+.dashboard-recommendation>a {
+    color: #777770;
+
+    font-size: 22px;
+}
+
+
+/* =========================================
+       TABLET SMART INSIGHTS
+    ========================================= */
+
+@media screen and (min-width: 768px) and (max-width: 1099px) {
+
+    .dashboard-smart-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .dashboard-smart-summary {
+        flex-direction: column;
+
+        gap: 7px;
+    }
+
+}
+
+
+/* =========================================
+   PHASE 2C.7.1.2
+   ADAPTIVE STUDY PLAN
+========================================= */
+
+.adaptive-plan-section {
+    width: 100%;
+
+    display: grid;
+
+    gap: 12px;
+}
+
+
+/* =========================================
+       HEADING
+    ========================================= */
+
+.adaptive-plan-heading {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+}
+
+
+.adaptive-plan-heading>div {
+    min-width: 0;
+}
+
+
+.adaptive-plan-label {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #92928a;
+
+    font-size: 7px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.09em;
+}
+
+
+.adaptive-plan-heading h3 {
+    margin: 0;
+
+    color: #1e1e1c;
+
+    font-size: 12px;
+
+    line-height: 1.3;
+}
+
+
+.adaptive-plan-refresh {
+    flex-shrink: 0;
+
+    padding: 7px 9px;
+
+    border: 1px solid #ddddD7;
+
+    border-radius: 8px;
+
+    background: #ffffff;
+
+    color: #292927;
+
+    font: inherit;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+.adaptive-plan-refresh:disabled {
+    opacity: 0.5;
+
+    cursor: default;
+}
+
+
+/* =========================================
+       SUMMARY
+    ========================================= */
+
+.adaptive-plan-summary {
+    display: grid;
+
+    gap: 11px;
+
+    padding: 14px;
+
+    border-radius: 17px;
+
+    background: #20201e;
+
+    color: #ffffff;
+}
+
+
+.adaptive-plan-summary>div:first-child {
+    display: grid;
+
+    gap: 4px;
+}
+
+
+.adaptive-plan-summary>div:first-child>span {
+    color: #aaa9a3;
+
+    font-size: 7px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.09em;
+}
+
+
+.adaptive-plan-summary p {
+    margin: 0;
+
+    font-size: 9px;
+
+    line-height: 1.55;
+}
+
+
+.adaptive-plan-summary small {
+    color: #aaa9a3;
+
+    font-size: 7px;
+}
+
+
+.adaptive-plan-summary-stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 6px;
+}
+
+
+.adaptive-plan-summary-stats>div {
+    display: grid;
+
+    gap: 2px;
+
+    padding: 8px;
+
+    border: 1px solid rgba(255, 255, 255, 0.09);
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.04);
+}
+
+
+.adaptive-plan-summary-stats strong {
+    font-size: 13px;
+}
+
+
+.adaptive-plan-summary-stats span {
+    color: #aaa9a3;
+
+    font-size: 7px;
+}
+
+
+/* =========================================
+       TASK LIST
+    ========================================= */
+
+.adaptive-plan-list {
+    display: grid;
+
+    gap: 8px;
+}
+
+
+.adaptive-plan-task {
+    position: relative;
+
+    overflow: hidden;
+
+    display: grid;
+
+    grid-template-columns:
+        55px minmax(0, 1fr);
+
+    gap: 10px;
+
+    padding: 11px;
+
+    border: 1px solid #e4e4de;
+
+    border-radius: 15px;
+
+    background: #ffffff;
+}
+
+
+/* =========================================
+       DATE COLUMN
+    ========================================= */
+
+.adaptive-plan-date {
+    align-self: start;
+
+    display: grid;
+
+    gap: 3px;
+
+    padding: 8px 5px;
+
+    border-radius: 10px;
+
+    background: #f0f0eb;
+
+    text-align: center;
+}
+
+
+.adaptive-plan-date strong {
+    font-size: 8px;
+
+    line-height: 1.25;
+}
+
+
+.adaptive-plan-date span {
+    color: #898981;
+
+    font-size: 6px;
+
+    line-height: 1.3;
+}
+
+
+/* =========================================
+       TASK CONTENT
+    ========================================= */
+
+.adaptive-plan-task-content {
+    min-width: 0;
+
+    display: grid;
+
+    gap: 7px;
+}
+
+
+.adaptive-plan-task-top {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 7px;
+}
+
+
+.adaptive-plan-priority {
+    width: fit-content;
+
+    display: inline-flex;
+
+    padding: 4px 6px;
+
+    border-radius: 999px;
+
+    font-size: 6px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.03em;
+
+    text-transform: uppercase;
+}
+
+
+.adaptive-plan-priority.high {
+    background: #f5e5e5;
+
+    color: #814141;
+}
+
+
+.adaptive-plan-priority.medium {
+    background: #f1ebdc;
+
+    color: #765e31;
+}
+
+
+.adaptive-plan-priority.low {
+    background: #e7efe5;
+
+    color: #496348;
+}
+
+
+.adaptive-plan-duration {
+    color: #74746d;
+
+    font-size: 7px;
+
+    font-weight: 700;
+}
+
+
+.adaptive-plan-task-title {
+    padding-right: 24px;
+
+    color: #222220;
+
+    font-size: 10px;
+
+    line-height: 1.4;
+}
+
+
+.adaptive-plan-meta {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 5px;
+}
+
+
+.adaptive-plan-meta span {
+    padding: 3px 6px;
+
+    border-radius: 6px;
+
+    background: #f2f2ee;
+
+    color: #6f6f69;
+
+    font-size: 7px;
+
+    font-weight: 700;
+}
+
+
+.adaptive-plan-topic {
+    margin: 0;
+
+    color: #55554f;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    line-height: 1.45;
+}
+
+
+.adaptive-plan-reason {
+    margin: 0;
+
+    color: #73736c;
+
+    font-size: 8px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================
+       MATERIAL
+    ========================================= */
+
+.adaptive-plan-material {
+    min-width: 0;
+
+    display: grid;
+
+    gap: 3px;
+
+    padding: 8px;
+
+    border-radius: 9px;
+
+    background: #f5f5f1;
+}
+
+
+.adaptive-plan-material span {
+    color: #909088;
+
+    font-size: 6px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.06em;
+}
+
+
+.adaptive-plan-material strong {
+    overflow: hidden;
+
+    font-size: 7px;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================
+       ACTIONS
+    ========================================= */
+
+.adaptive-plan-actions {
+    display: flex;
+
+    gap: 6px;
+}
+
+
+.adaptive-plan-primary-action {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 7px 9px;
+
+    border-radius: 8px;
+
+    background: #20201e;
+
+    color: #ffffff;
+
+    font-size: 7px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================
+       TASK NUMBER
+    ========================================= */
+
+.adaptive-plan-task-number {
+    position: absolute;
+
+    top: 11px;
+
+    right: 11px;
+
+    width: 18px;
+
+    height: 18px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: #eeeeea;
+
+    color: #777770;
+
+    font-size: 7px;
+
+    font-weight: 800;
+}
+
+
+/* =========================================
+       NOTE
+    ========================================= */
+
+.adaptive-plan-preview-note {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 8px;
+
+    padding: 10px;
+
+    border: 1px solid #e1e1dc;
+
+    border-radius: 11px;
+
+    background: #f8f8f5;
+}
+
+
+.adaptive-plan-preview-note>span {
+    width: 17px;
+
+    height: 17px;
+
+    flex-shrink: 0;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: #e7e7e2;
+
+    font-size: 8px;
+
+    font-weight: 800;
+}
+
+
+.adaptive-plan-preview-note p {
+    margin: 0;
+
+    color: #73736c;
+
+    font-size: 7px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================
+       LOADING / EMPTY / ERROR
+    ========================================= */
+
+.adaptive-plan-loading,
+.adaptive-plan-empty,
+.adaptive-plan-error {
+    display: grid;
+
+    justify-items: center;
+
+    gap: 7px;
+
+    padding: 22px 14px;
+
+    border: 1px solid #e3e3de;
+
+    border-radius: 15px;
+
+    background: #ffffff;
+
+    text-align: center;
+}
+
+
+.adaptive-plan-loading strong,
+.adaptive-plan-empty strong,
+.adaptive-plan-error strong {
+    font-size: 10px;
+}
+
+
+.adaptive-plan-loading p,
+.adaptive-plan-empty p,
+.adaptive-plan-error p {
+    max-width: 280px;
+
+    margin: 0;
+
+    color: #777770;
+
+    font-size: 8px;
+
+    line-height: 1.5;
+}
+
+
+.adaptive-plan-empty>div {
+    width: 32px;
+
+    height: 32px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 10px;
+
+    background: #20201e;
+
+    color: #ffffff;
+
+    font-size: 12px;
+}
+
+
+.adaptive-plan-empty a,
+.adaptive-plan-error button {
+    padding: 7px 10px;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    background: #20201e;
+
+    color: #ffffff;
+
+    font: inherit;
+
+    font-size: 7px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+/* =========================================
+       DESKTOP
+    ========================================= */
+
+.desktop-adaptive-plan {
+    margin-top: 16px;
+}
+
+
+@media screen and (min-width: 768px) {
+
+    .desktop-adaptive-plan .adaptive-plan-section {
+        gap: 15px;
+    }
+
+
+    .desktop-adaptive-plan .adaptive-plan-heading h3 {
+        font-size: 16px;
+    }
+
+
+    .desktop-adaptive-plan .adaptive-plan-label {
+        font-size: 8px;
+    }
+
+
+    .desktop-adaptive-plan .adaptive-plan-list {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
+    }
+
+
+    .desktop-adaptive-plan .adaptive-plan-task {
+        grid-template-columns:
+            70px minmax(0, 1fr);
+
+        padding: 14px;
+    }
+
+
+    .desktop-adaptive-plan .adaptive-plan-task-title {
+        font-size: 12px;
+    }
+
+
+    .desktop-adaptive-plan .adaptive-plan-topic,
+    .desktop-adaptive-plan .adaptive-plan-reason {
+        font-size: 9px;
+    }
+
+
+    .desktop-adaptive-plan .adaptive-plan-summary p {
+        font-size: 11px;
+    }
+
+
+    .desktop-adaptive-plan .adaptive-plan-summary-stats strong {
+        font-size: 16px;
+    }
 
 }
