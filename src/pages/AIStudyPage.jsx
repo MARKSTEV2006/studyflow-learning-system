@@ -31,64 +31,41 @@ const normalQuickPrompts = [
 
 const materialQuickPrompts = [
   {
-    label:
-      'Summarize',
-
-    type:
-      'chat',
-
+    label: 'Summarize',
+    type: 'chat',
     prompt:
       'Summarize this study material. Focus on the main ideas and important details.',
   },
 
   {
-    label:
-      'Create Reviewer',
-
-    type:
-      'chat',
-
+    label: 'Create Reviewer',
+    type: 'chat',
     prompt:
       'Create a complete reviewer based only on this study material.',
   },
 
   {
-    label:
-      'Key Concepts',
-
-    type:
-      'chat',
-
+    label: 'Key Concepts',
+    type: 'chat',
     prompt:
       'Identify and explain the key concepts in this study material.',
   },
 
   {
-    label:
-      'Flashcards',
-
-    type:
-      'chat',
-
+    label: 'Flashcards',
+    type: 'chat',
     prompt:
       'Create useful study flashcards based only on this study material.',
   },
 
   {
-    label:
-      'Quiz Me',
-
-    type:
-      'quiz',
+    label: 'Quiz Me',
+    type: 'quiz',
   },
 
   {
-    label:
-      'Exam Questions',
-
-    type:
-      'chat',
-
+    label: 'Exam Questions',
+    type: 'chat',
     prompt:
       'Create possible exam questions based only on this study material.',
   },
@@ -96,11 +73,8 @@ const materialQuickPrompts = [
 
 
 export default function AIStudyPage() {
-  const [
-    searchParams,
-  ] =
+  const [searchParams] =
     useSearchParams()
-
 
   const materialId =
     searchParams.get(
@@ -108,12 +82,15 @@ export default function AIStudyPage() {
     )
 
 
+  /* =========================================
+     CHAT STATE
+  ========================================= */
+
   const [
     message,
     setMessage,
   ] =
     useState('')
-
 
   const [
     messages,
@@ -121,42 +98,17 @@ export default function AIStudyPage() {
   ] =
     useState([
       {
-        role:
-          'ai',
-
+        role: 'ai',
         text:
           'Hi. I am StudyFlow AI. What do you want to study?',
       },
     ])
-
-
-  const [
-    selectedMaterial,
-    setSelectedMaterial,
-  ] =
-    useState(null)
-
-
-  const [
-    materialLoading,
-    setMaterialLoading,
-  ] =
-    useState(false)
-
-
-  const [
-    materialError,
-    setMaterialError,
-  ] =
-    useState('')
-
 
   const [
     loading,
     setLoading,
   ] =
     useState(false)
-
 
   const [
     error,
@@ -165,12 +117,38 @@ export default function AIStudyPage() {
     useState('')
 
 
+  /* =========================================
+     MATERIAL STATE
+  ========================================= */
+
+  const [
+    selectedMaterial,
+    setSelectedMaterial,
+  ] =
+    useState(null)
+
+  const [
+    materialLoading,
+    setMaterialLoading,
+  ] =
+    useState(false)
+
+  const [
+    materialError,
+    setMaterialError,
+  ] =
+    useState('')
+
+
+  /* =========================================
+     QUIZ STATE
+  ========================================= */
+
   const [
     quiz,
     setQuiz,
   ] =
     useState(null)
-
 
   const [
     quizLoading,
@@ -178,13 +156,11 @@ export default function AIStudyPage() {
   ] =
     useState(false)
 
-
   const [
     quizIndex,
     setQuizIndex,
   ] =
     useState(0)
-
 
   const [
     selectedAnswer,
@@ -192,13 +168,11 @@ export default function AIStudyPage() {
   ] =
     useState(null)
 
-
   const [
     answerChecked,
     setAnswerChecked,
   ] =
     useState(false)
-
 
   const [
     quizScore,
@@ -206,20 +180,17 @@ export default function AIStudyPage() {
   ] =
     useState(0)
 
-
   const [
     quizAnswers,
     setQuizAnswers,
   ] =
     useState([])
 
-
   const [
     quizComplete,
     setQuizComplete,
   ] =
     useState(false)
-
 
   const [
     reviewingMistakes,
@@ -228,19 +199,77 @@ export default function AIStudyPage() {
     useState(false)
 
 
+  /* =========================================
+     QUIZ SAVE STATE
+  ========================================= */
+
+  const [
+    quizSaving,
+    setQuizSaving,
+  ] =
+    useState(false)
+
+  const [
+    quizSaved,
+    setQuizSaved,
+  ] =
+    useState(false)
+
+  const [
+    quizSaveError,
+    setQuizSaveError,
+  ] =
+    useState('')
+
+  const [
+    quizModel,
+    setQuizModel,
+  ] =
+    useState(null)
+
+  const quizSaveRef =
+    useRef(false)
+
   const chatEndRef =
     useRef(null)
 
+
+  /* =========================================
+     CLEAR QUIZ
+  ========================================= */
 
   function clearQuizState() {
     setQuiz(null)
     setQuizIndex(0)
     setSelectedAnswer(null)
     setAnswerChecked(false)
+
     setQuizScore(0)
     setQuizAnswers([])
     setQuizComplete(false)
-    setReviewingMistakes(false)
+
+    setReviewingMistakes(
+      false,
+    )
+
+    setQuizSaving(
+      false,
+    )
+
+    setQuizSaved(
+      false,
+    )
+
+    setQuizSaveError(
+      '',
+    )
+
+    setQuizModel(
+      null,
+    )
+
+    quizSaveRef.current =
+      false
   }
 
 
@@ -253,14 +282,10 @@ export default function AIStudyPage() {
       chatEndRef
         .current
         ?.scrollIntoView({
-          behavior:
-            'smooth',
-
-          block:
-            'end',
+          behavior: 'smooth',
+          block: 'end',
         })
     },
-
     [
       messages,
       loading,
@@ -288,16 +313,58 @@ export default function AIStudyPage() {
         return
       }
 
-
       clearQuizState()
+
       loadSelectedMaterial()
     },
-
     [
       materialId,
     ],
   )
 
+
+  /* =========================================
+     AUTO SAVE COMPLETED QUIZ
+  ========================================= */
+
+  useEffect(
+    () => {
+      if (
+        !quizComplete ||
+        !quiz ||
+        !selectedMaterial ||
+        quizSaved ||
+        quizSaving ||
+        quizSaveRef.current
+      ) {
+        return
+      }
+
+      /*
+       * Wait until all answers
+       * are already stored in state.
+       */
+      if (
+        quizAnswers.length !==
+        quiz.questions.length
+      ) {
+        return
+      }
+
+      saveQuizAttempt()
+    },
+    [
+      quizComplete,
+      quizAnswers.length,
+      quizSaved,
+      quizSaving,
+    ],
+  )
+
+
+  /* =========================================
+     LOAD SELECTED MATERIAL
+  ========================================= */
 
   async function loadSelectedMaterial() {
     setMaterialLoading(
@@ -307,7 +374,6 @@ export default function AIStudyPage() {
     setMaterialError(
       '',
     )
-
 
     try {
       const {
@@ -322,18 +388,15 @@ export default function AIStudyPage() {
           .auth
           .getSession()
 
-
       if (sessionError) {
         throw sessionError
       }
-
 
       if (!session) {
         throw new Error(
           'Your session expired. Please sign in again.',
         )
       }
-
 
       const {
         data,
@@ -370,13 +433,11 @@ export default function AIStudyPage() {
           )
           .maybeSingle()
 
-
       if (
         materialQueryError
       ) {
         throw materialQueryError
       }
-
 
       if (!data) {
         throw new Error(
@@ -384,16 +445,13 @@ export default function AIStudyPage() {
         )
       }
 
-
       setSelectedMaterial(
         data,
       )
 
-
       setMessages([
         {
-          role:
-            'ai',
+          role: 'ai',
 
           text:
 `### Material ready
@@ -405,25 +463,23 @@ Choose one of the study actions above or ask me a question about this material.`
       ])
     }
 
-
-    catch (requestError) {
+    catch (
+      requestError
+    ) {
       console.error(
         'Selected material error:',
         requestError,
       )
 
-
       setSelectedMaterial(
         null,
       )
-
 
       setMaterialError(
         requestError?.message ||
         'Could not load the selected material.',
       )
     }
-
 
     finally {
       setMaterialLoading(
@@ -444,7 +500,6 @@ Choose one of the study actions above or ask me a question about this material.`
       return '0 MB'
     }
 
-
     return `${(
       size /
       1024 /
@@ -454,7 +509,7 @@ Choose one of the study actions above or ask me a question about this material.`
 
 
   /* =========================================
-     SEND MESSAGE
+     SEND CHAT MESSAGE
   ========================================= */
 
   async function sendMessage(
@@ -463,7 +518,6 @@ Choose one of the study actions above or ask me a question about this material.`
     const cleanMessage =
       text.trim()
 
-
     if (
       !cleanMessage ||
       loading
@@ -471,21 +525,14 @@ Choose one of the study actions above or ask me a question about this material.`
       return
     }
 
-
     setError(
       '',
     )
 
-
-    /*
-     * Keep recent conversation.
-     */
     const conversationHistory =
       messages
         .filter(
-          (
-            item,
-          ) =>
+          (item) =>
             item
               ?.text
               ?.trim(),
@@ -494,9 +541,7 @@ Choose one of the study actions above or ask me a question about this material.`
           -8,
         )
         .map(
-          (
-            item,
-          ) => ({
+          (item) => ({
             role:
               item.role ===
               'ai'
@@ -508,26 +553,16 @@ Choose one of the study actions above or ask me a question about this material.`
           }),
         )
 
-
-    /*
-     * Show student message immediately.
-     */
     setMessages(
-      (
-        current,
-      ) => [
+      (current) => [
         ...current,
 
         {
-          role:
-            'user',
-
-          text:
-            cleanMessage,
+          role: 'user',
+          text: cleanMessage,
         },
       ],
     )
-
 
     setMessage(
       '',
@@ -536,7 +571,6 @@ Choose one of the study actions above or ask me a question about this material.`
     setLoading(
       true,
     )
-
 
     try {
       const {
@@ -551,22 +585,15 @@ Choose one of the study actions above or ask me a question about this material.`
           .auth
           .getSession()
 
-
       if (sessionError) {
         throw sessionError
       }
-
 
       if (!session) {
         throw new Error(
           'Your session expired. Please sign in again.',
         )
       }
-
-
-      /* =====================================
-         CALL STUDY AI
-      ===================================== */
 
       const {
         data,
@@ -599,11 +626,6 @@ Choose one of the study actions above or ask me a question about this material.`
             },
           )
 
-
-      /* =====================================
-         FUNCTION ERROR
-      ===================================== */
-
       if (
         functionError
       ) {
@@ -612,14 +634,12 @@ Choose one of the study actions above or ask me a question about this material.`
           functionError,
         )
 
-
         if (
           functionError instanceof
           FunctionsHttpError
         ) {
           let errorBody =
             null
-
 
           try {
             errorBody =
@@ -629,17 +649,13 @@ Choose one of the study actions above or ask me a question about this material.`
           }
 
           catch {
-            /*
-             * Response wasn't JSON.
-             */
+            // Response wasn't JSON.
           }
-
 
           console.error(
             'EDGE FUNCTION ERROR BODY:',
             errorBody,
           )
-
 
           throw new Error(
             errorBody?.error ||
@@ -648,10 +664,8 @@ Choose one of the study actions above or ask me a question about this material.`
           )
         }
 
-
         throw functionError
       }
-
 
       if (
         data?.error
@@ -661,20 +675,12 @@ Choose one of the study actions above or ask me a question about this material.`
         )
       }
 
-
-      /* =====================================
-         ADD AI RESPONSE
-      ===================================== */
-
       setMessages(
-        (
-          current,
-        ) => [
+        (current) => [
           ...current,
 
           {
-            role:
-              'ai',
+            role: 'ai',
 
             text:
               data?.answer ||
@@ -684,20 +690,19 @@ Choose one of the study actions above or ask me a question about this material.`
       )
     }
 
-
-    catch (requestError) {
+    catch (
+      requestError
+    ) {
       console.error(
         'StudyFlow AI error:',
         requestError,
       )
-
 
       setError(
         requestError?.message ||
         'Could not contact StudyFlow AI.',
       )
     }
-
 
     finally {
       setLoading(
@@ -708,7 +713,7 @@ Choose one of the study actions above or ask me a question about this material.`
 
 
   /* =========================================
-     INTERACTIVE QUIZ
+     START INTERACTIVE QUIZ
   ========================================= */
 
   async function startInteractiveQuiz() {
@@ -719,15 +724,22 @@ Choose one of the study actions above or ask me a question about this material.`
       return
     }
 
-    setError('')
+    setError(
+      '',
+    )
+
     clearQuizState()
-    setQuizLoading(true)
+
+    setQuizLoading(
+      true,
+    )
 
     try {
       const {
         data: {
           session,
         },
+
         error:
           sessionError,
       } =
@@ -747,6 +759,7 @@ Choose one of the study actions above or ask me a question about this material.`
 
       const {
         data,
+
         error:
           functionError,
       } =
@@ -761,8 +774,7 @@ Choose one of the study actions above or ask me a question about this material.`
               },
 
               body: {
-                mode:
-                  'quiz',
+                mode: 'quiz',
 
                 materialId:
                   selectedMaterial.id,
@@ -773,7 +785,9 @@ Choose one of the study actions above or ask me a question about this material.`
             },
           )
 
-      if (functionError) {
+      if (
+        functionError
+      ) {
         console.error(
           'Interactive quiz function error:',
           functionError,
@@ -791,8 +805,10 @@ Choose one of the study actions above or ask me a question about this material.`
               await functionError
                 .context
                 .json()
-          } catch {
-            // Response was not JSON.
+          }
+
+          catch {
+            // Response wasn't JSON.
           }
 
           throw new Error(
@@ -805,7 +821,9 @@ Choose one of the study actions above or ask me a question about this material.`
         throw functionError
       }
 
-      if (data?.error) {
+      if (
+        data?.error
+      ) {
         throw new Error(
           data.error,
         )
@@ -827,7 +845,16 @@ Choose one of the study actions above or ask me a question about this material.`
       setQuiz(
         data.quiz,
       )
-    } catch (requestError) {
+
+      setQuizModel(
+        data?.model ||
+        null,
+      )
+    }
+
+    catch (
+      requestError
+    ) {
       console.error(
         'Interactive quiz error:',
         requestError,
@@ -837,13 +864,19 @@ Choose one of the study actions above or ask me a question about this material.`
         requestError?.message ||
         'Could not generate the interactive quiz.',
       )
-    } finally {
+    }
+
+    finally {
       setQuizLoading(
         false,
       )
     }
   }
 
+
+  /* =========================================
+     SELECT ANSWER
+  ========================================= */
 
   function chooseQuizAnswer(
     optionIndex,
@@ -860,6 +893,10 @@ Choose one of the study actions above or ask me a question about this material.`
     )
   }
 
+
+  /* =========================================
+     CHECK ANSWER
+  ========================================= */
 
   function checkQuizAnswer() {
     if (
@@ -890,6 +927,7 @@ Choose one of the study actions above or ask me a question about this material.`
     setQuizAnswers(
       (current) => [
         ...current,
+
         {
           questionIndex:
             quizIndex,
@@ -911,6 +949,228 @@ Choose one of the study actions above or ask me a question about this material.`
   }
 
 
+  /* =========================================
+     SAVE QUIZ RESULT
+  ========================================= */
+
+  async function saveQuizAttempt() {
+    if (
+      !quiz ||
+      !selectedMaterial ||
+      quizSaving ||
+      quizSaved ||
+      quizSaveRef.current
+    ) {
+      return
+    }
+
+    if (
+      quizAnswers.length !==
+      quiz.questions.length
+    ) {
+      return
+    }
+
+    quizSaveRef.current =
+      true
+
+    setQuizSaving(
+      true,
+    )
+
+    setQuizSaveError(
+      '',
+    )
+
+    try {
+      const {
+        data: {
+          session,
+        },
+
+        error:
+          sessionError,
+      } =
+        await supabase
+          .auth
+          .getSession()
+
+      if (sessionError) {
+        throw sessionError
+      }
+
+      if (!session) {
+        throw new Error(
+          'Your session expired. Please sign in again.',
+        )
+      }
+
+      const savedAnswers =
+        quizAnswers.map(
+          (answer) => {
+            const question =
+              quiz.questions[
+                answer.questionIndex
+              ]
+
+            return {
+              questionIndex:
+                answer.questionIndex,
+
+              question:
+                question?.question ||
+                '',
+
+              options:
+                question?.options ||
+                [],
+
+              selectedIndex:
+                answer.selectedIndex,
+
+              selectedAnswer:
+                question
+                  ?.options
+                  ?.[
+                    answer.selectedIndex
+                  ] ||
+                null,
+
+              correctIndex:
+                answer.correctIndex,
+
+              correctAnswer:
+                question
+                  ?.options
+                  ?.[
+                    answer.correctIndex
+                  ] ||
+                null,
+
+              correct:
+                Boolean(
+                  answer.correct,
+                ),
+
+              explanation:
+                question
+                  ?.explanation ||
+                '',
+            }
+          },
+        )
+
+      const finalScore =
+        savedAnswers.filter(
+          (answer) =>
+            answer.correct,
+        ).length
+
+      const totalQuestions =
+        quiz.questions.length
+
+      const percentage =
+        Number(
+          (
+            (
+              finalScore /
+              totalQuestions
+            ) *
+            100
+          ).toFixed(
+            2,
+          ),
+        )
+
+      const {
+        error:
+          saveError,
+      } =
+        await supabase
+          .from(
+            'quiz_attempts',
+          )
+          .insert({
+            user_id:
+              session.user.id,
+
+            material_id:
+              selectedMaterial.id,
+
+            subject_id:
+              selectedMaterial
+                .subject_id ||
+              null,
+
+            quiz_title:
+              quiz.title ||
+              'StudyFlow Quiz',
+
+            material_name:
+              selectedMaterial
+                .file_name ||
+              null,
+
+            subject_name:
+              selectedMaterial
+                .subjects
+                ?.name ||
+              null,
+
+            score:
+              finalScore,
+
+            total_questions:
+              totalQuestions,
+
+            percentage,
+
+            answers:
+              savedAnswers,
+
+            ai_model:
+              quizModel ||
+              null,
+          })
+
+      if (saveError) {
+        throw saveError
+      }
+
+      setQuizSaved(
+        true,
+      )
+    }
+
+    catch (
+      saveError
+    ) {
+      console.error(
+        'Quiz save error:',
+        saveError,
+      )
+
+      quizSaveRef.current =
+        false
+
+      setQuizSaveError(
+        saveError?.message ||
+        'Could not save this quiz result.',
+      )
+    }
+
+    finally {
+      setQuizSaving(
+        false,
+      )
+    }
+  }
+
+
+  /* =========================================
+     NEXT QUESTION
+  ========================================= */
+
   function nextQuizQuestion() {
     if (
       !quiz ||
@@ -927,6 +1187,7 @@ Choose one of the study actions above or ask me a question about this material.`
       setQuizComplete(
         true,
       )
+
       return
     }
 
@@ -945,14 +1206,53 @@ Choose one of the study actions above or ask me a question about this material.`
   }
 
 
+  /* =========================================
+     RETRY SAME QUIZ
+  ========================================= */
+
   function retryQuiz() {
-    setQuizIndex(0)
-    setSelectedAnswer(null)
-    setAnswerChecked(false)
-    setQuizScore(0)
-    setQuizAnswers([])
-    setQuizComplete(false)
-    setReviewingMistakes(false)
+    setQuizIndex(
+      0,
+    )
+
+    setSelectedAnswer(
+      null,
+    )
+
+    setAnswerChecked(
+      false,
+    )
+
+    setQuizScore(
+      0,
+    )
+
+    setQuizAnswers(
+      [],
+    )
+
+    setQuizComplete(
+      false,
+    )
+
+    setReviewingMistakes(
+      false,
+    )
+
+    setQuizSaving(
+      false,
+    )
+
+    setQuizSaved(
+      false,
+    )
+
+    setQuizSaveError(
+      '',
+    )
+
+    quizSaveRef.current =
+      false
   }
 
 
@@ -972,6 +1272,7 @@ Choose one of the study actions above or ask me a question about this material.`
       setError(
         'Select a study material first.',
       )
+
       return
     }
 
@@ -980,6 +1281,7 @@ Choose one of the study actions above or ask me a question about this material.`
       'quiz'
     ) {
       await startInteractiveQuiz()
+
       return
     }
 
@@ -990,14 +1292,13 @@ Choose one of the study actions above or ask me a question about this material.`
 
 
   /* =========================================
-     SUBMIT CHAT
+     CHAT SUBMIT
   ========================================= */
 
   async function handleSubmit(
     event,
   ) {
     event.preventDefault()
-
 
     await sendMessage(
       message,
@@ -1035,7 +1336,7 @@ Choose one of the study actions above or ask me a question about this material.`
 
 
       {/* =====================================
-          MATERIAL LOADING
+          MATERIAL
       ===================================== */}
 
       {materialLoading ? (
@@ -1053,10 +1354,6 @@ Choose one of the study actions above or ask me a question about this material.`
         </section>
 
       ) : materialError ? (
-
-        /* =================================
-           MATERIAL ERROR
-        ================================= */
 
         <section className="ai-selected-material-card">
 
@@ -1082,10 +1379,6 @@ Choose one of the study actions above or ask me a question about this material.`
         </section>
 
       ) : selectedMaterial ? (
-
-        /* =================================
-           SELECTED MATERIAL
-        ================================= */
 
         <section className="ai-selected-material-card">
 
@@ -1158,50 +1451,36 @@ Choose one of the study actions above or ask me a question about this material.`
           </div>
 
 
-          {/* =================================
-              MATERIAL ACTION BUTTONS
-          ================================= */}
-
           <div className="ai-material-actions">
 
             {
-              materialQuickPrompts
-                .map(
-                  (
-                    item,
-                  ) => (
+              materialQuickPrompts.map(
+                (item) => (
 
-                    <button
-                      type="button"
+                  <button
+                    type="button"
+                    key={item.label}
+                    disabled={
+                      loading ||
+                      quizLoading
+                    }
+                    onClick={() =>
+                      handleMaterialAction(
+                        item,
+                      )
+                    }
+                  >
 
-                      key={
-                        item.label
-                      }
+                    <span>
+                      ✦
+                    </span>
 
-                      disabled={
-                        loading ||
-                        quizLoading
-                      }
+                    {item.label}
 
-                      onClick={() =>
-                        handleMaterialAction(
-                          item,
-                        )
-                      }
-                    >
+                  </button>
 
-                      <span>
-                        ✦
-                      </span>
-
-                      {
-                        item.label
-                      }
-
-                    </button>
-
-                  ),
-                )
+                ),
+              )
             }
 
           </div>
@@ -1215,10 +1494,6 @@ Choose one of the study actions above or ask me a question about this material.`
         </section>
 
       ) : (
-
-        /* =================================
-           NO MATERIAL
-        ================================= */
 
         <section className="mobile-ai-material">
 
@@ -1258,42 +1533,30 @@ Choose one of the study actions above or ask me a question about this material.`
           <div className="mobile-ai-prompts">
 
             {
-              normalQuickPrompts
-                .map(
-                  (
-                    prompt,
-                  ) => (
+              normalQuickPrompts.map(
+                (prompt) => (
 
-                    <button
-                      type="button"
+                  <button
+                    type="button"
+                    key={prompt}
+                    disabled={loading}
+                    onClick={() =>
+                      sendMessage(
+                        prompt,
+                      )
+                    }
+                  >
 
-                      key={
-                        prompt
-                      }
+                    <span>
+                      ✦
+                    </span>
 
-                      disabled={
-                        loading
-                      }
+                    {prompt}
 
-                      onClick={() =>
-                        sendMessage(
-                          prompt,
-                        )
-                      }
-                    >
+                  </button>
 
-                      <span>
-                        ✦
-                      </span>
-
-                      {
-                        prompt
-                      }
-
-                    </button>
-
-                  ),
-                )
+                ),
+              )
             }
 
           </div>
@@ -1304,7 +1567,7 @@ Choose one of the study actions above or ask me a question about this material.`
 
 
       {/* =====================================
-          INTERACTIVE QUIZ
+          QUIZ LOADING
       ===================================== */}
 
       {quizLoading && (
@@ -1337,6 +1600,10 @@ Choose one of the study actions above or ask me a question about this material.`
       )}
 
 
+      {/* =====================================
+          INTERACTIVE QUIZ
+      ===================================== */}
+
       {quiz && (
 
         <section className="interactive-quiz">
@@ -1365,9 +1632,7 @@ Choose one of the study actions above or ask me a question about this material.`
                   type="button"
                   className="quiz-close"
                   aria-label="Close quiz"
-                  onClick={
-                    closeQuiz
-                  }
+                  onClick={closeQuiz}
                 >
                   ×
                 </button>
@@ -1467,11 +1732,9 @@ Choose one of the study actions above or ask me a question about this material.`
                         return (
                           <button
                             type="button"
-
                             key={
                               `${quizIndex}-${optionIndex}`
                             }
-
                             className={[
                               'quiz-option',
                               isSelected
@@ -1486,11 +1749,9 @@ Choose one of the study actions above or ask me a question about this material.`
                             ]
                               .filter(Boolean)
                               .join(' ')}
-
                             disabled={
                               answerChecked
                             }
-
                             onClick={() =>
                               chooseQuizAnswer(
                                 optionIndex,
@@ -1607,9 +1868,7 @@ Choose one of the study actions above or ask me a question about this material.`
               </span>
 
               <h2>
-                {
-                  quizScore
-                } / {
+                {quizScore} / {
                   quiz.questions.length
                 }
               </h2>
@@ -1627,12 +1886,72 @@ Choose one of the study actions above or ask me a question about this material.`
               </p>
 
 
+              {/* =================================
+                  SAVE STATUS
+              ================================= */}
+
+              <div className="quiz-save-status">
+
+                {quizSaving && (
+
+                  <span className="quiz-save-message saving">
+                    Saving result...
+                  </span>
+
+                )}
+
+
+                {quizSaved && (
+
+                  <div className="quiz-save-message saved">
+
+                    <span>
+                      ✓ Result saved to Quiz History
+                    </span>
+
+                    <Link to="/quiz-history">
+                      View History
+                    </Link>
+
+                  </div>
+
+                )}
+
+
+                {quizSaveError && (
+
+                  <div className="quiz-save-message error">
+
+                    <span>
+                      {quizSaveError}
+                    </span>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        quizSaveRef.current =
+                          false
+
+                        saveQuizAttempt()
+                      }}
+                    >
+                      Retry Save
+                    </button>
+
+                  </div>
+
+                )}
+
+              </div>
+
+
               <div className="quiz-result-stats">
 
                 <div>
                   <span>
                     Correct
                   </span>
+
                   <strong>
                     {quizScore}
                   </strong>
@@ -1642,6 +1961,7 @@ Choose one of the study actions above or ask me a question about this material.`
                   <span>
                     Wrong
                   </span>
+
                   <strong>
                     {
                       quiz.questions.length -
@@ -1681,15 +2001,15 @@ Choose one of the study actions above or ask me a question about this material.`
                   )
                 }
 
+
                 <button
                   type="button"
                   className="secondary-button"
-                  onClick={
-                    retryQuiz
-                  }
+                  onClick={retryQuiz}
                 >
                   Try Again
                 </button>
+
 
                 <button
                   type="button"
@@ -1727,6 +2047,7 @@ Choose one of the study actions above or ask me a question about this material.`
                                 answer.questionIndex
                               }
                             >
+
                               <span>
                                 Question {
                                   answer.questionIndex +
@@ -1767,6 +2088,7 @@ Choose one of the study actions above or ask me a question about this material.`
                                   question.explanation
                                 }
                               </small>
+
                             </article>
                           )
                         },
@@ -1781,9 +2103,7 @@ Choose one of the study actions above or ask me a question about this material.`
               <button
                 type="button"
                 className="quiz-close-results"
-                onClick={
-                  closeQuiz
-                }
+                onClick={closeQuiz}
               >
                 Back to AI Study
               </button>
@@ -1805,42 +2125,38 @@ Choose one of the study actions above or ask me a question about this material.`
 
         <section className="ai-chat-thread">
 
-        {
-          messages.map(
-            (
-              chatMessage,
-              index,
-            ) => (
+          {
+            messages.map(
+              (
+                chatMessage,
+                index,
+              ) => (
 
-              <div
-                key={
-                  `${chatMessage.role}-${index}`
-                }
+                <div
+                  key={
+                    `${chatMessage.role}-${index}`
+                  }
+                  className={
+                    chatMessage.role ===
+                    'user'
+                      ? 'ai-chat-message user'
+                      : 'ai-chat-message ai'
+                  }
+                >
 
-                className={
-                  chatMessage.role ===
-                  'user'
-                    ? 'ai-chat-message user'
-                    : 'ai-chat-message ai'
-                }
-              >
+                  <span className="ai-message-author">
+                    {
+                      chatMessage.role ===
+                      'user'
+                        ? 'You'
+                        : 'StudyFlow AI'
+                    }
+                  </span>
 
-                <span className="ai-message-author">
 
                   {
                     chatMessage.role ===
-                    'user'
-                      ? 'You'
-                      : 'StudyFlow AI'
-                  }
-
-                </span>
-
-
-                {
-                  chatMessage.role ===
-                  'ai'
-                    ? (
+                    'ai' ? (
 
                       <div className="ai-markdown">
 
@@ -1848,7 +2164,6 @@ Choose one of the study actions above or ask me a question about this material.`
                           remarkPlugins={[
                             remarkGfm,
                           ]}
-
                           components={{
                             a({
                               children,
@@ -1857,9 +2172,7 @@ Choose one of the study actions above or ask me a question about this material.`
                               return (
                                 <a
                                   {...props}
-
                                   target="_blank"
-
                                   rel="noreferrer"
                                 >
                                   {children}
@@ -1869,61 +2182,52 @@ Choose one of the study actions above or ask me a question about this material.`
                           }}
                         >
                           {
-                            chatMessage
-                              .text
+                            chatMessage.text
                           }
                         </ReactMarkdown>
 
                       </div>
 
-                    )
-                    : (
+                    ) : (
 
                       <p className="ai-user-text">
                         {
-                          chatMessage
-                            .text
+                          chatMessage.text
                         }
                       </p>
 
                     )
-                }
+                  }
 
+                </div>
+
+              ),
+            )
+          }
+
+
+          {loading && (
+
+            <div className="ai-chat-message ai">
+
+              <span className="ai-message-author">
+                StudyFlow AI
+              </span>
+
+              <div className="ai-thinking">
+                <span />
+                <span />
+                <span />
               </div>
 
-            ),
-          )
-        }
-
-
-        {/* =================================
-            THINKING
-        ================================= */}
-
-        {loading && (
-
-          <div className="ai-chat-message ai">
-
-            <span className="ai-message-author">
-              StudyFlow AI
-            </span>
-
-            <div className="ai-thinking">
-              <span />
-              <span />
-              <span />
             </div>
 
-          </div>
-
-        )}
+          )}
 
 
-        <div
-          ref={
-            chatEndRef
-          }
-        />
+          <div
+            ref={chatEndRef}
+          />
 
         </section>
 
@@ -1951,53 +2255,41 @@ Choose one of the study actions above or ask me a question about this material.`
 
         <form
           className="mobile-ai-input"
-
           onSubmit={
             handleSubmit
           }
         >
 
-        <input
-          type="text"
-
-          value={
-            message
-          }
-
-          disabled={
-            loading
-          }
-
-          placeholder={
-            selectedMaterial
-              ? `Ask about ${selectedMaterial.file_name}...`
-              : 'Ask StudyFlow AI...'
-          }
-
-          autoComplete="off"
-
-          onChange={(
-            event,
-          ) =>
-            setMessage(
-              event.target.value,
-            )
-          }
-        />
+          <input
+            type="text"
+            value={message}
+            disabled={loading}
+            placeholder={
+              selectedMaterial
+                ? `Ask about ${selectedMaterial.file_name}...`
+                : 'Ask StudyFlow AI...'
+            }
+            autoComplete="off"
+            onChange={(
+              event,
+            ) =>
+              setMessage(
+                event.target.value,
+              )
+            }
+          />
 
 
-        <button
-          type="submit"
-
-          disabled={
-            loading ||
-            !message.trim()
-          }
-
-          aria-label="Send message"
-        >
-          ↑
-        </button>
+          <button
+            type="submit"
+            disabled={
+              loading ||
+              !message.trim()
+            }
+            aria-label="Send message"
+          >
+            ↑
+          </button>
 
         </form>
 

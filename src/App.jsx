@@ -14,6 +14,7 @@ import DashboardPage from './pages/DashboardPage'
 import MySubjectsPage from './pages/MySubjectsPage'
 import StudyMaterialsPage from './pages/StudyMaterialsPage'
 import AIStudyPage from './pages/AIStudyPage'
+import QuizHistoryPage from './pages/src/pages/QuizHistoryPage'
 import PlannerPage from './pages/PlannerPage'
 import FocusPage from './pages/FocusPage'
 import StudyGuidePage from './pages/StudyGuidePage'
@@ -21,7 +22,10 @@ import AboutPage from './pages/AboutPage'
 import NotFoundPage from './pages/NotFoundPage'
 
 export default function App() {
-  const { session, loading } = useAuth()
+  const {
+    session,
+    loading,
+  } = useAuth()
 
   if (loading) {
     return (
@@ -43,16 +47,14 @@ export default function App() {
       <Route
         path="/login"
         element={
-          session
-            ? (
-              <Navigate
-                to="/dashboard"
-                replace
-              />
-            )
-            : (
-              <LoginPage />
-            )
+          session ? (
+            <Navigate
+              to="/dashboard"
+              replace
+            />
+          ) : (
+            <LoginPage />
+          )
         }
       />
 
@@ -78,6 +80,11 @@ export default function App() {
           <Route
             path="/ai-study"
             element={<AIStudyPage />}
+          />
+
+          <Route
+            path="/quiz-history"
+            element={<QuizHistoryPage />}
           />
 
           <Route
