@@ -10,11 +10,11 @@ import {
 
 import {
   supabase,
-} from '../../../lib/supabase'
+} from '../lib/supabase'
 
 import {
   useAuth,
-} from '../../../context/AuthContext'
+} from '../context/AuthContext'
 
 
 export default function QuizHistoryPage() {

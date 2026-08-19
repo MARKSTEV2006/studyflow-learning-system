@@ -6239,5 +6239,40 @@
 
         font-size: 12px;
     }
+    .auth-link-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  margin-bottom: 18px;
+}
+
+.forgot-password-link {
+  font-size: 15px;
+  font-weight: 600;
+  color: #2563eb;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.forgot-password-link:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.forgot-password-link:focus-visible {
+  outline: 2px solid #93c5fd;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+@media (max-width: 768px) {
+  .auth-link-row {
+    margin-top: 8px;
+    margin-bottom: 16px;
+  }
+
+  .forgot-password-link {
+    font-size: 14px;
+  }
+}
 }
 }

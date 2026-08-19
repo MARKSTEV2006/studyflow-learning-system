@@ -962,16 +962,122 @@
         padding-inline: 15px;
     }
 
-
     .studyflow-login
     .mobile-auth-brand {
         margin-bottom: 30px;
     }
 
-
     .studyflow-login
     .auth-card-heading h2 {
         font-size: 28px;
     }
+}
 
+
+/* =========================================
+   FORGOT / RESET PASSWORD
+========================================= */
+
+.studyflow-login .auth-link-row {
+    display: flex;
+    justify-content: flex-end;
+
+    margin-top: -6px;
+    margin-bottom: 2px;
+}
+
+
+.studyflow-login .forgot-password-link {
+    color: #2563eb;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        color 0.18s ease,
+        text-decoration-color 0.18s ease;
+}
+
+
+.studyflow-login .forgot-password-link:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+
+.studyflow-login .forgot-password-link:focus-visible {
+    outline: 2px solid #93c5fd;
+    outline-offset: 3px;
+    border-radius: 5px;
+}
+
+
+/* RESET PASSWORD LINKS */
+
+.studyflow-login .auth-inline-link {
+    color: #2563eb;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+.studyflow-login .auth-inline-link:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+
+.recovery-link-row {
+    margin-top: 8px;
+}
+
+
+/* =========================================
+   PASSWORD RECOVERY LOADING
+========================================= */
+
+.password-recovery-loading {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 14px;
+
+    background: #f7f7f5;
+    color: #1e1e1c;
+}
+
+
+.password-recovery-loading strong {
+    font-size: 13px;
+}
+
+
+/* =========================================
+   MOBILE FORGOT PASSWORD
+========================================= */
+
+@media screen and (max-width: 767px) {
+
+    .studyflow-login .auth-link-row {
+        margin-top: -5px;
+        margin-bottom: 1px;
+    }
+
+    .studyflow-login .forgot-password-link {
+        font-size: 13px;
+    }
+
+    .studyflow-login .auth-inline-link {
+        font-size: 12px;
+    }
 }

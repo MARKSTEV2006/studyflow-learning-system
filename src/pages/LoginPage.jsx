@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import {
   useEffect,
   useState,
@@ -749,6 +750,12 @@ export default function LoginPage() {
             />
 
           </label>
+          <div className="auth-link-row">
+  <Link to="/forgot-password" className="forgot-password-link">
+    Forgot password?
+  </Link>
+</div>
+         
 
 
           {/* =================================
