@@ -1,0 +1,977 @@
+/* =========================================
+   STUDYFLOW LOGIN
+   DESKTOP + MOBILE
+========================================= */
+
+
+/* =========================================
+   DESKTOP
+========================================= */
+
+.studyflow-login.auth-page {
+    min-height: 100vh;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(520px, 1.05fr)
+        minmax(500px, 0.95fr);
+
+    background: #ffffff;
+}
+
+
+/* =========================================
+   LEFT INTRO
+========================================= */
+
+.studyflow-login .auth-intro {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    padding:
+        52px
+        clamp(44px, 6vw, 96px);
+
+    background: #1e1e1c;
+    color: #ffffff;
+}
+
+
+.studyflow-login .auth-brand {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    font-size: 18px;
+    font-weight: 750;
+}
+
+
+.studyflow-login .auth-brand .brand-mark {
+    width: 52px;
+    height: 52px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 15px;
+
+    background: #ffffff;
+    color: #1e1e1c;
+
+    font-size: 20px;
+    font-weight: 850;
+}
+
+
+.studyflow-login .auth-copy {
+    width: 100%;
+    max-width: 650px;
+
+    margin:
+        auto 0;
+}
+
+
+.studyflow-login .auth-copy .eyebrow {
+    margin-bottom: 20px;
+
+    color: #aaa9a3;
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 0.16em;
+}
+
+
+.studyflow-login .auth-copy h1 {
+    margin:
+        0 0 28px;
+
+    color: #ffffff;
+
+    font-size:
+        clamp(
+            56px,
+            6vw,
+            88px
+        );
+
+    font-weight: 760;
+
+    line-height: 0.98;
+
+    letter-spacing: -0.055em;
+}
+
+
+.studyflow-login .auth-copy > p:last-child {
+    max-width: 550px;
+
+    margin: 0;
+
+    color: #c8c8c1;
+
+    font-size: 17px;
+
+    line-height: 1.7;
+}
+
+
+.studyflow-login .auth-feature-row {
+    display: flex;
+
+    align-items: center;
+
+    gap: 34px;
+
+    color: #aaa9a3;
+
+    font-size: 12px;
+    font-weight: 650;
+
+    letter-spacing: 0.15em;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================
+   RIGHT PANEL
+========================================= */
+
+.studyflow-login .auth-panel {
+    min-height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding:
+        48px
+        clamp(38px, 6vw, 80px);
+
+    background: #ffffff;
+}
+
+
+.studyflow-login .auth-card {
+    width: 100%;
+    max-width: 472px;
+
+    display: grid;
+
+    gap: 17px;
+}
+
+
+/* =========================================
+   MOBILE BRAND
+========================================= */
+
+.studyflow-login .mobile-auth-brand {
+    display: none;
+}
+
+
+/* =========================================
+   HEADING
+========================================= */
+
+.studyflow-login .auth-card-heading {
+    margin-bottom: 18px;
+}
+
+
+.studyflow-login .auth-card-heading .eyebrow {
+    margin:
+        0 0 8px;
+
+    color: #77776f;
+
+    font-size: 10px;
+    font-weight: 850;
+
+    letter-spacing: 0.16em;
+}
+
+
+.studyflow-login .auth-card-heading h2 {
+    margin:
+        0 0 10px;
+
+    color: #171717;
+
+    font-size: 38px;
+    font-weight: 760;
+
+    line-height: 1.08;
+
+    letter-spacing: -0.045em;
+}
+
+
+.studyflow-login .auth-card-heading > p:last-child {
+    margin: 0;
+
+    color: #70706a;
+
+    font-size: 15px;
+
+    line-height: 1.55;
+}
+
+
+/* =========================================
+   FIELDS
+========================================= */
+
+.studyflow-login .field {
+    display: grid;
+
+    gap: 8px;
+}
+
+
+.studyflow-login .field > span {
+    color: #252523;
+
+    font-size: 13px;
+    font-weight: 750;
+}
+
+
+.studyflow-login .field input {
+    width: 100%;
+    min-height: 54px;
+
+    padding:
+        0 16px;
+
+    border:
+        1px solid #dfdfd9;
+
+    border-radius: 14px;
+
+    outline: none;
+
+    background: #ffffff;
+    color: #171717;
+
+    font-size: 15px;
+
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease;
+}
+
+
+.studyflow-login .field input::placeholder {
+    color: #999991;
+}
+
+
+.studyflow-login .field input:hover {
+    border-color: #c9c9c2;
+}
+
+
+.studyflow-login .field input:focus {
+    border-color: #85857d;
+
+    box-shadow:
+        0 0 0 4px
+        rgba(
+            30,
+            30,
+            28,
+            0.06
+        );
+}
+
+
+/* =========================================
+   MAIN BUTTON
+========================================= */
+
+.studyflow-login .auth-primary-button {
+    width: 100%;
+    min-height: 54px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    margin-top: 2px;
+
+    padding:
+        0 18px;
+
+    border: 0;
+    border-radius: 14px;
+
+    background: #1e1e1c;
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+
+.studyflow-login
+.auth-primary-button:hover:not(:disabled) {
+    background: #0d0d0c;
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 8px 22px
+        rgba(
+            0,
+            0,
+            0,
+            0.12
+        );
+}
+
+
+.studyflow-login
+.auth-primary-button:active:not(:disabled) {
+    transform:
+        translateY(0);
+}
+
+
+.studyflow-login
+.auth-primary-button:disabled {
+    background: #777772;
+
+    cursor: wait;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+
+/* =========================================
+   BUTTON LOADER
+========================================= */
+
+.button-spinner {
+    width: 15px;
+    height: 15px;
+
+    border:
+        2px solid
+        rgba(
+            255,
+            255,
+            255,
+            0.35
+        );
+
+    border-top-color:
+        #ffffff;
+
+    border-radius: 50%;
+
+    animation:
+        studyflow-spin
+        0.7s
+        linear
+        infinite;
+}
+
+
+@keyframes studyflow-spin {
+
+    to {
+        transform:
+            rotate(360deg);
+    }
+
+}
+
+
+/* =========================================
+   CONFIRMATION EMAIL CARD
+========================================= */
+
+.studyflow-login .confirmation-help {
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        38px
+        minmax(0, 1fr)
+        auto;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding:
+        12px 13px;
+
+    border:
+        1px solid #e2e2dc;
+
+    border-radius: 15px;
+
+    background: #f8f8f5;
+}
+
+
+.studyflow-login .confirmation-help-icon {
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 11px;
+
+    background: #ffffff;
+
+    border:
+        1px solid #e3e3dd;
+
+    color: #44443f;
+
+    font-size: 16px;
+}
+
+
+.studyflow-login .confirmation-help-copy {
+    min-width: 0;
+
+    display: grid;
+
+    gap: 2px;
+}
+
+
+.studyflow-login
+.confirmation-help-copy strong {
+    color: #30302c;
+
+    font-size: 11px;
+    font-weight: 750;
+
+    line-height: 1.35;
+}
+
+
+.studyflow-login
+.confirmation-help-copy span {
+    color: #7b7b74;
+
+    font-size: 10px;
+
+    line-height: 1.35;
+}
+
+
+/* =========================================
+   RESEND CONFIRMATION BUTTON
+========================================= */
+
+.studyflow-login
+.resend-confirmation-button {
+    min-width: 94px;
+    min-height: 38px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    padding:
+        0 12px;
+
+    border:
+        1px solid #d2d2cb;
+
+    border-radius: 11px;
+
+    background: #ffffff;
+    color: #292927;
+
+    font: inherit;
+
+    font-size: 11px;
+    font-weight: 750;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        color 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+
+.studyflow-login
+.resend-confirmation-button:hover:not(:disabled) {
+    background: #1e1e1c;
+
+    border-color: #1e1e1c;
+
+    color: #ffffff;
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 5px 14px
+        rgba(
+            0,
+            0,
+            0,
+            0.1
+        );
+}
+
+
+.studyflow-login
+.resend-confirmation-button:active:not(:disabled) {
+    transform:
+        translateY(0);
+}
+
+
+.studyflow-login
+.resend-confirmation-button:disabled {
+    border-color: #e4e4de;
+
+    background: #efefeb;
+
+    color: #aaa9a2;
+
+    cursor: not-allowed;
+
+    opacity: 1;
+
+    box-shadow: none;
+
+    transform: none;
+}
+
+
+.studyflow-login .resend-icon {
+    display: inline-block;
+
+    font-size: 14px;
+
+    line-height: 1;
+}
+
+
+/* =========================================
+   LOGIN / REGISTER SWITCH
+========================================= */
+
+.studyflow-login .auth-switch {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    margin-top: 4px;
+
+    color: #777770;
+
+    font-size: 13px;
+}
+
+
+.studyflow-login
+.auth-switch .text-button {
+    padding: 4px 2px;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #1e1e1c;
+
+    font-size: 13px;
+    font-weight: 750;
+
+    cursor: pointer;
+}
+
+
+.studyflow-login
+.auth-switch .text-button:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================
+   NOTICES
+========================================= */
+
+.studyflow-login .notice {
+    padding:
+        12px 14px;
+
+    border-radius: 13px;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+.studyflow-login .notice.error {
+    border:
+        1px solid #efcccc;
+
+    background: #fff1f1;
+
+    color: #8a2929;
+}
+
+
+.studyflow-login .notice.success {
+    border:
+        1px solid #cfe5d4;
+
+    background: #eff8f1;
+
+    color: #295f35;
+}
+
+
+.studyflow-login .notice.warning {
+    border:
+        1px solid #eedcaf;
+
+    background: #fff8e8;
+
+    color: #71531e;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media screen and (max-width: 1000px) {
+
+    .studyflow-login.auth-page {
+        grid-template-columns:
+            minmax(360px, 0.85fr)
+            minmax(430px, 1.15fr);
+    }
+
+
+    .studyflow-login .auth-intro {
+        padding:
+            42px 38px;
+    }
+
+
+    .studyflow-login .auth-copy h1 {
+        font-size:
+            clamp(
+                48px,
+                7vw,
+                68px
+            );
+    }
+
+
+    .studyflow-login .auth-panel {
+        padding:
+            42px 34px;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media screen and (max-width: 767px) {
+
+    html,
+    body,
+    #root {
+        min-height: 100%;
+    }
+
+
+    .studyflow-login.auth-page {
+        min-height: 100dvh;
+
+        display: block;
+
+        background: #ffffff;
+    }
+
+
+    /* Hide desktop intro */
+
+    .studyflow-login .auth-intro {
+        display: none;
+    }
+
+
+    .studyflow-login .auth-panel {
+        width: 100%;
+        min-height: 100dvh;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        padding:
+            28px 18px
+            calc(
+                28px +
+                env(
+                    safe-area-inset-bottom
+                )
+            );
+
+        background: #ffffff;
+    }
+
+
+    .studyflow-login .auth-card {
+        width: 100%;
+
+        max-width: 430px;
+
+        gap: 15px;
+    }
+
+
+    /* MOBILE LOGO */
+
+    .studyflow-login
+    .mobile-auth-brand {
+        display: flex;
+
+        align-items: center;
+
+        gap: 11px;
+
+        margin-bottom: 38px;
+    }
+
+
+    .studyflow-login
+    .mobile-auth-logo {
+        width: 44px;
+        height: 44px;
+
+        display: grid;
+        place-items: center;
+
+        border-radius: 13px;
+
+        background: #1e1e1c;
+        color: #ffffff;
+
+        font-size: 17px;
+        font-weight: 850;
+    }
+
+
+    .studyflow-login
+    .mobile-auth-brand > div:last-child {
+        display: grid;
+
+        gap: 1px;
+    }
+
+
+    .studyflow-login
+    .mobile-auth-brand strong {
+        color: #1e1e1c;
+
+        font-size: 15px;
+    }
+
+
+    .studyflow-login
+    .mobile-auth-brand span {
+        color: #8a8a83;
+
+        font-size: 10px;
+    }
+
+
+    /* HEADING */
+
+    .studyflow-login
+    .auth-card-heading {
+        margin-bottom: 15px;
+    }
+
+
+    .studyflow-login
+    .auth-card-heading h2 {
+        font-size: 31px;
+    }
+
+
+    .studyflow-login
+    .auth-card-heading > p:last-child {
+        font-size: 13px;
+    }
+
+
+    /* INPUTS */
+
+    .studyflow-login
+    .field input {
+        min-height: 54px;
+
+        border-radius: 14px;
+
+        font-size: 16px;
+    }
+
+
+    /* SIGN IN */
+
+    .studyflow-login
+    .auth-primary-button {
+        min-height: 54px;
+
+        border-radius: 14px;
+    }
+
+
+    /* CONFIRMATION CARD */
+
+    .studyflow-login
+    .confirmation-help {
+        grid-template-columns:
+            38px
+            minmax(0, 1fr);
+
+        gap:
+            10px 11px;
+
+        padding: 13px;
+
+        border-radius: 16px;
+    }
+
+
+    .studyflow-login
+    .confirmation-help-copy strong {
+        font-size: 11px;
+    }
+
+
+    .studyflow-login
+    .confirmation-help-copy span {
+        font-size: 10px;
+    }
+
+
+    /* RESEND IS FULL WIDTH ON PHONE */
+
+    .studyflow-login
+    .resend-confirmation-button {
+        grid-column:
+            1 / -1;
+
+        width: 100%;
+
+        min-height: 44px;
+
+        margin-top: 2px;
+
+        border-radius: 12px;
+
+        background: #ffffff;
+
+        font-size: 12px;
+    }
+
+
+    .studyflow-login
+    .resend-confirmation-button:hover:not(:disabled) {
+        background: #1e1e1c;
+
+        color: #ffffff;
+    }
+
+
+    .studyflow-login
+    .auth-switch {
+        margin-top: 4px;
+
+        font-size: 12px;
+    }
+
+
+    .studyflow-login
+    .auth-switch .text-button {
+        font-size: 12px;
+    }
+
+}
+
+
+/* =========================================
+   SMALL PHONE
+========================================= */
+
+@media screen and (max-width: 390px) {
+
+    .studyflow-login .auth-panel {
+        padding-inline: 15px;
+    }
+
+
+    .studyflow-login
+    .mobile-auth-brand {
+        margin-bottom: 30px;
+    }
+
+
+    .studyflow-login
+    .auth-card-heading h2 {
+        font-size: 28px;
+    }
+
+}

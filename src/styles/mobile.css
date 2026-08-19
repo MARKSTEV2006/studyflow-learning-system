@@ -6084,5 +6084,160 @@
     .desktop-adaptive-plan .adaptive-plan-summary-stats strong {
         font-size: 16px;
     }
+/* =========================================
+   STUDYFLOW LOGIN - MOBILE
+   RESEND CONFIRMATION
+========================================= */
 
+@media screen and (max-width: 767px) {
+
+    .auth-page {
+        min-height: 100dvh;
+        display: block;
+        background: #ffffff;
+    }
+
+    .auth-intro {
+        display: none;
+    }
+
+    .auth-panel {
+        width: 100%;
+        min-height: 100dvh;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding:
+            28px 18px calc(28px + env(safe-area-inset-bottom));
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 430px;
+
+        gap: 15px;
+    }
+
+    .auth-card-heading {
+        margin-bottom: 12px;
+    }
+
+    .auth-card-heading h2 {
+        margin-bottom: 8px;
+
+        font-size: 30px;
+        line-height: 1.1;
+    }
+
+    .auth-card-heading>p:last-child {
+        font-size: 14px;
+    }
+
+    .field {
+        gap: 7px;
+    }
+
+    .field>span {
+        font-size: 13px;
+    }
+
+    .field input {
+        min-height: 52px;
+
+        padding: 0 15px;
+
+        border-radius: 14px;
+
+        font-size: 16px;
+    }
+
+    .primary-button {
+        width: 100%;
+        min-height: 52px;
+
+        margin-top: 2px;
+
+        border-radius: 14px;
+
+        font-size: 15px;
+        font-weight: 750;
+    }
+
+
+    /* =====================================
+       RESEND CONFIRMATION
+    ===================================== */
+
+    .resend-confirmation-button {
+        width: 100%;
+        min-height: 50px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 8px;
+
+        margin: 0;
+
+        padding: 0 16px;
+
+        border: 1px solid #d9d9d3;
+        border-radius: 14px;
+
+        background: #f5f5f1;
+        color: #292927;
+
+        font: inherit;
+        font-size: 14px;
+        font-weight: 700;
+
+        cursor: pointer;
+
+        transition:
+            background 0.18s ease,
+            border-color 0.18s ease,
+            transform 0.18s ease;
+    }
+
+    .resend-confirmation-button:hover:not(:disabled) {
+        background: #ecece7;
+        border-color: #bdbdb5;
+    }
+
+    .resend-confirmation-button:active:not(:disabled) {
+        transform: scale(0.985);
+    }
+
+    .resend-confirmation-button:disabled {
+        background: #f8f8f5;
+        border-color: #e7e7e2;
+
+        color: #aaa9a3;
+
+        opacity: 1;
+
+        cursor: not-allowed;
+    }
+
+    .text-button {
+        min-height: 42px;
+
+        margin-top: 2px;
+
+        font-size: 14px;
+
+        text-align: center;
+    }
+
+    .notice {
+        border-radius: 13px;
+
+        padding: 12px 13px;
+
+        font-size: 12px;
+    }
+}
 }
