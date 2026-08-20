@@ -1,7 +1,7 @@
 import {
+  useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from 'react'
 
@@ -18,21 +18,98 @@ import {
 } from '../lib/supabase'
 
 
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function normalizeProgress(value) {
+  if (
+    !value ||
+    typeof value !== 'object' ||
+    Array.isArray(value)
+  ) {
+    return {}
+  }
+
+  return value
+}
+
+
+function countCompletedTasks(
+  studyPlan,
+  progress,
+) {
+  return studyPlan.reduce(
+    (
+      total,
+      _task,
+      index,
+    ) => {
+      const taskState =
+        progress?.[
+          String(index)
+        ]
+
+      return taskState?.completed
+        ? total + 1
+        : total
+    },
+    0,
+  )
+}
+
+
+/* =========================================================
+   COMPONENT
+========================================================= */
+
 export default function AdaptiveStudyPlan({
   userId,
 }) {
+  /* =======================================================
+     STATE
+  ======================================================= */
+
   const [
-    plan,
-    setPlan,
+    insightRow,
+    setInsightRow,
+  ] =
+    useState(null)
+
+
+  const [
+    studyPlan,
+    setStudyPlan,
   ] =
     useState([])
+
+
+  const [
+    progress,
+    setProgress,
+  ] =
+    useState({})
 
 
   const [
     loading,
     setLoading,
   ] =
+    useState(true)
+
+
+  const [
+    generating,
+    setGenerating,
+  ] =
     useState(false)
+
+
+  const [
+    savingTask,
+    setSavingTask,
+  ] =
+    useState(null)
 
 
   const [
@@ -43,117 +120,364 @@ export default function AdaptiveStudyPlan({
 
 
   const [
-    generatedAt,
-    setGeneratedAt,
+    filter,
+    setFilter,
   ] =
-    useState(null)
+    useState('all')
 
 
-  const [
-    cached,
-    setCached,
-  ] =
-    useState(false)
+  /* =======================================================
+     ANALYTICS UPDATE EVENT
+  ======================================================= */
 
-
-  const [
-    sourceAttemptCount,
-    setSourceAttemptCount,
-  ] =
-    useState(0)
-
-
-  const [
-    summary,
-    setSummary,
-  ] =
-    useState('')
-
-
-  const requestRef =
-    useRef(false)
-
-
-  /* =========================================
-     LOAD ON MOUNT
-  ========================================= */
-
-  useEffect(
-    () => {
-      if (
-        !userId
-      ) {
-        return
-      }
-
-
-      loadAdaptivePlan()
-    },
-
-    [
-      userId,
-    ],
-  )
-
-
-  /* =========================================
-     FUNCTION ERROR PARSER
-  ========================================= */
-
-  async function getFunctionErrorMessage(
-    functionError,
+  function notifyAnalytics(
+    type,
   ) {
-    if (
-      functionError instanceof
-      FunctionsHttpError
-    ) {
-      try {
-        const errorBody =
-          await functionError
-            .context
-            .json()
-
-
-        return (
-          errorBody?.error ||
-          errorBody?.message ||
-          `StudyFlow returned HTTP ${functionError.context.status}.`
-        )
-      } catch {
-        return (
-          `StudyFlow returned HTTP ${functionError.context.status}.`
-        )
-      }
-    }
-
-
-    return (
-      functionError?.message ||
-      'Could not generate the adaptive study plan.'
+    window.dispatchEvent(
+      new CustomEvent(
+        'studyflow:study-plan-progress',
+        {
+          detail: {
+            userId,
+            type,
+          },
+        },
+      ),
     )
   }
 
 
-  /* =========================================
-     LOAD / GENERATE PLAN
-  ========================================= */
+  /* =======================================================
+     LOAD STUDY PLAN
 
-  async function loadAdaptivePlan(
-    force = false,
-  ) {
+     Database is the source of truth.
+  ======================================================= */
+
+  const loadStudyPlan =
+    useCallback(
+      async ({
+        silent = false,
+      } = {}) => {
+        if (!userId) {
+          setInsightRow(null)
+          setStudyPlan([])
+          setProgress({})
+
+          if (!silent) {
+            setLoading(false)
+          }
+
+          return
+        }
+
+
+        if (!silent) {
+          setLoading(true)
+        }
+
+
+        setError('')
+
+
+        try {
+          const {
+            data,
+            error:
+              queryError,
+          } =
+            await supabase
+              .from(
+                'study_insights',
+              )
+              .select(`
+                id,
+                user_id,
+                study_plan,
+                study_plan_source_attempt_count,
+                study_plan_generated_at,
+                study_plan_progress,
+                study_plan_completed_count,
+                study_plan_total_count,
+                study_plan_progress_updated_at
+              `)
+              .eq(
+                'user_id',
+                userId,
+              )
+              .maybeSingle()
+
+
+          if (queryError) {
+            throw queryError
+          }
+
+
+          /* ===============================================
+             NO STUDY INSIGHT ROW
+          =============================================== */
+
+          if (!data) {
+            setInsightRow(null)
+            setStudyPlan([])
+            setProgress({})
+
+            return
+          }
+
+
+          /* ===============================================
+             NORMALIZE DATA
+          =============================================== */
+
+          const incomingPlan =
+            Array.isArray(
+              data.study_plan,
+            )
+              ? data.study_plan
+              : []
+
+
+          const incomingProgress =
+            normalizeProgress(
+              data.study_plan_progress,
+            )
+
+
+          const actualCompletedCount =
+            countCompletedTasks(
+              incomingPlan,
+              incomingProgress,
+            )
+
+
+          const actualTotalCount =
+            incomingPlan.length
+
+
+          /* ===============================================
+             RESTORE UI
+          =============================================== */
+
+          setInsightRow(
+            data,
+          )
+
+
+          setStudyPlan(
+            incomingPlan,
+          )
+
+
+          setProgress(
+            incomingProgress,
+          )
+
+
+          /* ===============================================
+             REPAIR COUNTS IF DATABASE COUNTS ARE STALE
+          =============================================== */
+
+          const storedCompletedCount =
+            Number(
+              data
+                .study_plan_completed_count ||
+                0,
+            )
+
+
+          const storedTotalCount =
+            Number(
+              data
+                .study_plan_total_count ||
+                0,
+            )
+
+
+          if (
+            storedCompletedCount !==
+              actualCompletedCount ||
+            storedTotalCount !==
+              actualTotalCount
+          ) {
+            const {
+              error:
+                repairError,
+            } =
+              await supabase
+                .from(
+                  'study_insights',
+                )
+                .update({
+                  study_plan_completed_count:
+                    actualCompletedCount,
+
+                  study_plan_total_count:
+                    actualTotalCount,
+                })
+                .eq(
+                  'id',
+                  data.id,
+                )
+                .eq(
+                  'user_id',
+                  userId,
+                )
+
+
+            if (
+              repairError
+            ) {
+              console.warn(
+                'Study plan count repair warning:',
+                repairError,
+              )
+            }
+          }
+        }
+
+
+        catch (
+          requestError
+        ) {
+          console.error(
+            'Adaptive study plan load error:',
+            requestError,
+          )
+
+
+          setError(
+            requestError?.message ||
+              'Could not load your adaptive study plan.',
+          )
+        }
+
+
+        finally {
+          if (!silent) {
+            setLoading(false)
+          }
+        }
+      },
+
+      [
+        userId,
+      ],
+    )
+
+
+  /* =======================================================
+     INITIAL LOAD
+
+     Runs after:
+     - login
+     - refresh
+     - user changes
+  ======================================================= */
+
+  useEffect(
+    () => {
+      if (!userId) {
+        setInsightRow(null)
+        setStudyPlan([])
+        setProgress({})
+        setLoading(false)
+
+        return
+      }
+
+
+      loadStudyPlan()
+    },
+
+    [
+      userId,
+      loadStudyPlan,
+    ],
+  )
+
+
+  /* =======================================================
+     SYNC WHEN RETURNING TO APP
+  ======================================================= */
+
+  useEffect(
+    () => {
+      if (!userId) {
+        return undefined
+      }
+
+
+      function handleWindowFocus() {
+        loadStudyPlan({
+          silent:
+            true,
+        })
+      }
+
+
+      function handleVisibilityChange() {
+        if (
+          document.visibilityState ===
+          'visible'
+        ) {
+          loadStudyPlan({
+            silent:
+              true,
+          })
+        }
+      }
+
+
+      window.addEventListener(
+        'focus',
+        handleWindowFocus,
+      )
+
+
+      document.addEventListener(
+        'visibilitychange',
+        handleVisibilityChange,
+      )
+
+
+      return () => {
+        window.removeEventListener(
+          'focus',
+          handleWindowFocus,
+        )
+
+
+        document.removeEventListener(
+          'visibilitychange',
+          handleVisibilityChange,
+        )
+      }
+    },
+
+    [
+      userId,
+      loadStudyPlan,
+    ],
+  )
+
+
+  /* =======================================================
+     GENERATE / REFRESH PLAN
+
+     NEW PLAN = NEW PROGRESS
+  ======================================================= */
+
+  async function generateStudyPlan() {
     if (
       !userId ||
-      requestRef.current
+      generating ||
+      savingTask !== null
     ) {
       return
     }
 
 
-    requestRef.current =
-      true
-
-
-    setLoading(
+    setGenerating(
       true,
     )
 
@@ -164,6 +488,10 @@ export default function AdaptiveStudyPlan({
 
 
     try {
+      /* ===============================================
+         SESSION
+      =============================================== */
+
       const {
         data: {
           session,
@@ -177,24 +505,25 @@ export default function AdaptiveStudyPlan({
           .getSession()
 
 
-      if (
-        sessionError
-      ) {
+      if (sessionError) {
         throw sessionError
       }
 
 
-      if (
-        !session
-      ) {
+      if (!session) {
         throw new Error(
           'Your session expired. Please sign in again.',
         )
       }
 
 
+      /* ===============================================
+         GENERATE NEW AI PLAN
+      =============================================== */
+
       const {
-        data,
+        data:
+          functionData,
 
         error:
           functionError,
@@ -213,275 +542,811 @@ export default function AdaptiveStudyPlan({
                 mode:
                   'generate-study-plan',
 
-                force,
+                force:
+                  true,
               },
             },
           )
 
 
-      if (
-        functionError
-      ) {
-        const message =
-          await getFunctionErrorMessage(
-            functionError,
+      /* ===============================================
+         EDGE FUNCTION ERROR
+      =============================================== */
+
+      if (functionError) {
+        console.error(
+          'Generate study plan function error:',
+          functionError,
+        )
+
+
+        if (
+          functionError instanceof
+          FunctionsHttpError
+        ) {
+          let errorBody =
+            null
+
+
+          try {
+            errorBody =
+              await functionError
+                .context
+                .json()
+          }
+
+          catch {
+            // Ignore non-JSON response.
+          }
+
+
+          throw new Error(
+            errorBody?.error ||
+              errorBody?.message ||
+              `StudyFlow AI returned HTTP ${
+                functionError
+                  ?.context
+                  ?.status ||
+                'error'
+              }.`,
           )
+        }
 
 
-        throw new Error(
-          message,
-        )
+        throw functionError
       }
 
 
       if (
-        data?.error
+        functionData?.error
       ) {
         throw new Error(
-          data.error,
+          functionData.error,
         )
       }
 
 
-      const incomingTasks =
-        Array.isArray(
-          data
-            ?.plan
-            ?.tasks,
+      /* ===============================================
+         GET NEW PLAN FROM DATABASE
+
+         Do not depend only on Edge Function response.
+      =============================================== */
+
+      const {
+        data:
+          generatedInsight,
+
+        error:
+          generatedInsightError,
+      } =
+        await supabase
+          .from(
+            'study_insights',
+          )
+          .select(`
+            id,
+            user_id,
+            study_plan,
+            study_plan_generated_at
+          `)
+          .eq(
+            'user_id',
+            userId,
+          )
+          .maybeSingle()
+
+
+      if (
+        generatedInsightError
+      ) {
+        throw generatedInsightError
+      }
+
+
+      if (
+        !generatedInsight
+      ) {
+        throw new Error(
+          'The new study plan was generated, but StudyFlow could not find the saved plan.',
         )
-          ? data.plan.tasks
+      }
+
+
+      const newStudyPlan =
+        Array.isArray(
+          generatedInsight.study_plan,
+        )
+          ? generatedInsight.study_plan
           : []
 
 
-      setPlan(
-        incomingTasks,
+      /* ===============================================
+         RESET OLD COMPLETION DATA
+      =============================================== */
+
+      const resetTime =
+        new Date()
+          .toISOString()
+
+
+      const {
+        data:
+          resetRows,
+
+        error:
+          resetError,
+      } =
+        await supabase
+          .from(
+            'study_insights',
+          )
+          .update({
+            study_plan_progress:
+              {},
+
+            study_plan_completed_count:
+              0,
+
+            study_plan_total_count:
+              newStudyPlan.length,
+
+            study_plan_progress_updated_at:
+              resetTime,
+          })
+          .eq(
+            'id',
+            generatedInsight.id,
+          )
+          .eq(
+            'user_id',
+            userId,
+          )
+          .select(`
+            id,
+            user_id,
+            study_plan,
+            study_plan_source_attempt_count,
+            study_plan_generated_at,
+            study_plan_progress,
+            study_plan_completed_count,
+            study_plan_total_count,
+            study_plan_progress_updated_at
+          `)
+
+
+      if (resetError) {
+        throw resetError
+      }
+
+
+      if (
+        !Array.isArray(
+          resetRows,
+        ) ||
+        resetRows.length ===
+          0
+      ) {
+        throw new Error(
+          'The new study plan was created, but progress could not be reset. Check the study_insights RLS UPDATE policy.',
+        )
+      }
+
+
+      const resetRow =
+        resetRows[0]
+
+
+      /* ===============================================
+         UPDATE LOCAL UI
+      =============================================== */
+
+      setProgress(
+        {},
       )
 
 
-      setGeneratedAt(
-        data
-          ?.plan
-          ?.generatedAt ||
-        null,
+      setStudyPlan(
+        newStudyPlan,
       )
 
 
-      setSummary(
-        data
-          ?.plan
-          ?.summary ||
-        '',
+      setInsightRow(
+        resetRow,
       )
 
 
-      setCached(
-        Boolean(
-          data?.cached,
-        ),
+      setFilter(
+        'all',
       )
 
 
-      setSourceAttemptCount(
-        Number(
-          data
-            ?.sourceAttemptCount ||
-          0,
-        ),
+      /* ===============================================
+         NOTIFY ANALYTICS
+      =============================================== */
+
+      notifyAnalytics(
+        'plan-reset',
       )
-    } catch (
+
+
+      /* ===============================================
+         FINAL DATABASE SYNC
+      =============================================== */
+
+      await loadStudyPlan({
+        silent:
+          true,
+      })
+    }
+
+
+    catch (
       requestError
     ) {
       console.error(
-        'Adaptive study plan error:',
+        'Generate adaptive plan error:',
         requestError,
       )
 
 
       setError(
         requestError?.message ||
-        'Could not load your adaptive study plan.',
+          'Could not generate your new study plan.',
       )
-    } finally {
-      setLoading(
+
+
+      /*
+       * Restore real database state
+       * if generation/reset fails.
+       */
+
+      await loadStudyPlan({
+        silent:
+          true,
+      })
+    }
+
+
+    finally {
+      setGenerating(
         false,
       )
-
-
-      requestRef.current =
-        false
     }
   }
 
 
-  /* =========================================
-     PLAN BASE DATE
-  ========================================= */
+  /* =======================================================
+     GET TASK PROGRESS
+  ======================================================= */
 
-  const planBaseDate =
+  function getTaskProgress(
+    index,
+  ) {
+    const item =
+      progress?.[
+        String(index)
+      ]
+
+
+    return {
+      completed:
+        Boolean(
+          item?.completed,
+        ),
+
+      completedAt:
+        item?.completed_at ||
+        null,
+    }
+  }
+
+
+  /* =======================================================
+     COUNTS
+  ======================================================= */
+
+  const totalCount =
+    studyPlan.length
+
+
+  const completedCount =
     useMemo(
-      () => {
-        if (
-          generatedAt
-        ) {
-          const generatedDate =
-            new Date(
-              generatedAt,
-            )
-
-
-          if (
-            !Number.isNaN(
-              generatedDate.getTime(),
-            )
-          ) {
-            return generatedDate
-          }
-        }
-
-
-        return new Date()
-      },
+      () =>
+        countCompletedTasks(
+          studyPlan,
+          progress,
+        ),
 
       [
-        generatedAt,
+        studyPlan,
+        progress,
       ],
     )
 
 
-  /* =========================================
-     DATE HELPERS
-  ========================================= */
-
-  function startOfDay(
-    date,
-  ) {
-    return new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
+  const pendingCount =
+    Math.max(
+      totalCount -
+        completedCount,
+      0,
     )
+
+
+  const progressPercent =
+    totalCount > 0
+      ? Math.round(
+          (
+            completedCount /
+            totalCount
+          ) *
+            100,
+        )
+      : 0
+
+
+  /* =======================================================
+     FILTERED TASKS
+  ======================================================= */
+
+  const filteredTasks =
+    useMemo(
+      () =>
+        studyPlan
+          .map(
+            (
+              task,
+              index,
+            ) => ({
+              task,
+
+              index,
+
+              completed:
+                Boolean(
+                  progress?.[
+                    String(index)
+                  ]?.completed,
+                ),
+            }),
+          )
+          .filter(
+            (
+              item,
+            ) => {
+              if (
+                filter ===
+                'completed'
+              ) {
+                return item.completed
+              }
+
+
+              if (
+                filter ===
+                'pending'
+              ) {
+                return !item.completed
+              }
+
+
+              return true
+            },
+          ),
+
+      [
+        studyPlan,
+        progress,
+        filter,
+      ],
+    )
+
+
+  /* =======================================================
+     TOGGLE TASK COMPLETION
+  ======================================================= */
+
+  async function toggleTaskCompletion(
+    index,
+  ) {
+    if (
+      !insightRow?.id ||
+      !userId ||
+      savingTask !== null
+    ) {
+      return
+    }
+
+
+    const progressKey =
+      String(index)
+
+
+    const currentTaskState =
+      progress?.[
+        progressKey
+      ] || {}
+
+
+    const nextCompleted =
+      !Boolean(
+        currentTaskState.completed,
+      )
+
+
+    const nextProgress = {
+      ...progress,
+
+      [progressKey]: {
+        completed:
+          nextCompleted,
+
+        completed_at:
+          nextCompleted
+            ? new Date()
+                .toISOString()
+            : null,
+      },
+    }
+
+
+    const nextCompletedCount =
+      countCompletedTasks(
+        studyPlan,
+        nextProgress,
+      )
+
+
+    setSavingTask(
+      index,
+    )
+
+
+    setError(
+      '',
+    )
+
+
+    try {
+      const now =
+        new Date()
+          .toISOString()
+
+
+      /* ===============================================
+         SAVE TO SUPABASE
+      =============================================== */
+
+      const {
+        data:
+          updatedRows,
+
+        error:
+          updateError,
+      } =
+        await supabase
+          .from(
+            'study_insights',
+          )
+          .update({
+            study_plan_progress:
+              nextProgress,
+
+            study_plan_completed_count:
+              nextCompletedCount,
+
+            study_plan_total_count:
+              studyPlan.length,
+
+            study_plan_progress_updated_at:
+              now,
+          })
+          .eq(
+            'id',
+            insightRow.id,
+          )
+          .eq(
+            'user_id',
+            userId,
+          )
+          .select(`
+            id,
+            user_id,
+            study_plan,
+            study_plan_source_attempt_count,
+            study_plan_generated_at,
+            study_plan_progress,
+            study_plan_completed_count,
+            study_plan_total_count,
+            study_plan_progress_updated_at
+          `)
+
+
+      if (updateError) {
+        throw updateError
+      }
+
+
+      if (
+        !Array.isArray(
+          updatedRows,
+        ) ||
+        updatedRows.length ===
+          0
+      ) {
+        throw new Error(
+          'Study plan progress was not saved. Check the study_insights RLS policies.',
+        )
+      }
+
+
+      const updatedRow =
+        updatedRows[0]
+
+
+      const savedProgress =
+        normalizeProgress(
+          updatedRow
+            .study_plan_progress,
+        )
+
+
+      /* ===============================================
+         UPDATE LOCAL STATE USING DATABASE RESULT
+      =============================================== */
+
+      setProgress(
+        savedProgress,
+      )
+
+
+      setInsightRow(
+        (
+          current,
+        ) => ({
+          ...current,
+
+          ...updatedRow,
+        }),
+      )
+
+
+      /* ===============================================
+         NOTIFY ANALYTICS COMPONENT
+      =============================================== */
+
+      notifyAnalytics(
+        nextCompleted
+          ? 'task-completed'
+          : 'task-reopened',
+      )
+    }
+
+
+    catch (
+      requestError
+    ) {
+      console.error(
+        'Study plan completion update error:',
+        requestError,
+      )
+
+
+      setError(
+        requestError?.message ||
+          'Could not save your study plan progress.',
+      )
+
+
+      /*
+       * Restore database state if save fails.
+       */
+
+      await loadStudyPlan({
+        silent:
+          true,
+      })
+    }
+
+
+    finally {
+      setSavingTask(
+        null,
+      )
+    }
   }
 
 
-  function getTaskDate(
-    dueOffsetDays,
+  /* =======================================================
+     PRIORITY HELPERS
+  ======================================================= */
+
+  function getPriorityClass(
+    priority,
   ) {
-    const date =
-      startOfDay(
-        planBaseDate,
+    const value =
+      String(
+        priority ||
+          'medium',
       )
-
-
-    date.setDate(
-      date.getDate() +
-      Number(
-        dueOffsetDays ||
-        0,
-      ),
-    )
-
-
-    return date
-  }
-
-
-  function getDateLabel(
-    dueOffsetDays,
-  ) {
-    const taskDate =
-      getTaskDate(
-        dueOffsetDays,
-      )
-
-
-    const today =
-      startOfDay(
-        new Date(),
-      )
-
-
-    const tomorrow =
-      startOfDay(
-        new Date(),
-      )
-
-
-    tomorrow.setDate(
-      tomorrow.getDate() +
-      1,
-    )
+        .trim()
+        .toLowerCase()
 
 
     if (
-      taskDate.getTime() ===
-      today.getTime()
+      value ===
+      'high'
     ) {
-      return 'Today'
+      return 'high'
     }
 
 
     if (
-      taskDate.getTime() ===
-      tomorrow.getTime()
+      value ===
+      'low'
     ) {
-      return 'Tomorrow'
+      return 'low'
     }
 
 
-    return new Intl
-      .DateTimeFormat(
-        'en-PH',
-        {
-          month:
-            'short',
-
-          day:
-            'numeric',
-        },
-      )
-      .format(
-        taskDate,
-      )
+    return 'medium'
   }
 
 
-  function getFullDate(
-    dueOffsetDays,
+  function getPriorityLabel(
+    priority,
   ) {
-    return new Intl
-      .DateTimeFormat(
-        'en-PH',
-        {
-          weekday:
-            'short',
-
-          month:
-            'short',
-
-          day:
-            'numeric',
-        },
+    const value =
+      getPriorityClass(
+        priority,
       )
-      .format(
-        getTaskDate(
-          dueOffsetDays,
-        ),
-      )
+
+
+    if (
+      value ===
+      'high'
+    ) {
+      return 'High priority'
+    }
+
+
+    if (
+      value ===
+      'low'
+    ) {
+      return 'Low priority'
+    }
+
+
+    return 'Medium priority'
   }
 
 
-  function formatGeneratedAt() {
+  /* =======================================================
+     TASK FIELD HELPERS
+  ======================================================= */
+
+  function getTaskTitle(
+    task,
+    index,
+  ) {
+    return (
+      task?.title ||
+      task?.task ||
+      task?.action ||
+      `Study task ${index + 1}`
+    )
+  }
+
+
+  function getTaskDuration(
+    task,
+  ) {
+    return (
+      task?.duration ||
+      task?.durationMinutes ||
+      task?.duration_min ||
+      task?.minutes ||
+      null
+    )
+  }
+
+
+  function formatDuration(
+    duration,
+  ) {
+    if (!duration) {
+      return null
+    }
+
+
+    const value =
+      String(duration)
+
+
     if (
-      !generatedAt
+      /min|hour|hr/i.test(
+        value,
+      )
     ) {
+      return value
+    }
+
+
+    return `${value} min`
+  }
+
+
+  function getTaskSubject(
+    task,
+  ) {
+    return (
+      task?.subject ||
+      task?.subjectName ||
+      null
+    )
+  }
+
+
+  function getTaskTopic(
+    task,
+  ) {
+    return (
+      task?.topic ||
+      task?.weakTopic ||
+      task?.focus ||
+      null
+    )
+  }
+
+
+  function getTaskReason(
+    task,
+  ) {
+    return (
+      task?.reason ||
+      task?.description ||
+      task?.why ||
+      null
+    )
+  }
+
+
+  function getMaterialName(
+    task,
+  ) {
+    return (
+      task?.materialName ||
+      task?.material_name ||
+      null
+    )
+  }
+
+
+  function getMaterialId(
+    task,
+  ) {
+    return (
+      task?.materialId ||
+      task?.material_id ||
+      null
+    )
+  }
+
+
+  /* =======================================================
+     FORMAT COMPLETION DATE
+  ======================================================= */
+
+  function formatCompletedDate(
+    value,
+  ) {
+    if (!value) {
       return ''
     }
 
 
     const date =
-      new Date(
-        generatedAt,
-      )
+      new Date(value)
 
 
     if (
@@ -510,121 +1375,54 @@ export default function AdaptiveStudyPlan({
             '2-digit',
         },
       )
-      .format(
-        date,
-      )
+      .format(date)
   }
 
 
-  /* =========================================
-     PRIORITY
-  ========================================= */
+  /* =======================================================
+     LOADING
+  ======================================================= */
 
-  function priorityClass(
-    priority,
-  ) {
-    if (
-      priority ===
-      'high'
-    ) {
-      return 'high'
-    }
+  if (loading) {
+    return (
+      <section className="adaptive-plan-section">
 
+        <div className="adaptive-plan-loading">
 
-    if (
-      priority ===
-      'low'
-    ) {
-      return 'low'
-    }
+          <div className="ai-thinking">
+            <span />
+            <span />
+            <span />
+          </div>
 
 
-    return 'medium'
-  }
+          <strong>
+            Loading your study plan...
+          </strong>
 
 
-  function priorityLabel(
-    priority,
-  ) {
-    if (
-      priority ===
-      'high'
-    ) {
-      return 'High priority'
-    }
+          <p>
+            Restoring your saved StudyFlow
+            progress.
+          </p>
 
+        </div>
 
-    if (
-      priority ===
-      'low'
-    ) {
-      return 'Low priority'
-    }
-
-
-    return 'Medium priority'
-  }
-
-
-  /* =========================================
-     ACTION TYPE
-  ========================================= */
-
-  function actionLabel(
-    actionType,
-  ) {
-    switch (
-      actionType
-    ) {
-      case 'practice':
-        return 'Practice'
-
-      case 'recall':
-        return 'Recall'
-
-      case 'retake':
-        return 'Retake quiz'
-
-      default:
-        return 'Review'
-    }
-  }
-
-
-  /* =========================================
-     TOTAL MINUTES
-  ========================================= */
-
-  const totalMinutes =
-    useMemo(
-      () =>
-        plan.reduce(
-          (
-            total,
-            task,
-          ) =>
-            total +
-            Number(
-              task
-                ?.durationMin ||
-              0,
-            ),
-
-          0,
-        ),
-
-      [
-        plan,
-      ],
+      </section>
     )
+  }
 
+
+  /* =======================================================
+     UI
+  ======================================================= */
 
   return (
     <section className="adaptive-plan-section">
 
-      {/* =====================================
+      {/* =================================================
           HEADER
-      ===================================== */}
+      ================================================= */}
 
       <div className="adaptive-plan-heading">
 
@@ -636,7 +1434,7 @@ export default function AdaptiveStudyPlan({
 
 
           <h3>
-            Adaptive study plan
+            Adaptive Study Plan
           </h3>
 
         </div>
@@ -644,63 +1442,34 @@ export default function AdaptiveStudyPlan({
 
         <button
           type="button"
+
           className="adaptive-plan-refresh"
+
           disabled={
-            loading
+            generating ||
+            savingTask !== null
           }
-          onClick={() =>
-            loadAdaptivePlan(
-              true,
-            )
+
+          onClick={
+            generateStudyPlan
           }
         >
           {
-            loading
+            generating
               ? 'Generating...'
-              : 'Regenerate'
+
+              : studyPlan.length > 0
+                ? 'Refresh plan'
+                : 'Generate plan'
           }
         </button>
 
       </div>
 
 
-      {/* =====================================
-          LOADING
-      ===================================== */}
-
-      {
-        loading &&
-        plan.length ===
-          0 && (
-
-          <div className="adaptive-plan-loading">
-
-            <div className="ai-thinking">
-              <span />
-              <span />
-              <span />
-            </div>
-
-
-            <strong>
-              Building your study plan...
-            </strong>
-
-
-            <p>
-              StudyFlow is using your weak topics
-              and quiz history.
-            </p>
-
-          </div>
-
-        )
-      }
-
-
-      {/* =====================================
+      {/* =================================================
           ERROR
-      ===================================== */}
+      ================================================= */}
 
       {
         error && (
@@ -708,23 +1477,20 @@ export default function AdaptiveStudyPlan({
           <div className="adaptive-plan-error">
 
             <strong>
-              Could not load your study plan.
+              Something went wrong
             </strong>
 
 
             <p>
-              {
-                error
-              }
+              {error}
             </p>
 
 
             <button
               type="button"
+
               onClick={() =>
-                loadAdaptivePlan(
-                  true,
-                )
+                loadStudyPlan()
               }
             >
               Try again
@@ -736,314 +1502,672 @@ export default function AdaptiveStudyPlan({
       }
 
 
-      {/* =====================================
-          PLAN
-      ===================================== */}
+      {/* =================================================
+          EMPTY PLAN
+      ================================================= */}
 
       {
         !error &&
-        plan.length >
+        studyPlan.length ===
+          0 && (
+
+          <div className="adaptive-plan-empty">
+
+            <div className="adaptive-plan-empty-icon">
+              ✦
+            </div>
+
+
+            <strong>
+              No adaptive study plan yet
+            </strong>
+
+
+            <p>
+              Complete an interactive quiz.
+              StudyFlow will use your weak
+              topics to prepare your plan.
+            </p>
+
+
+            <Link to="/ai-study">
+              Start studying
+            </Link>
+
+          </div>
+
+        )
+      }
+
+
+      {/* =================================================
+          ACTIVE PLAN
+      ================================================= */}
+
+      {
+        studyPlan.length >
           0 && (
 
           <>
 
-            {/* =================================
-                SUMMARY
-            ================================= */}
+            {/* =============================================
+                PROGRESS
+            ============================================= */}
 
-            <div className="adaptive-plan-summary">
+            <div className="study-plan-progress">
 
-              <div>
+              <div className="study-plan-progress-top">
+
+                <div>
+
+                  <span className="study-plan-progress-label">
+                    PLAN PROGRESS
+                  </span>
+
+
+                  <strong className="study-plan-progress-count">
+                    {completedCount} of{' '}
+                    {totalCount} completed
+                  </strong>
+
+                </div>
+
+
+                <div className="study-plan-progress-value">
+                  {progressPercent}%
+                </div>
+
+              </div>
+
+
+              <div
+                className="study-plan-progress-track"
+
+                role="progressbar"
+
+                aria-label="Study plan completion"
+
+                aria-valuemin="0"
+
+                aria-valuemax="100"
+
+                aria-valuenow={
+                  progressPercent
+                }
+              >
+
+                <div
+                  className="study-plan-progress-fill"
+
+                  style={{
+                    width:
+                      `${progressPercent}%`,
+                  }}
+                />
+
+              </div>
+
+
+              <div className="study-plan-progress-bottom">
 
                 <span>
-                  YOUR PLAN
+                  {
+                    progressPercent ===
+                    100
+                      ? 'Plan completed'
+
+                      : `${pendingCount} ${
+                          pendingCount ===
+                          1
+                            ? 'task'
+                            : 'tasks'
+                        } remaining`
+                  }
                 </span>
 
 
-                <p>
-                  {
-                    summary ||
-                    `You have ${plan.length} recommended study sessions.`
-                  }
-                </p>
+                {
+                  progressPercent ===
+                    100 && (
+
+                    <span className="study-plan-finished">
+                      ✓ Nice work
+                    </span>
+
+                  )
+                }
 
               </div>
-
-
-              <div className="adaptive-plan-summary-stats">
-
-                <div>
-
-                  <strong>
-                    {
-                      plan.length
-                    }
-                  </strong>
-
-                  <span>
-                    Tasks
-                  </span>
-
-                </div>
-
-
-                <div>
-
-                  <strong>
-                    {
-                      totalMinutes
-                    }
-                  </strong>
-
-                  <span>
-                    Minutes
-                  </span>
-
-                </div>
-
-
-                <div>
-
-                  <strong>
-                    {
-                      sourceAttemptCount
-                    }
-                  </strong>
-
-                  <span>
-                    Quizzes
-                  </span>
-
-                </div>
-
-              </div>
-
-
-              {
-                generatedAt && (
-
-                  <small>
-                    {
-                      cached
-                        ? 'Saved plan'
-                        : 'New plan'
-                    }
-                    {' · '}
-                    {
-                      formatGeneratedAt()
-                    }
-                  </small>
-
-                )
-              }
 
             </div>
 
 
-            {/* =================================
-                TASKS
-            ================================= */}
+            {/* =============================================
+                FILTERS
+            ============================================= */}
 
-            <div className="adaptive-plan-list">
+            <div
+              className="study-plan-filters"
 
-              {
-                plan.map(
-                  (
-                    task,
-                    index,
-                  ) => (
+              role="group"
 
-                    <article
-                      className="adaptive-plan-task"
-                      key={
-                        `${task.title}-${index}`
-                      }
-                    >
+              aria-label="Filter study plan tasks"
+            >
 
-                      {/* =========================
-                          DATE
-                      ========================= */}
+              <button
+                type="button"
 
-                      <div className="adaptive-plan-date">
+                className={
+                  filter ===
+                  'all'
+                    ? 'active'
+                    : ''
+                }
 
-                        <strong>
-                          {
-                            getDateLabel(
-                              task.dueOffsetDays,
-                            )
-                          }
-                        </strong>
+                onClick={() =>
+                  setFilter(
+                    'all',
+                  )
+                }
+              >
 
+                <span>
+                  All
+                </span>
 
-                        <span>
-                          {
-                            getFullDate(
-                              task.dueOffsetDays,
-                            )
-                          }
-                        </span>
+                <strong>
+                  {totalCount}
+                </strong>
 
-                      </div>
+              </button>
 
 
-                      {/* =========================
-                          CONTENT
-                      ========================= */}
+              <button
+                type="button"
 
-                      <div className="adaptive-plan-task-content">
+                className={
+                  filter ===
+                  'pending'
+                    ? 'active'
+                    : ''
+                }
 
-                        <div className="adaptive-plan-task-top">
+                onClick={() =>
+                  setFilter(
+                    'pending',
+                  )
+                }
+              >
 
-                          <span
+                <span>
+                  Pending
+                </span>
+
+                <strong>
+                  {pendingCount}
+                </strong>
+
+              </button>
+
+
+              <button
+                type="button"
+
+                className={
+                  filter ===
+                  'completed'
+                    ? 'active'
+                    : ''
+                }
+
+                onClick={() =>
+                  setFilter(
+                    'completed',
+                  )
+                }
+              >
+
+                <span>
+                  Completed
+                </span>
+
+                <strong>
+                  {completedCount}
+                </strong>
+
+              </button>
+
+            </div>
+
+
+            {/* =============================================
+                EMPTY FILTER
+            ============================================= */}
+
+            {
+              filteredTasks.length ===
+                0 && (
+
+                <div className="study-plan-filter-empty">
+
+                  <span>
+                    {
+                      filter ===
+                      'completed'
+                        ? '✓'
+                        : '○'
+                    }
+                  </span>
+
+
+                  <strong>
+                    {
+                      filter ===
+                      'completed'
+                        ? 'No completed tasks yet'
+                        : 'No pending tasks'
+                    }
+                  </strong>
+
+
+                  <p>
+                    {
+                      filter ===
+                      'completed'
+                        ? 'Complete a study task and it will appear here.'
+                        : 'You have completed every task in this study plan.'
+                    }
+                  </p>
+
+                </div>
+
+              )
+            }
+
+
+            {/* =============================================
+                TASK LIST
+            ============================================= */}
+
+            {
+              filteredTasks.length >
+                0 && (
+
+                <div className="adaptive-plan-list">
+
+                  {
+                    filteredTasks.map(
+                      ({
+                        task,
+                        index,
+                      }) => {
+                        const taskProgress =
+                          getTaskProgress(
+                            index,
+                          )
+
+
+                        const completed =
+                          taskProgress
+                            .completed
+
+
+                        const duration =
+                          formatDuration(
+                            getTaskDuration(
+                              task,
+                            ),
+                          )
+
+
+                        const subject =
+                          getTaskSubject(
+                            task,
+                          )
+
+
+                        const topic =
+                          getTaskTopic(
+                            task,
+                          )
+
+
+                        const reason =
+                          getTaskReason(
+                            task,
+                          )
+
+
+                        const materialName =
+                          getMaterialName(
+                            task,
+                          )
+
+
+                        const materialId =
+                          getMaterialId(
+                            task,
+                          )
+
+
+                        const taskSaving =
+                          savingTask ===
+                          index
+
+
+                        return (
+                          <article
+                            key={
+                              `${
+                                getTaskTitle(
+                                  task,
+                                  index,
+                                )
+                              }-${index}`
+                            }
+
                             className={
-                              `adaptive-plan-priority ${priorityClass(
-                                task.priority,
-                              )}`
+                              `adaptive-plan-task study-plan-task ${
+                                completed
+                                  ? 'completed'
+                                  : 'pending'
+                              }`
                             }
                           >
-                            {
-                              priorityLabel(
-                                task.priority,
-                              )
-                            }
-                          </span>
 
+                            {/* =================================
+                                CHECK BUTTON
+                            ================================= */}
 
-                          <span className="adaptive-plan-duration">
-                            {
-                              task.durationMin
-                            } min
-                          </span>
+                            <button
+                              type="button"
 
-                        </div>
-
-
-                        <strong className="adaptive-plan-task-title">
-                          {
-                            task.title
-                          }
-                        </strong>
-
-
-                        <div className="adaptive-plan-meta">
-
-                          <span>
-                            {
-                              task.subject ||
-                              'General'
-                            }
-                          </span>
-
-
-                          <span>
-                            {
-                              actionLabel(
-                                task.actionType,
-                              )
-                            }
-                          </span>
-
-                        </div>
-
-
-                        {
-                          task.topic && (
-
-                            <p className="adaptive-plan-topic">
-                              Focus: {
-                                task.topic
+                              className={
+                                `study-plan-check ${
+                                  completed
+                                    ? 'completed'
+                                    : ''
+                                }`
                               }
-                            </p>
 
-                          )
-                        }
+                              disabled={
+                                savingTask !==
+                                null
+                              }
 
+                              aria-label={
+                                completed
+                                  ? 'Mark task as pending'
+                                  : 'Mark task as completed'
+                              }
 
-                        {
-                          task.reason && (
-
-                            <p className="adaptive-plan-reason">
+                              onClick={() =>
+                                toggleTaskCompletion(
+                                  index,
+                                )
+                              }
+                            >
                               {
-                                task.reason
+                                taskSaving
+                                  ? '…'
+
+                                  : completed
+                                    ? '✓'
+                                    : index +
+                                      1
                               }
-                            </p>
-
-                          )
-                        }
+                            </button>
 
 
-                        {
-                          task.materialName && (
+                            {/* =================================
+                                TASK BODY
+                            ================================= */}
 
-                            <div className="adaptive-plan-material">
+                            <div className="study-plan-task-body">
 
-                              <span>
-                                MATERIAL
-                              </span>
+                              {/* TOP */}
+
+                              <div className="study-plan-task-header">
+
+                                <div className="study-plan-task-badges">
+
+                                  <span
+                                    className={
+                                      `adaptive-plan-priority ${
+                                        getPriorityClass(
+                                          task
+                                            ?.priority,
+                                        )
+                                      }`
+                                    }
+                                  >
+                                    {
+                                      getPriorityLabel(
+                                        task
+                                          ?.priority,
+                                      )
+                                    }
+                                  </span>
 
 
-                              <strong>
+                                  <span
+                                    className={
+                                      `study-plan-status ${
+                                        completed
+                                          ? 'completed'
+                                          : 'pending'
+                                      }`
+                                    }
+                                  >
+                                    {
+                                      completed
+                                        ? 'Completed'
+                                        : 'Pending'
+                                    }
+                                  </span>
+
+                                </div>
+
+
                                 {
-                                  task.materialName
+                                  duration && (
+
+                                    <span className="adaptive-plan-duration">
+                                      {
+                                        duration
+                                      }
+                                    </span>
+
+                                  )
+                                }
+
+                              </div>
+
+
+                              {/* TITLE */}
+
+                              <strong className="adaptive-plan-task-title">
+                                {
+                                  getTaskTitle(
+                                    task,
+                                    index,
+                                  )
                                 }
                               </strong>
 
+
+                              {/* SUBJECT / TOPIC */}
+
+                              {
+                                (
+                                  subject ||
+                                  topic
+                                ) && (
+
+                                  <div className="adaptive-plan-meta">
+
+                                    {
+                                      subject && (
+
+                                        <span>
+                                          {
+                                            subject
+                                          }
+                                        </span>
+
+                                      )
+                                    }
+
+
+                                    {
+                                      topic && (
+
+                                        <span>
+                                          {
+                                            topic
+                                          }
+                                        </span>
+
+                                      )
+                                    }
+
+                                  </div>
+
+                                )
+                              }
+
+
+                              {/* REASON */}
+
+                              {
+                                reason && (
+
+                                  <p className="adaptive-plan-reason">
+                                    {
+                                      reason
+                                    }
+                                  </p>
+
+                                )
+                              }
+
+
+                              {/* STUDY MATERIAL */}
+
+                              {
+                                materialName && (
+
+                                  <div className="adaptive-plan-material">
+
+                                    <span>
+                                      STUDY MATERIAL
+                                    </span>
+
+
+                                    <strong>
+                                      {
+                                        materialName
+                                      }
+                                    </strong>
+
+                                  </div>
+
+                                )
+                              }
+
+
+                              {/* ACTIONS */}
+
+                              <div className="adaptive-plan-actions">
+
+                                <button
+                                  type="button"
+
+                                  className={
+                                    `adaptive-plan-complete-action ${
+                                      completed
+                                        ? 'completed'
+                                        : ''
+                                    }`
+                                  }
+
+                                  disabled={
+                                    savingTask !==
+                                    null
+                                  }
+
+                                  onClick={() =>
+                                    toggleTaskCompletion(
+                                      index,
+                                    )
+                                  }
+                                >
+                                  {
+                                    taskSaving
+                                      ? 'Saving...'
+
+                                      : completed
+                                        ? 'Undo completion'
+                                        : 'Mark complete'
+                                  }
+                                </button>
+
+
+                                <Link
+                                  className="adaptive-plan-primary-action"
+
+                                  to={
+                                    materialId
+                                      ? `/ai-study?material=${materialId}`
+                                      : '/ai-study'
+                                  }
+                                >
+                                  Study with AI
+                                </Link>
+
+                              </div>
+
+
+                              {/* COMPLETION DATE */}
+
+                              {
+                                completed &&
+                                taskProgress
+                                  .completedAt && (
+
+                                  <small className="adaptive-plan-completed-time">
+
+                                    ✓ Completed{' '}
+
+                                    {
+                                      formatCompletedDate(
+                                        taskProgress
+                                          .completedAt,
+                                      )
+                                    }
+
+                                  </small>
+
+                                )
+                              }
+
                             </div>
 
-                          )
-                        }
+                          </article>
+                        )
+                      },
+                    )
+                  }
+
+                </div>
+
+              )
+            }
 
 
-                        <div className="adaptive-plan-actions">
-
-                          {
-                            task.materialId ? (
-
-                              <Link
-                                to={
-                                  `/ai-study?material=${task.materialId}`
-                                }
-                                className="adaptive-plan-primary-action"
-                              >
-                                ✦ Review with AI
-                              </Link>
-
-                            ) : (
-
-                              <Link
-                                to="/ai-study"
-                                className="adaptive-plan-primary-action"
-                              >
-                                ✦ Ask StudyFlow AI
-                              </Link>
-
-                            )
-                          }
-
-                        </div>
-
-                      </div>
-
-
-                      <div className="adaptive-plan-task-number">
-                        {
-                          index +
-                          1
-                        }
-                      </div>
-
-                    </article>
-
-                  ),
-                )
-              }
-
-            </div>
-
-
-            {/* =================================
-                PREVIEW NOTE
-            ================================= */}
+            {/* =============================================
+                INFO
+            ============================================= */}
 
             <div className="adaptive-plan-preview-note">
 
@@ -1053,51 +2177,16 @@ export default function AdaptiveStudyPlan({
 
 
               <p>
-                This is an AI-generated plan preview.
-                Your Planner tasks are not changed yet.
+                Your progress is saved
+                automatically and restored
+                when you return. Generating
+                a new plan starts a new
+                progress cycle.
               </p>
 
             </div>
 
           </>
-
-        )
-      }
-
-
-      {/* =====================================
-          EMPTY
-      ===================================== */}
-
-      {
-        !loading &&
-        !error &&
-        plan.length ===
-          0 && (
-
-          <div className="adaptive-plan-empty">
-
-            <div>
-              ✦
-            </div>
-
-
-            <strong>
-              No adaptive study plan yet.
-            </strong>
-
-
-            <p>
-              Complete quizzes so StudyFlow can
-              identify what you should review next.
-            </p>
-
-
-            <Link to="/materials">
-              Go to study materials
-            </Link>
-
-          </div>
 
         )
       }

@@ -1,3 +1,5 @@
+import StudyPlanProgressAnalytics
+  from '../components/StudyPlanProgressAnalytics'
 import AdaptiveStudyPlan from '../components/AdaptiveStudyPlan'
 import {
   useEffect,

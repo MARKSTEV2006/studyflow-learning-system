@@ -9,9 +9,6 @@ import {
   useSearchParams,
 } from 'react-router-dom'
 
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-
 import {
   FunctionsHttpError,
 } from '@supabase/supabase-js'
@@ -19,6 +16,74 @@ import {
 import {
   supabase,
 } from '../lib/supabase'
+
+import {
+  useAuth,
+} from '../context/AuthContext'
+
+import AIChatThread from '../components/AIChatThread'
+
+
+/* =========================================
+   SUPABASE AI CHAT HISTORY
+========================================= */
+
+const DEFAULT_CHAT_MESSAGES = [
+  {
+    role:
+      'ai',
+
+    text:
+      'Hi. I am StudyFlow AI. What do you want to study?',
+  },
+]
+
+
+function createDefaultChatMessages() {
+  const now =
+    new Date()
+      .toISOString()
+
+  return DEFAULT_CHAT_MESSAGES.map(
+    (
+      item,
+      index,
+    ) => ({
+      ...item,
+
+      id:
+        `welcome-${index}`,
+
+      createdAt:
+        now,
+    }),
+  )
+}
+
+
+function getChatContextKey(
+  materialId,
+) {
+  return materialId
+    ? `material:${materialId}`
+    : 'general'
+}
+
+
+function getLegacyChatStorageKey(
+  userId,
+  materialId,
+) {
+  if (!userId) {
+    return null
+  }
+
+
+  return `studyflow-ai-chat:${userId}:${
+    materialId ||
+    'general'
+  }`
+}
 
 
 const normalQuickPrompts = [
@@ -73,6 +138,12 @@ const materialQuickPrompts = [
 
 
 export default function AIStudyPage() {
+  const {
+    user,
+  } =
+    useAuth()
+
+
   const [
     searchParams,
   ] =
@@ -82,6 +153,19 @@ export default function AIStudyPage() {
   const materialId =
     searchParams.get(
       'material',
+    )
+
+
+  const chatContextKey =
+    getChatContextKey(
+      materialId,
+    )
+
+
+  const legacyChatStorageKey =
+    getLegacyChatStorageKey(
+      user?.id,
+      materialId,
     )
 
 
@@ -100,15 +184,30 @@ export default function AIStudyPage() {
     messages,
     setMessages,
   ] =
-    useState([
-      {
-        role:
-          'ai',
+    useState(
+      createDefaultChatMessages,
+    )
 
-        text:
-          'Hi. I am StudyFlow AI. What do you want to study?',
-      },
-    ])
+
+  const [
+    conversationId,
+    setConversationId,
+  ] =
+    useState(null)
+
+
+  const [
+    chatHistoryLoading,
+    setChatHistoryLoading,
+  ] =
+    useState(true)
+
+
+  const [
+    chatHistoryReady,
+    setChatHistoryReady,
+  ] =
+    useState(false)
 
 
   const [
@@ -275,6 +374,10 @@ export default function AIStudyPage() {
     useRef(null)
 
 
+  const chatLoadSequenceRef =
+    useRef(0)
+
+
   /* =========================================
      CLEAR QUIZ STATE
   ========================================= */
@@ -339,6 +442,764 @@ export default function AIStudyPage() {
     quizSaveRef.current =
       false
   }
+
+
+  /* =========================================
+     TOUCH CONVERSATION
+  ========================================= */
+
+  async function touchConversation(
+    activeConversationId,
+    userId,
+  ) {
+    if (
+      !activeConversationId ||
+      !userId
+    ) {
+      return
+    }
+
+
+    const {
+      error:
+        updateError,
+    } =
+      await supabase
+        .from(
+          'ai_conversations',
+        )
+        .update({
+          updated_at:
+            new Date()
+              .toISOString(),
+        })
+        .eq(
+          'id',
+          activeConversationId,
+        )
+        .eq(
+          'user_id',
+          userId,
+        )
+
+
+    if (
+      updateError
+    ) {
+      console.warn(
+        'Could not update AI conversation timestamp:',
+        updateError,
+      )
+    }
+  }
+
+
+  /* =========================================
+     SAVE ONE CHAT MESSAGE
+  ========================================= */
+
+  async function saveChatMessage({
+    activeConversationId,
+    userId,
+    role,
+    content,
+    aiModel = null,
+  }) {
+    const cleanContent =
+      String(
+        content ||
+        '',
+      )
+        .trim()
+
+
+    if (
+      !activeConversationId ||
+      !userId ||
+      !cleanContent
+    ) {
+      throw new Error(
+        'StudyFlow chat history is not ready.',
+      )
+    }
+
+
+    const {
+      data:
+        insertedMessage,
+
+      error:
+        insertError,
+    } =
+      await supabase
+        .from(
+          'ai_messages',
+        )
+        .insert({
+          conversation_id:
+            activeConversationId,
+
+          user_id:
+            userId,
+
+          role,
+
+          content:
+            cleanContent,
+
+          ai_model:
+            aiModel,
+        })
+        .select(`
+          id,
+          role,
+          content,
+          ai_model,
+          created_at
+        `)
+        .single()
+
+
+    if (
+      insertError
+    ) {
+      throw insertError
+    }
+
+
+    await touchConversation(
+      activeConversationId,
+      userId,
+    )
+
+
+    return insertedMessage
+  }
+
+
+  /* =========================================
+     MIGRATE OLD LOCAL CHAT ONCE
+
+     If Phase 2C.8 localStorage history exists
+     and this Supabase conversation is empty,
+     move the old messages into ai_messages.
+  ========================================= */
+
+  async function migrateLegacyChat({
+    activeConversationId,
+    userId,
+  }) {
+    if (
+      !legacyChatStorageKey ||
+      !activeConversationId ||
+      !userId
+    ) {
+      return []
+    }
+
+
+    try {
+      const savedChat =
+        window
+          .localStorage
+          .getItem(
+            legacyChatStorageKey,
+          )
+
+
+      if (!savedChat) {
+        return []
+      }
+
+
+      const parsedChat =
+        JSON.parse(
+          savedChat,
+        )
+
+
+      const validChat =
+        Array.isArray(
+          parsedChat,
+        )
+          ? parsedChat
+              .filter(
+                (
+                  item,
+                ) =>
+                  item &&
+                  (
+                    item.role ===
+                      'user' ||
+                    item.role ===
+                      'ai'
+                  ) &&
+                  typeof item.text ===
+                    'string' &&
+                  item.text.trim(),
+              )
+              .filter(
+                (
+                  item,
+                  index,
+                ) =>
+                  !(
+                    index === 0 &&
+                    item.role ===
+                      'ai' &&
+                    item.text.trim() ===
+                      DEFAULT_CHAT_MESSAGES[0]
+                        .text
+                  ),
+              )
+          : []
+
+
+      if (
+        validChat.length ===
+        0
+      ) {
+        window
+          .localStorage
+          .removeItem(
+            legacyChatStorageKey,
+          )
+
+        return []
+      }
+
+
+      const baseTime =
+        Date.now() -
+        validChat.length
+
+
+      const rows =
+        validChat.map(
+          (
+            item,
+            index,
+          ) => ({
+            conversation_id:
+              activeConversationId,
+
+            user_id:
+              userId,
+
+            role:
+              item.role,
+
+            content:
+              item.text.trim(),
+
+            ai_model:
+              null,
+
+            created_at:
+              new Date(
+                baseTime +
+                index,
+              )
+                .toISOString(),
+          }),
+        )
+
+
+      const {
+        error:
+          migrationError,
+      } =
+        await supabase
+          .from(
+            'ai_messages',
+          )
+          .insert(
+            rows,
+          )
+
+
+      if (
+        migrationError
+      ) {
+        throw migrationError
+      }
+
+
+      await touchConversation(
+        activeConversationId,
+        userId,
+      )
+
+
+      window
+        .localStorage
+        .removeItem(
+          legacyChatStorageKey,
+        )
+
+
+      return rows.map(
+        (
+          row,
+          index,
+        ) => ({
+          id:
+            `legacy-${index}`,
+
+          role:
+            row.role,
+
+          text:
+            row.content,
+
+          createdAt:
+            row.created_at,
+        }),
+      )
+    } catch (
+      migrationError
+    ) {
+      console.warn(
+        'Could not migrate old StudyFlow AI chat:',
+        migrationError,
+      )
+
+
+      return []
+    }
+  }
+
+
+  /* =========================================
+     LOAD / CREATE SUPABASE CONVERSATION
+
+     One conversation per:
+     - logged-in user
+     - general AI context OR material context
+  ========================================= */
+
+  useEffect(
+    () => {
+      const loadSequence =
+        chatLoadSequenceRef
+          .current +
+        1
+
+
+      chatLoadSequenceRef
+        .current =
+        loadSequence
+
+
+      if (
+        !user?.id
+      ) {
+        setConversationId(
+          null,
+        )
+
+        setMessages(
+          createDefaultChatMessages(),
+        )
+
+        setChatHistoryReady(
+          false,
+        )
+
+        setChatHistoryLoading(
+          false,
+        )
+
+        return
+      }
+
+
+      async function loadChatHistory() {
+        setChatHistoryLoading(
+          true,
+        )
+
+        setChatHistoryReady(
+          false,
+        )
+
+        setConversationId(
+          null,
+        )
+
+        setMessages(
+          createDefaultChatMessages(),
+        )
+
+        setError(
+          '',
+        )
+
+
+        try {
+          const {
+            data: {
+              session,
+            },
+
+            error:
+              sessionError,
+          } =
+            await supabase
+              .auth
+              .getSession()
+
+
+          if (
+            sessionError
+          ) {
+            throw sessionError
+          }
+
+
+          if (
+            !session ||
+            session.user.id !==
+              user.id
+          ) {
+            throw new Error(
+              'Your session expired. Please sign in again.',
+            )
+          }
+
+
+          const {
+            data:
+              existingConversation,
+
+            error:
+              conversationQueryError,
+          } =
+            await supabase
+              .from(
+                'ai_conversations',
+              )
+              .select(`
+                id,
+                user_id,
+                material_id,
+                context_key,
+                title,
+                created_at,
+                updated_at
+              `)
+              .eq(
+                'user_id',
+                user.id,
+              )
+              .eq(
+                'context_key',
+                chatContextKey,
+              )
+              .maybeSingle()
+
+
+          if (
+            conversationQueryError
+          ) {
+            throw conversationQueryError
+          }
+
+
+          let activeConversation =
+            existingConversation
+
+
+          if (
+            !activeConversation
+          ) {
+            const {
+              data:
+                createdConversation,
+
+              error:
+                conversationInsertError,
+            } =
+              await supabase
+                .from(
+                  'ai_conversations',
+                )
+                .insert({
+                  user_id:
+                    user.id,
+
+                  material_id:
+                    materialId ||
+                    null,
+
+                  context_key:
+                    chatContextKey,
+
+                  title:
+                    materialId
+                      ? 'Study Material Chat'
+                      : 'StudyFlow AI Chat',
+                })
+                .select(`
+                  id,
+                  user_id,
+                  material_id,
+                  context_key,
+                  title,
+                  created_at,
+                  updated_at
+                `)
+                .single()
+
+
+            if (
+              conversationInsertError
+            ) {
+              if (
+                conversationInsertError
+                  .code ===
+                '23505'
+              ) {
+                const {
+                  data:
+                    duplicateConversation,
+
+                  error:
+                    duplicateQueryError,
+                } =
+                  await supabase
+                    .from(
+                      'ai_conversations',
+                    )
+                    .select(`
+                      id,
+                      user_id,
+                      material_id,
+                      context_key,
+                      title,
+                      created_at,
+                      updated_at
+                    `)
+                    .eq(
+                      'user_id',
+                      user.id,
+                    )
+                    .eq(
+                      'context_key',
+                      chatContextKey,
+                    )
+                    .single()
+
+
+                if (
+                  duplicateQueryError
+                ) {
+                  throw duplicateQueryError
+                }
+
+
+                activeConversation =
+                  duplicateConversation
+              } else {
+                throw conversationInsertError
+              }
+            } else {
+              activeConversation =
+                createdConversation
+            }
+          }
+
+
+          if (
+            !activeConversation
+              ?.id
+          ) {
+            throw new Error(
+              'StudyFlow could not create your AI conversation.',
+            )
+          }
+
+
+          const {
+            data:
+              messageRows,
+
+            error:
+              messageQueryError,
+          } =
+            await supabase
+              .from(
+                'ai_messages',
+              )
+              .select(`
+                id,
+                conversation_id,
+                user_id,
+                role,
+                content,
+                ai_model,
+                created_at
+              `)
+              .eq(
+                'conversation_id',
+                activeConversation.id,
+              )
+              .eq(
+                'user_id',
+                user.id,
+              )
+              .order(
+                'created_at',
+                {
+                  ascending:
+                    false,
+                },
+              )
+              .limit(
+                100,
+              )
+
+
+          if (
+            messageQueryError
+          ) {
+            throw messageQueryError
+          }
+
+
+          let loadedMessages =
+            Array.isArray(
+              messageRows,
+            )
+              ? [
+                  ...messageRows,
+                ]
+                  .reverse()
+                  .map(
+                    (
+                      row,
+                    ) => ({
+                      id:
+                        row.id,
+
+                      role:
+                        row.role ===
+                        'user'
+                          ? 'user'
+                          : 'ai',
+
+                      text:
+                        row.content ||
+                        '',
+
+                      createdAt:
+                        row.created_at ||
+                        null,
+                    }),
+                  )
+                  .filter(
+                    (
+                      item,
+                    ) =>
+                      item.text.trim(),
+                  )
+              : []
+
+
+          if (
+            loadedMessages.length ===
+            0
+          ) {
+            loadedMessages =
+              await migrateLegacyChat({
+                activeConversationId:
+                  activeConversation.id,
+
+                userId:
+                  user.id,
+              })
+          }
+
+
+          if (
+            chatLoadSequenceRef
+              .current !==
+            loadSequence
+          ) {
+            return
+          }
+
+
+          setConversationId(
+            activeConversation.id,
+          )
+
+
+          setMessages(
+            loadedMessages.length >
+              0
+              ? loadedMessages
+              : createDefaultChatMessages(),
+          )
+
+
+          setChatHistoryReady(
+            true,
+          )
+        } catch (
+          chatError
+        ) {
+          console.error(
+            'StudyFlow AI chat history error:',
+            chatError,
+          )
+
+
+          if (
+            chatLoadSequenceRef
+              .current ===
+            loadSequence
+          ) {
+            setConversationId(
+              null,
+            )
+
+            setMessages(
+              createDefaultChatMessages(),
+            )
+
+            setChatHistoryReady(
+              false,
+            )
+
+            setError(
+              chatError?.message ||
+              'Could not load your AI chat history.',
+            )
+          }
+        } finally {
+          if (
+            chatLoadSequenceRef
+              .current ===
+            loadSequence
+          ) {
+            setChatHistoryLoading(
+              false,
+            )
+          }
+        }
+      }
+
+
+      loadChatHistory()
+    },
+
+    [
+      user?.id,
+      chatContextKey,
+      materialId,
+    ],
+  )
 
 
   /* =========================================
@@ -676,21 +1537,6 @@ export default function AIStudyPage() {
       setSelectedMaterial(
         data,
       )
-
-
-      setMessages([
-        {
-          role:
-            'ai',
-
-          text:
-`### Material ready
-
-**${data.file_name}**
-
-Choose one of the study actions above or ask me a question about this material.`,
-        },
-      ])
     } catch (
       requestError
     ) {
@@ -743,6 +1589,12 @@ Choose one of the study actions above or ask me a question about this material.`
 
   /* =========================================
      SEND CHAT MESSAGE
+
+     Flow:
+     1. Save user message to Supabase
+     2. Send request to StudyFlow AI
+     3. Save AI reply to Supabase
+     4. Update local UI
   ========================================= */
 
   async function sendMessage(
@@ -754,8 +1606,27 @@ Choose one of the study actions above or ask me a question about this material.`
 
     if (
       !cleanMessage ||
-      loading
+      loading ||
+      chatHistoryLoading ||
+      materialLoading ||
+      (
+        materialId &&
+        !selectedMaterial
+      )
     ) {
+      return
+    }
+
+
+    if (
+      !user?.id ||
+      !conversationId ||
+      !chatHistoryReady
+    ) {
+      setError(
+        'Your AI chat history is still loading. Please try again.',
+      )
+
       return
     }
 
@@ -794,23 +1665,6 @@ Choose one of the study actions above or ask me a question about this material.`
         )
 
 
-    setMessages(
-      (
-        current,
-      ) => [
-        ...current,
-
-        {
-          role:
-            'user',
-
-          text:
-            cleanMessage,
-        },
-      ],
-    )
-
-
     setMessage(
       '',
     )
@@ -843,13 +1697,67 @@ Choose one of the study actions above or ask me a question about this material.`
 
 
       if (
-        !session
+        !session ||
+        session.user.id !==
+          user.id
       ) {
         throw new Error(
           'Your session expired. Please sign in again.',
         )
       }
 
+
+      /* =====================================
+         SAVE USER MESSAGE FIRST
+      ===================================== */
+
+      const savedUserMessage =
+        await saveChatMessage({
+          activeConversationId:
+            conversationId,
+
+          userId:
+            user.id,
+
+          role:
+            'user',
+
+          content:
+            cleanMessage,
+        })
+
+
+      setMessages(
+        (
+          current,
+        ) => [
+          ...current,
+
+          {
+            id:
+              savedUserMessage
+                ?.id ||
+              `user-${Date.now()}`,
+
+            role:
+              'user',
+
+            text:
+              cleanMessage,
+
+            createdAt:
+              savedUserMessage
+                ?.created_at ||
+              new Date()
+                .toISOString(),
+          },
+        ],
+      )
+
+
+      /* =====================================
+         CALL STUDYFLOW AI
+      ===================================== */
 
       const {
         data,
@@ -937,6 +1845,35 @@ Choose one of the study actions above or ask me a question about this material.`
       }
 
 
+      const aiAnswer =
+        data?.answer ||
+        'No response was received from StudyFlow AI.'
+
+
+      /* =====================================
+         SAVE AI REPLY
+      ===================================== */
+
+      const savedAiMessage =
+        await saveChatMessage({
+          activeConversationId:
+            conversationId,
+
+          userId:
+            user.id,
+
+          role:
+            'ai',
+
+          content:
+            aiAnswer,
+
+          aiModel:
+            data?.model ||
+            null,
+        })
+
+
       setMessages(
         (
           current,
@@ -944,12 +1881,22 @@ Choose one of the study actions above or ask me a question about this material.`
           ...current,
 
           {
+            id:
+              savedAiMessage
+                ?.id ||
+              `ai-${Date.now()}`,
+
             role:
               'ai',
 
             text:
-              data?.answer ||
-              'No response was received from StudyFlow AI.',
+              aiAnswer,
+
+            createdAt:
+              savedAiMessage
+                ?.created_at ||
+              new Date()
+                .toISOString(),
           },
         ],
       )
@@ -1680,6 +2627,98 @@ Choose one of the study actions above or ask me a question about this material.`
 
 
   /* =========================================
+     CLEAR SUPABASE CHAT
+  ========================================= */
+
+  async function clearChat() {
+    if (
+      loading ||
+      chatHistoryLoading
+    ) {
+      return
+    }
+
+
+    setError(
+      '',
+    )
+
+
+    if (
+      !conversationId ||
+      !user?.id
+    ) {
+      setMessages(
+        createDefaultChatMessages(),
+      )
+
+      setMessage(
+        '',
+      )
+
+      return
+    }
+
+
+    try {
+      const {
+        error:
+          deleteError,
+      } =
+        await supabase
+          .from(
+            'ai_messages',
+          )
+          .delete()
+          .eq(
+            'conversation_id',
+            conversationId,
+          )
+          .eq(
+            'user_id',
+            user.id,
+          )
+
+
+      if (
+        deleteError
+      ) {
+        throw deleteError
+      }
+
+
+      await touchConversation(
+        conversationId,
+        user.id,
+      )
+
+
+      setMessages(
+        createDefaultChatMessages(),
+      )
+
+
+      setMessage(
+        '',
+      )
+    } catch (
+      clearError
+    ) {
+      console.error(
+        'Clear StudyFlow AI chat error:',
+        clearError,
+      )
+
+
+      setError(
+        clearError?.message ||
+        'Could not clear your AI chat history.',
+      )
+    }
+  }
+
+
+  /* =========================================
      CHAT SUBMIT
   ========================================= */
 
@@ -1723,6 +2762,30 @@ Choose one of the study actions above or ask me a question about this material.`
           Ask questions, create reviewers,
           prepare quizzes, and study any subject.
         </p>
+
+
+        {
+          !chatHistoryLoading &&
+          messages.length >
+            1 && (
+
+            <button
+              type="button"
+              className="ai-clear-chat-button"
+              onClick={
+                clearChat
+              }
+              disabled={
+                loading ||
+                quizLoading ||
+                chatHistoryLoading
+              }
+            >
+              Clear chat
+            </button>
+
+          )
+        }
 
       </section>
 
@@ -1866,7 +2929,8 @@ Choose one of the study actions above or ask me a question about this material.`
                         }
                         disabled={
                           loading ||
-                          quizLoading
+                          quizLoading ||
+                          chatHistoryLoading
                         }
                         onClick={() =>
                           handleMaterialAction(
@@ -1956,7 +3020,8 @@ Choose one of the study actions above or ask me a question about this material.`
                           prompt
                         }
                         disabled={
-                          loading
+                          loading ||
+                          chatHistoryLoading
                         }
                         onClick={() =>
                           sendMessage(
@@ -2638,127 +3703,28 @@ Choose one of the study actions above or ask me a question about this material.`
 
 
       {/* =====================================
-          CHAT
+          PHASE 2C.10
+          AI STUDY CHAT UI CLEANUP
       ===================================== */}
 
       {
         !quiz &&
         !quizLoading && (
 
-          <section className="ai-chat-thread">
-
-            {
-              messages.map(
-                (
-                  chatMessage,
-                  index,
-                ) => (
-
-                  <div
-                    key={
-                      `${chatMessage.role}-${index}`
-                    }
-                    className={
-                      chatMessage.role ===
-                      'user'
-                        ? 'ai-chat-message user'
-                        : 'ai-chat-message ai'
-                    }
-                  >
-
-                    <span className="ai-message-author">
-                      {
-                        chatMessage.role ===
-                        'user'
-                          ? 'You'
-                          : 'StudyFlow AI'
-                      }
-                    </span>
-
-
-                    {
-                      chatMessage.role ===
-                      'ai' ? (
-
-                        <div className="ai-markdown">
-
-                          <ReactMarkdown
-                            remarkPlugins={[
-                              remarkGfm,
-                            ]}
-                            components={{
-                              a({
-                                children,
-                                ...props
-                              }) {
-                                return (
-                                  <a
-                                    {...props}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                  >
-                                    {
-                                      children
-                                    }
-                                  </a>
-                                )
-                              },
-                            }}
-                          >
-                            {
-                              chatMessage.text
-                            }
-                          </ReactMarkdown>
-
-                        </div>
-
-                      ) : (
-
-                        <p className="ai-user-text">
-                          {
-                            chatMessage.text
-                          }
-                        </p>
-
-                      )
-                    }
-
-                  </div>
-
-                ),
-              )
+          <AIChatThread
+            messages={
+              messages
             }
-
-
-            {
-              loading && (
-
-                <div className="ai-chat-message ai">
-
-                  <span className="ai-message-author">
-                    StudyFlow AI
-                  </span>
-
-
-                  <div className="ai-thinking">
-                    <span />
-                    <span />
-                    <span />
-                  </div>
-
-                </div>
-
-              )
+            loading={
+              loading
             }
-
-
-            <div
-              ref={
-                chatEndRef
-              }
-            />
-
-          </section>
+            historyLoading={
+              chatHistoryLoading
+            }
+            endRef={
+              chatEndRef
+            }
+          />
 
         )
       }
@@ -2802,7 +3768,13 @@ Choose one of the study actions above or ask me a question about this material.`
                 message
               }
               disabled={
-                loading
+                loading ||
+                chatHistoryLoading ||
+                materialLoading ||
+                (
+                  materialId &&
+                  !selectedMaterial
+                )
               }
               placeholder={
                 selectedMaterial
@@ -2824,6 +3796,13 @@ Choose one of the study actions above or ask me a question about this material.`
               type="submit"
               disabled={
                 loading ||
+                chatHistoryLoading ||
+                materialLoading ||
+                !chatHistoryReady ||
+                (
+                  materialId &&
+                  !selectedMaterial
+                ) ||
                 !message.trim()
               }
               aria-label="Send message"
