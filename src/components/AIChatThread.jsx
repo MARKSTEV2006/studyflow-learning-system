@@ -189,6 +189,7 @@ function MessageBody({
 
 function ChatMessage({
   message,
+  userInitial,
 }) {
   const isUser =
     message.role ===
@@ -228,19 +229,19 @@ function ChatMessage({
   )
 
   const avatar = (
-    <div
-      className={
-        isUser
-          ? 'sf-ai-avatar user'
-          : 'sf-ai-avatar ai'
-      }
-      aria-hidden="true"
-    >
-      {isUser
-        ? 'Y'
-        : '✦'}
-    </div>
-  )
+  <div
+    className={
+      isUser
+        ? 'sf-ai-avatar user'
+        : 'sf-ai-avatar ai'
+    }
+    aria-hidden="true"
+  >
+    {isUser
+      ? userInitial
+      : '✦'}
+  </div>
+)
 
   return (
     <article
@@ -325,7 +326,19 @@ export default function AIChatThread({
   loading = false,
   historyLoading = false,
   endRef,
+  userEmail = '',
+  userName = '',
 }) {
+
+  const profileText =
+    userName.trim() ||
+    userEmail.trim() ||
+    'User'
+
+  const userInitial =
+    profileText
+      .charAt(0)
+      .toUpperCase()
   if (
     historyLoading
   ) {
@@ -387,11 +400,14 @@ export default function AIChatThread({
                   </div>
                 )}
 
-              <ChatMessage
-                message={
-                  chatMessage
-                }
-              />
+             <ChatMessage
+  message={
+    chatMessage
+  }
+  userInitial={
+    userInitial
+  }
+/>
             </div>
           )
         },

@@ -3712,19 +3712,29 @@ export default function AIStudyPage() {
         !quizLoading && (
 
           <AIChatThread
-            messages={
-              messages
-            }
-            loading={
-              loading
-            }
-            historyLoading={
-              chatHistoryLoading
-            }
-            endRef={
-              chatEndRef
-            }
-          />
+  messages={
+    messages
+  }
+  loading={
+    loading
+  }
+  historyLoading={
+    chatHistoryLoading
+  }
+  endRef={
+    chatEndRef
+  }
+  userEmail={
+    user?.email
+  }
+  userName={
+    user?.user_metadata
+      ?.full_name ||
+    user?.user_metadata
+      ?.name ||
+    ''
+  }
+/>
 
         )
       }
